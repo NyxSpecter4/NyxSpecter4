@@ -3,100 +3,117 @@
 # BountyWarz: Persian Gulf
 
 ### Sovereign Aerospace Combat & Zero-Trust Cyber Warfare Simulator
+**The Flagship Mobile Production Release**
 
-[![Live Web Platform](https://img.shields.io/badge/live-bountywarz.com-2ea043?style=flat-square)](https://bountywarz.com)
-[![Google Play Release](https://img.shields.io/badge/Google%20Play-Android%2016%20(API%2036)-0288D1?style=flat-square&logo=google-play)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)
-[![MITRE ATT&CK](https://img.shields.io/badge/aligned-MITRE%20ATT%26CK-1f6feb?style=flat-square)](#sovereign-proficiency--standards)
-[![DoD 8140](https://img.shields.io/badge/aligned-DoD%208140-1f6feb?style=flat-square)](#sovereign-proficiency--standards)
-[![Evidence Records](https://img.shields.io/badge/records-tamper--evident-8957e5?style=flat-square)](#sovereign-proficiency--standards)
-[![60 FPS Mobile](https://img.shields.io/badge/engine-60%20FPS%20Three.js-orange?style=flat-square)](#mobile-architecture)
-
-**The Flagship Product of Kinetigor**
+[![Google Play Release](https://img.shields.io/badge/Google%20Play-Android%2016%20(API%2036)-0288D1?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)
+[![Production Build](https://img.shields.io/badge/Release-v1.1.10%20(Code%2020)-success?style=for-the-badge)](https://bountywarz.com)
+[![Engine Performance](https://img.shields.io/badge/Engine-60%20FPS%20Three.js-orange?style=for-the-badge)](https://bountywarz.com)
+[![Compliance](https://img.shields.io/badge/Standards-DoD%208140%20%7C%20MITRE%20ATT%26CK-blue?style=for-the-badge)](https://bountywarz.com)
 
 </div>
 
 ---
 
-## The Vision: One Unified Flagship
+## Executive Summary
 
-**BountyWarz: Persian Gulf** fuses high-performance 3D flight simulation with real-time cyber warfare operations. Command advanced Unmanned Combat Aerial Vehicles (UCAVs) in aerial dogfights over the Strait of Hormuz, conduct zero-trust SCADA network penetrations against critical maritime infrastructure, and trade commodities across live sovereign financial markets.
+**BountyWarz: Persian Gulf** is an enterprise-grade sovereign aerospace combat and electronic cyber warfare platform built for high-performance mobile devices. 
 
-Air combat and electronic warfare are no longer separate domains — victory requires dominating both simultaneously.
-
----
-
-## Core Operational Systems
-
-### 1. 3D Flight Combat & Drone Interception
-- **Carrier Catapult Acceleration**: Steam-catapult launches from offshore supercarriers straight into the active Persian Gulf theater.
-- **Supersonic Flight Dynamics**: Break the sound barrier through Zagros canyon corridors and across open maritime chokepoints.
-- **Weapons & Targeting HUD**: Thermal FLIR optics, 20mm rotary autocannons, and radar-guided intercept missiles.
-- **Solo Skirmish & Instant Matchmaking**: Real-time peer-to-peer multiplayer dogfights and coordinated AI tactical flight squads.
-
-### 2. Zero-Trust SCADA & Cyber Range Operations
-- **Infrastructure Territory Control**: Loiter in tactical proximity to the Strait of Hormuz shipping lanes, Qeshm Island electronic warfare arrays, and the Fujairah subsea cable landing to inject zero-day cyber payloads.
-- **SCADA Telemetry Manipulation**: Hijack pipeline pump telemetry, blind air defense radar sweeps, and flip territorial control in favor of your commissioned sovereign faction.
-- **Evidence-Based Scoring**: Grades **how you reasoned**, not merely whether you memorized an exploit script. Every challenge maps to verified Common Weakness Enumeration (CWE) and National Vulnerability Database (NVD) standards.
-
-### 3. Tactical Comms & Combat Audio
-- **1-Tap Flight Comms (Zero Typing in Flight)**: Instant tactile HUD squawk callouts: `[LOCK TARGET]`, `[NEED COVER]`, `[SCADA BREACH]`, `[SUBMERGING]`, and `[HOLD CHOKEPOINT]`.
-- **Dynamic AI Wingman Banter**: Contextual radio chatter, tactical VHF squelch, and authenticated squad feeds.
-- **Procedural Synthesizer Audio**: 100% procedural Phrygian minor electronic combat soundtrack powered by the Web Audio API — zero asset bloat, offline-capable, and synced with physical vibration haptics.
-
-### 4. Sovereign Economy & Commodities Exchange
-- **High-Stakes Bounty Contracts**: Hunt high-threat rogue airframes, extract cryptographic keys, and collect bounties up to 75,000 SCADA credits.
-- **Live Commodities Trading Floor**: Trade crude oil futures, liquefied natural gas (LNG), microchip silicon, and sovereign debt notes on the Kinetigor Sovereign Commodities Exchange.
-- **Airframe & Cyber-Deck Engineering**: Upgrade composite hull armor, thrust-vectoring pitch rates, pulse lasers, and cryptographic coprocessors.
+Operating in the high-stakes geopolitical theater of the Strait of Hormuz, the platform fuses supersonic 3D flight simulation with real-time zero-trust SCADA network exploitation, sovereign commodity markets, and tactical squadron command.
 
 ---
 
-## Sovereign Proficiency & Standards
+## Flagship Systems Architecture
 
-BountyWarz is engineered to replace rote completion certificates with tamper-evident proficiency proof:
+```
+                                  BOUNTYWARZ: PERSIAN GULF
+                                  [com.bountywarz.gate]
+                                             │
+         ┌───────────────────────────────────┼───────────────────────────────────┐
+         ▼                                   ▼                                   ▼
+┌──────────────────┐               ┌──────────────────┐               ┌──────────────────┐
+│  AEROSPACE 3D    │               │ ZERO-TRUST SCADA │               │ SOVEREIGN MARKET │
+│  FLIGHT COMBAT   │               │ CYBER OPERATIONS │               │    & TRADING     │
+├──────────────────┤               ├──────────────────┤               ├──────────────────┤
+│• Carrier Launch  │               │• Hormuz Terminal │               │• Crude Oil / LNG │
+│• 3D Dogfighting  │               │• Qeshm EW Array  │               │• Silicon Futures │
+│• FLIR Targeting  │               │• Subsea Cables   │               │• Debt Instruments│
+│• Autocannon / AAM│               │• MITRE ATT&CK    │               │• Airframe Bounties│
+└──────────────────┘               └──────────────────┘               └──────────────────┘
+         │                                   │                                   │
+         └───────────────────────────────────┼───────────────────────────────────┘
+                                             ▼
+                          ┌─────────────────────────────────────┐
+                          │     TACTICAL COMMS & MOBILE HUD     │
+                          ├─────────────────────────────────────┤
+                          │• 1-Tap Squawk (Zero Flight Typing)  │
+                          │• Contextual AI Wingman Banter       │
+                          │• Dual Virtual Stick Touch Engine    │
+                          │• Procedural Web Audio Synth Engine  │
+                          └─────────────────────────────────────┘
+```
 
-| Standard / Pillar | Alignment | Implementation |
+---
+
+## Key Operational Pillars
+
+### 1. High-G Aerospace Interception
+- **Supercarrier Catapult Launches**: Steam-catapult acceleration from offshore naval task forces directly into the Persian Gulf conflict zone.
+- **Atmospheric Flight Model**: High-fidelity flight dynamics optimized for supersonic canyon runs through the Zagros ridgeline and maritime chokepoints.
+- **Integrated Ordnance**: Thermal FLIR tracking, 20mm rotary autocannons, and fire-and-forget interceptor missiles.
+- **Squadron Combat**: Real-time peer-to-peer multiplayer dogfights supplemented by responsive autonomous AI wingmen.
+
+### 2. Dual-Domain Electronic Warfare & SCADA Hacking
+- **Chokepoint Territory Control**: Loiter within broadcast proximity of key Persian Gulf infrastructure to deploy zero-trust exploit payloads.
+- **Critical Infrastructure Disruption**: Manipulate oil pipeline SCADA telemetries, blind air-defense radar grids, and reroute subsea communication hubs.
+- **Defensible Proof of Competence**: Every cyber encounter maps directly to verified **Common Weakness Enumeration (CWE)** and **National Vulnerability Database (NVD)** standards, grading underlying tactical reasoning rather than static multiple-choice selections.
+
+### 3. Tactile Mobile Avionics & Comms
+- **1-Tap Tactical Comms (Zero Typing in Flight)**: Docked tactile HUD buttons allow immediate squad coordination under high-G load:
+  - `[LOCK TARGET]` — Designate priority hostile bogeys.
+  - `[NEED COVER]` — Deploy defensive escorts and flare countermeasures.
+  - `[SCADA BREACH]` — Signal active infrastructure zero-day penetration.
+  - `[SUBMERGING]` — Drop below radar horizons to defeat hostile missile locks.
+  - `[HOLD CHOKEPOINT]` — Establish defensive vector over the shipping corridor.
+- **AI Wingman Voice Banter**: Context-aware procedural radio calls with synthetic VHF squelch and haptic pulse confirmations.
+- **Procedural Sound Architecture**: 100% procedural Phrygian minor electronic synthesizer engine driven via the Web Audio API — zero static media file overhead, completely offline capable.
+
+### 4. Sovereign Commodities & In-Game Financial Engine
+- **Live Macroeconomic Ledger**: Trade crude oil futures, liquefied natural gas (LNG), semiconductor-grade silicon, and sovereign debt notes on the Kinetigor Sovereign Commodities Floor.
+- **Bounty Contracts**: Hunt high-threat rogue airframes, extract encrypted payload hashes, and collect dynamic bounties up to 75,000 SCADA credits.
+- **Airframe Engineering**: Reinvest proceeds into enhanced thrust-vectoring engines, radar-absorbent coatings, and hardware cryptoprocessors.
+
+---
+
+## Technical Specifications (Android Release)
+
+| Parameter | Specification | Compliance Rationale |
 |---|---|---|
-| **MITRE ATT&CK** | Enterprise & ICS | Reconnaissance, Initial Access, Execution, Persistence, Lateral Movement |
-| **DoD 8140** | Cyber Defense Operations | Defensive Cyberspace Operations (DCO) & ICS/SCADA Protection |
-| **CISA Zero Trust** | 5 Core Pillars | Strict identity validation, segmented network perimeters, data encryption |
-| **CWE / NVD** | Ground Truth | Real-world vulnerability root-cause analysis (memory safety, auth bypass, injection) |
+| **Application ID** | `com.bountywarz.gate` | Registered Google Play Production Identifier |
+| **Version Code** | `20` | Gold Master Beta Release |
+| **Version Name** | `1.1.10` | Semantic Version Milestone |
+| **Target SDK** | **API Level 36 (Android 16)** | Google Play 2026 Security & Performance Mandate |
+| **Minimum SDK** | **API Level 24 (Android 7.0)** | 98.4% Global Device Coverage |
+| **Graphics Pipeline** | Three.js / WebGL 2.0 | 60 FPS Target with 25,000m Horizon Draw |
+| **Shell Architecture** | Hardened Trusted Web Activity (TWA) | Instant Cold-Start, Biometric Auth, Digital Asset Links Verified |
+| **Audio Engine** | Procedural Web Audio API | Zero Asset Bloat, Dynamic Combat Resonant Synthesis |
+| **Haptics** | Multi-Stage Vibration API | Tactile Hit Confirmation & Stall Warning Buffeting |
 
 ---
 
-## Mobile & Cross-Platform Architecture
+## Sovereign Verification & Standards Alignment
 
-- **Google Play Android 16 (API Level 36)**: Built as a fully verified Android App Bundle (`com.bountywarz.gate`) adhering to Google Play 2026 security mandates.
-- **Dual Virtual Thumbstick Engine**: Responsive thumb controls with multi-zone deadbands and progressive pitch/roll curves.
-- **60 FPS Three.js Pipeline**: High-efficiency rendering with a 25,000-meter draw horizon, dynamic ocean shaders, and atmospheric particle effects.
-- **Trusted Web Activity (TWA)**: Zero bloat, instant cold-start, seamless offline caching, and native biometric session handoff.
+The BountyWarz platform replaces static training certificates with cryptographic, tamper-evident proficiency records:
 
----
-
-## Start Flying
-
-| Portal | Role |
-|---|---|
-| **[bountywarz.com](https://bountywarz.com)** | **The Flagship Range & 3D Persian Gulf Combat Theater** |
-| **[kinetigor.com](https://kinetigor.com)** | **Kinetigor Desk** — Sovereign dealmaking, multi-agent contracts & Maat proof judging |
-| **[protocolbreach.com](https://protocolbreach.com)** | **Protocol Breach** — Fast-paced 10-minute tactical cyber sprint scenarios |
-
----
-
-## Open Source Tooling & AI Infrastructure
-
-Infrastructure built and maintained while shipping the BountyWarz engine:
-
-| Repository | Purpose |
-|---|---|
-| **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | Multi-agent cybersecurity review plugin & MCP server grounded in real CVE/NVD models. |
-| **[kin-security-action](https://github.com/NyxSpecter4/kin-security-action)** | Automated GitHub Action inspecting pull requests for security vulnerabilities. |
-| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | DevOps orchestration hooks, diagnostics, and MCP wiring for autonomous AI coding agents. |
+- **MITRE ATT&CK (Enterprise & ICS)**: Validates reconnaissance, initial access, SCADA execution, and lateral movement.
+- **DoD 8140 Cyberspace Workforce**: Validates active defensive cyberspace operations across industrial and operational technology (OT).
+- **CISA Zero Trust Model**: Enforces continuous authentication, microsegmentation, and verified perimeter handoffs.
 
 ---
 
 <div align="center">
 
-**Kinetigor** · **[bountywarz.com](https://bountywarz.com)**  
-*Nothing goes green for looking green.*
+**Official Production Portal**: [bountywarz.com](https://bountywarz.com)
+
+*A sovereign product of Kinetigor Defense Systems.*
 
 </div>
