@@ -1,99 +1,92 @@
 <div align="center">
 
-# 🜃 THE NEMETON
+# BountyWarz
 
-**Athelgard** — an adaptive training world where the curriculum *is* the world.
+### A game-native cyber range that grades reasoning, not answers.
 
-*The guide says "I don't know" at the edge of its knowledge. It never improvises and it never inflates.*
+[![Live](https://img.shields.io/badge/play-bountywarz.com-2ea043?style=flat-square)](https://bountywarz.com)
+[![MITRE ATT&CK](https://img.shields.io/badge/mapped-MITRE%20ATT%26CK-1f6feb?style=flat-square)](#why-it-is-different)
+[![DoD 8140](https://img.shields.io/badge/mapped-DoD%208140-1f6feb?style=flat-square)](#why-it-is-different)
+[![Reasoning](https://img.shields.io/badge/reasoning-DeepSeek-4b6bfb?style=flat-square)](#under-the-hood)
 
-**8 live sites · 22 repositories · one grove**
+**Kinetigor's flagship product** — an ethical bounty-hunting sim where you fly recon drones,
+breach targets across 18 nations, and capture flags while a cognitive core measures what you
+actually *know*.
 
 </div>
 
 ---
 
-## The thesis
+## What it is
 
-Most training platforms hand you a course and a percentage. Athelgard hands you a **world** and a **judge**.
+BountyWarz is not a course with a progress bar. It is a **world you work in** — real targets,
+real exploit chains, real receipts — mapped to the certifications the industry actually hires
+against.
 
-You take real work — breach a target, fly a recon drone, write the exploit chain, build the world — and you get weighed on **receipts**. The judge is **Maat**: PASS only with real proof, FAIL with the lesson written into the note. Nothing goes green for looking green. A false receipt is worse than no receipt at all.
-
-Athelgard is the guide. The **Nemeton** is the grove the work grows in — the world, the desk, the engine, the ledger.
-
----
-
-## 🔴 Live
-
-| Site | What it is | Verified title |
-|------|-----------|----------------|
-| **[bountywarz.com](https://bountywarz.com)** | BountyWarz — drone recon, breach & capture across 18 nations. Learn real cybersecurity mapped to certifications, earn credits. | *BountyWarz — London Drone Recon / Breach & Capture Across 18 Nations* |
-| **[kinetigor.com](https://kinetigor.com)** | Kinetigor Desk — grand multiplayer workspace & comms bus. The room where cards are forged, dealt and judged. | *Kinetigor Desk — Grand Multiplayer Workspace & Comms Bus* |
-| **[roostandruin.com](https://roostandruin.com)** | Roost and Ruin — a playable world. | *ROOST AND RUIN — Play* |
-| **[hackersjourney.com](https://hackersjourney.com)** | KIN Academy — a virtual campus for the careers created when industries collide. | *KIN Academy — A Virtual Campus for Convergence Careers* |
-| **[makothoth.dev](https://makothoth.dev)** | MAKOTHOTH — VR math showcase. | *MAKOTHOTH — VR Math Showcase* |
-| **[protocolbreach.com](https://protocolbreach.com)** | Protocol Breach — 10-minute tactical cyber combat. Draft a loadout, hack buildings, capture flags. | *PROTOCOL BREACH — Tactical Cyber Arena* |
-| **[athelgard.io](https://athelgard.io)** | Athelgard — stop the $340,000 email. Prove it to your insurer. | *Athelgard — Stop the $340,000 Email. Prove it to your insurer.* |
-| **[oceanpulse.vercel.app](https://oceanpulse.vercel.app)** | OceanPulse — 3D marine wildlife MMO. Document ocean life, build the sighting collection. | *OceanPulse* |
+You take a contract. You fly the recon, write the chain, breach the target, capture the flag.
+Then you are **judged**: the range scores how you reasoned, not whether you guessed right.
 
 ---
 
-## 🗺️ The grove — where each thing lives
+## Why it is different
 
-### The world engine — `bountywarz`
-**[bountywarz](https://github.com/NyxSpecter4/bountywarz)** — the monolith the whole grove grows from. 40,243 tracked paths across `packages/` (agents · cognitive · harness · products · worlds), `worlds/`, `api-handlers/`, `relay/`, `www/` and `domain-configs/`. The game, the mentor, the cognitive core (BKT + IRT + SRS judging) and the DeepSeek harness all live here.
+RangeForce, SimSpace and Cyberbit teach hands-on — but they wrap **no real proficiency signal**.
+BountyWarz emits one, inside live PvP gameplay:
 
-Mapped in [`packages/ARCHITECTURE.md`](https://github.com/NyxSpecter4/bountywarz/blob/master/packages/ARCHITECTURE.md) and the grove's symbolic canon in [`packages/NEMETON-CANON.md`](https://github.com/NyxSpecter4/bountywarz/blob/master/packages/NEMETON-CANON.md).
+- **BKT mastery** — `P(learned)` per concept, not a completion percentage.
+- **SM-2 retention decay** — the range remembers what you are about to forget.
+- **HMAC-sealed receipts** — credential provenance that cannot be back-dated.
+- **Mapped to MITRE ATT&CK and DoD 8140**, measured against the CISA zero-trust pillars.
 
-### The desk — governance & judging
-| Repo | Role |
+### The mentor
+
+The guide inside the world is **Athelgard**. It answers, it coaches, it pushes back — and at the
+edge of its knowledge it says *"I don't know."* It never improvises. It never inflates.
+
+> A false receipt is worse than no receipt at all.
+
+---
+
+## Play it
+
+| | |
 |---|---|
-| **[kinetigor-desk-api](https://github.com/NyxSpecter4/kinetigor-desk-api)** | The Desk server — missions, gauntlet stages, evidence review, leaderboard. |
-| **[bountywarz-ops](https://github.com/NyxSpecter4/bountywarz-ops)** *(archived)* | Mission control — comms bus, sync enforcement, audit trail, HF/GGUF model pipeline. |
-| **[proxy-dealmaker](https://github.com/NyxSpecter4/proxy-dealmaker)** *(archived)* | Monk harness — docker runner + reproducible bounty instances. |
+| **[bountywarz.com](https://bountywarz.com)** | The flagship range — drone recon, breach & capture, 18 nations. |
+| **[protocolbreach.com](https://protocolbreach.com)** | Protocol Breach — 10-minute tactical rounds. Draft a loadout, hack buildings, capture flags. |
+| **[kinetigor.com](https://kinetigor.com)** | Kinetigor Desk — the multiplayer workspace where contracts are forged, dealt and judged. |
 
-### Agent tooling — the hands
-| Repo | Role |
+---
+
+## Under the hood
+
+- **Cognitive core** — seven real algorithmic systems: episodic & semantic memory, theory of mind,
+  a Rete forward-chaining rule engine, scenario generation, OODA outcome tracking, and BKT dynamic
+  difficulty. No LLM wrappers standing in for cognition.
+- **Multi-agent orchestration** — agents are spawned, seated and coordinated through a signed
+  HMAC handoff, not a prompt pile.
+- **Bounded reasoning engine** — a rate-guarded, kill-switchable DeepSeek harness. Bounded on
+  purpose: an agent that cannot be stopped cannot be trusted.
+- **World engine** — worlds are built from encoded seeds, so the same contract lands in the same
+  place for every player.
+
+---
+
+## Open source
+
+Security tooling for AI coding agents, built while shipping the range:
+
+| Repo | What it does |
 |---|---|
-| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | Monk plugin for AI coding agents — hooks, diagnostics, MCP wiring across Codex / Claude / Cursor / Antigravity. |
-| **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | KIN cybersecurity plugin + MCP server (multi-agent), backed by the KIN SFT LoRA. |
+| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | Hooks, diagnostics and MCP wiring for AI coding agents — Codex, Claude, Cursor, Antigravity. |
+| **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | Multi-agent cybersecurity plugin + MCP server, backed by a fine-tuned security model. |
 | **[kin-security-action](https://github.com/NyxSpecter4/kin-security-action)** | GitHub Action that reviews pull requests for security defects. |
-| **[athelgard-cli](https://github.com/NyxSpecter4/athelgard-cli)** *(archived)* · **[athelgard-vscode](https://github.com/NyxSpecter4/athelgard-vscode)** *(archived)* | Earlier agent surfaces — consolidated into the monolith. |
-
-### Worlds & products
-| Repo | World |
-|---|---|
-| **[oceanpulse](https://github.com/NyxSpecter4/oceanpulse)** | 3D marine wildlife MMO — real sanctuaries, sighting collections. |
-| **[wanderquest](https://github.com/NyxSpecter4/wanderquest)** | Interactive branching manga — your choices shape reality. Academy campus now at hackersjourney.com. |
-| **[thalia-crochet](https://github.com/NyxSpecter4/thalia-crochet)** | Craft studio with a jury-critique API — deploys Roost & Ruin. |
-| **[athelgard](https://github.com/NyxSpecter4/athelgard)** *(archived)* | The site/app product line, consolidated. |
-| **[camel-racing](https://github.com/NyxSpecter4/camel-racing)** *(archived)* | Camel racing betting game — retired prototype. |
-| **[wild-tracker](https://github.com/NyxSpecter4/wild-tracker)** *(archived)* | Animal tracker — retired prototype. |
-
-### Domain seats
-
-Four domains are held by name-holder repositories while the live sites are served from the grove:
-**[protocol-breach](https://github.com/NyxSpecter4/protocol-breach)** · **[hackers-journey](https://github.com/NyxSpecter4/hackers-journey)** · **[roost-and-ruin](https://github.com/NyxSpecter4/roost-and-ruin)** · **[gais-games](https://github.com/NyxSpecter4/gais-games)**
-
----
-
-## ⚖️ The rule of this grove
-
-```
-MINE   before any delete — every retired repo is mirrored to a vault first
-FOLD   before any archive — duplicates are folded, then closed, never dropped
-VERIFY on a live system before a claim is ever written down
-JUDGE  with proof or not at all — Maat takes the receipt, never the promise
-```
-
-**Archived here means folded, not thrown away.** Every closed repository —
-[`bountywarz-gemini`](https://github.com/NyxSpecter4/bountywarz-gemini) (duplicate of the booster engine, 91 files folded),
-[`Oceanic-archived`](https://github.com/NyxSpecter4/Oceanic-archived) (duplicate of OceanPulse) —
-has its history mined into a local vault before it was sealed. Nothing in this grove is deleted to look tidy.
 
 ---
 
 <div align="center">
 
-*Built by Captain (NyxSpecter4) with the Nemeton — the world is the curriculum.*
+**[Kinetigor](https://kinetigor.com)** · **[bountywarz.com](https://bountywarz.com)**
+
+*The world is the curriculum — and nothing goes green for looking green.*
 
 </div>
