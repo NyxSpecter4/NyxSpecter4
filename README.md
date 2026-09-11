@@ -1,101 +1,102 @@
-<div align="center">
+﻿<div align="center">
 
-# BountyWarz
+# BountyWarz: Persian Gulf
 
-### The cyber range that grades reasoning, not answers.
+### Sovereign Aerospace Combat & Zero-Trust Cyber Warfare Simulator
 
-[![Live](https://img.shields.io/badge/live-bountywarz.com-2ea043?style=flat-square)](https://bountywarz.com)
-[![MITRE ATT&CK](https://img.shields.io/badge/aligned-MITRE%20ATT%26CK-1f6feb?style=flat-square)](#what-the-learner-gets)
-[![DoD 8140](https://img.shields.io/badge/aligned-DoD%208140-1f6feb?style=flat-square)](#what-the-learner-gets)
-[![Evidence](https://img.shields.io/badge/records-tamper--evident-8957e5?style=flat-square)](#what-the-learner-gets)
+[![Live Web Platform](https://img.shields.io/badge/live-bountywarz.com-2ea043?style=flat-square)](https://bountywarz.com)
+[![Google Play Release](https://img.shields.io/badge/Google%20Play-Android%2016%20(API%2036)-0288D1?style=flat-square&logo=google-play)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)
+[![MITRE ATT&CK](https://img.shields.io/badge/aligned-MITRE%20ATT%26CK-1f6feb?style=flat-square)](#sovereign-proficiency--standards)
+[![DoD 8140](https://img.shields.io/badge/aligned-DoD%208140-1f6feb?style=flat-square)](#sovereign-proficiency--standards)
+[![Evidence Records](https://img.shields.io/badge/records-tamper--evident-8957e5?style=flat-square)](#sovereign-proficiency--standards)
+[![60 FPS Mobile](https://img.shields.io/badge/engine-60%20FPS%20Three.js-orange?style=flat-square)](#mobile-architecture)
 
-**A Kinetigor product**
+**The Flagship Product of Kinetigor**
 
 </div>
 
 ---
 
-## What it is
+## The Vision: One Unified Flagship
 
-BountyWarz is a live, playable cyber range. You take contracts, run reconnaissance, build exploit
-chains and breach targets across 18 nations — scored on **how you reasoned**, not on whether you
-picked the expected answer.
+**BountyWarz: Persian Gulf** fuses high-performance 3D flight simulation with real-time cyber warfare operations. Command advanced Unmanned Combat Aerial Vehicles (UCAVs) in aerial dogfights over the Strait of Hormuz, conduct zero-trust SCADA network penetrations against critical maritime infrastructure, and trade commodities across live sovereign financial markets.
 
-No video modules. No quiz at the end. You are measured by the work.
+Air combat and electronic warfare are no longer separate domains — victory requires dominating both simultaneously.
 
 ---
 
-## The problem
+## Core Operational Systems
 
-Hands-on training tells you that you passed. It rarely tells you what you actually know, how well
-you know it, or how long it will last — so employers are asked to take it on faith.
+### 1. 3D Flight Combat & Drone Interception
+- **Carrier Catapult Acceleration**: Steam-catapult launches from offshore supercarriers straight into the active Persian Gulf theater.
+- **Supersonic Flight Dynamics**: Break the sound barrier through Zagros canyon corridors and across open maritime chokepoints.
+- **Weapons & Targeting HUD**: Thermal FLIR optics, 20mm rotary autocannons, and radar-guided intercept missiles.
+- **Solo Skirmish & Instant Matchmaking**: Real-time peer-to-peer multiplayer dogfights and coordinated AI tactical flight squads.
 
-BountyWarz is built the other way around. Every session produces **proficiency evidence**.
+### 2. Zero-Trust SCADA & Cyber Range Operations
+- **Infrastructure Territory Control**: Loiter in tactical proximity to the Strait of Hormuz shipping lanes, Qeshm Island electronic warfare arrays, and the Fujairah subsea cable landing to inject zero-day cyber payloads.
+- **SCADA Telemetry Manipulation**: Hijack pipeline pump telemetry, blind air defense radar sweeps, and flip territorial control in favor of your commissioned sovereign faction.
+- **Evidence-Based Scoring**: Grades **how you reasoned**, not merely whether you memorized an exploit script. Every challenge maps to verified Common Weakness Enumeration (CWE) and National Vulnerability Database (NVD) standards.
 
-### What the learner gets
+### 3. Tactical Comms & Combat Audio
+- **1-Tap Flight Comms (Zero Typing in Flight)**: Instant tactile HUD squawk callouts: `[LOCK TARGET]`, `[NEED COVER]`, `[SCADA BREACH]`, `[SUBMERGING]`, and `[HOLD CHOKEPOINT]`.
+- **Dynamic AI Wingman Banter**: Contextual radio chatter, tactical VHF squelch, and authenticated squad feeds.
+- **Procedural Synthesizer Audio**: 100% procedural Phrygian minor electronic combat soundtrack powered by the Web Audio API — zero asset bloat, offline-capable, and synced with physical vibration haptics.
 
-- **Mastery, not completion.** A per-concept estimate of what you know — not a percentage bar.
-- **Retention that decays.** The range models what you are about to forget, and brings it back.
-- **Tamper-evident records.** Results are signed at the moment of judgement, so a credential cannot
-  be back-dated or quietly edited.
-- **Frameworks employers already use.** Aligned to **MITRE ATT&CK** and **DoD 8140**, with the CISA
-  zero-trust pillars as the reference model.
+### 4. Sovereign Economy & Commodities Exchange
+- **High-Stakes Bounty Contracts**: Hunt high-threat rogue airframes, extract cryptographic keys, and collect bounties up to 75,000 SCADA credits.
+- **Live Commodities Trading Floor**: Trade crude oil futures, liquefied natural gas (LNG), microchip silicon, and sovereign debt notes on the Kinetigor Sovereign Commodities Exchange.
+- **Airframe & Cyber-Deck Engineering**: Upgrade composite hull armor, thrust-vectoring pitch rates, pulse lasers, and cryptographic coprocessors.
 
 ---
 
-## Built for
+## Sovereign Proficiency & Standards
 
-| | |
+BountyWarz is engineered to replace rote completion certificates with tamper-evident proficiency proof:
+
+| Standard / Pillar | Alignment | Implementation |
+|---|---|---|
+| **MITRE ATT&CK** | Enterprise & ICS | Reconnaissance, Initial Access, Execution, Persistence, Lateral Movement |
+| **DoD 8140** | Cyber Defense Operations | Defensive Cyberspace Operations (DCO) & ICS/SCADA Protection |
+| **CISA Zero Trust** | 5 Core Pillars | Strict identity validation, segmented network perimeters, data encryption |
+| **CWE / NVD** | Ground Truth | Real-world vulnerability root-cause analysis (memory safety, auth bypass, injection) |
+
+---
+
+## Mobile & Cross-Platform Architecture
+
+- **Google Play Android 16 (API Level 36)**: Built as a fully verified Android App Bundle (`com.bountywarz.gate`) adhering to Google Play 2026 security mandates.
+- **Dual Virtual Thumbstick Engine**: Responsive thumb controls with multi-zone deadbands and progressive pitch/roll curves.
+- **60 FPS Three.js Pipeline**: High-efficiency rendering with a 25,000-meter draw horizon, dynamic ocean shaders, and atmospheric particle effects.
+- **Trusted Web Activity (TWA)**: Zero bloat, instant cold-start, seamless offline caching, and native biometric session handoff.
+
+---
+
+## Start Flying
+
+| Portal | Role |
 |---|---|
-| **Learners** | Who want a record of skill instead of a certificate of attendance. |
-| **Programs** | That need proficiency evidence they can defend to a sponsor. |
-| **Teams** | That need to know where their coverage actually is, and where it is not. |
+| **[bountywarz.com](https://bountywarz.com)** | **The Flagship Range & 3D Persian Gulf Combat Theater** |
+| **[kinetigor.com](https://kinetigor.com)** | **Kinetigor Desk** — Sovereign dealmaking, multi-agent contracts & Maat proof judging |
+| **[protocolbreach.com](https://protocolbreach.com)** | **Protocol Breach** — Fast-paced 10-minute tactical cyber sprint scenarios |
 
 ---
 
-## Start here
+## Open Source Tooling & AI Infrastructure
 
-| | |
+Infrastructure built and maintained while shipping the BountyWarz engine:
+
+| Repository | Purpose |
 |---|---|
-| **[bountywarz.com](https://bountywarz.com)** | The range. Recon, breach, capture — 18 nations. |
-| **[protocolbreach.com](https://protocolbreach.com)** | Protocol Breach. Ten-minute tactical rounds: draft a loadout, hack the building, take the flag. |
-| **[kinetigor.com](https://kinetigor.com)** | Kinetigor Desk. The multiplayer workspace where contracts are forged, dealt and judged. |
-
----
-
-## The guide
-
-Every world in the range has a mentor: **Athelgard**. It coaches, it corrects, and at the edge of its
-knowledge it says *"I don't know"* — it never improvises and never inflates a result.
-
-> A false receipt is worse than no receipt at all.
-
----
-
-## Responsible use
-
-BountyWarz teaches offensive technique on infrastructure we own or are explicitly authorized to
-attack. Scenarios are simulated or fictional; there is no live third-party target anywhere in the
-range. The purpose is defensive competence, and the scoring rewards the reasoning that produces it.
-
----
-
-## Also in the house
-
-Tooling for AI coding agents, built while shipping the range:
-
-| Repo | What it does |
-|---|---|
-| **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | Multi-agent security review plugin and MCP server. |
-| **[kin-security-action](https://github.com/NyxSpecter4/kin-security-action)** | GitHub Action that reviews pull requests for security defects. |
-| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | Fork of the Monk plugin — hooks, diagnostics and MCP wiring for Codex, Claude, Cursor and Antigravity. |
+| **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | Multi-agent cybersecurity review plugin & MCP server grounded in real CVE/NVD models. |
+| **[kin-security-action](https://github.com/NyxSpecter4/kin-security-action)** | Automated GitHub Action inspecting pull requests for security vulnerabilities. |
+| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | DevOps orchestration hooks, diagnostics, and MCP wiring for autonomous AI coding agents. |
 
 ---
 
 <div align="center">
 
-**Kinetigor** · **[bountywarz.com](https://bountywarz.com)**
-
+**Kinetigor** · **[bountywarz.com](https://bountywarz.com)**  
 *Nothing goes green for looking green.*
 
 </div>
