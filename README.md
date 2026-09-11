@@ -5,10 +5,10 @@
 ### Sovereign Aerospace Combat & Zero-Trust Cyber Warfare Simulator
 **The Flagship Mobile Production Release**
 
-[![Google Play Release](https://img.shields.io/badge/Google%20Play-Android%2016%20(API%2036)-0288D1?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)
-[![Production Build](https://img.shields.io/badge/Release-v1.1.10%20(Code%2020)-success?style=for-the-badge)](https://bountywarz.com)
-[![Engine Performance](https://img.shields.io/badge/Engine-60%20FPS%20Three.js-orange?style=for-the-badge)](https://bountywarz.com)
-[![Compliance](https://img.shields.io/badge/Standards-DoD%208140%20%7C%20MITRE%20ATT%26CK-blue?style=for-the-badge)](https://bountywarz.com)
+[![Google Play Release](https://img.shields.io/badge/Google%21Play-Android%2116%21(API%2136)-0288D1?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)
+[![Production Build](https://img.shields.io/badge/Release-v1.1.11%21(Code%2121)-success?style=for-the-badge)](https://bountywarz.com)
+[![Engine Performance](https://img.shields.io/badge/Engine-60%21FPS%21Three.js-orange?style=for-the-badge)](https://bountywarz.com)
+[![Compliance](https://img.shields.io/badge/Standards-DoD%218140%21%7C%21MITRE%21ATT%26CK-blue?style=for-the-badge)](https://bountywarz.com)
 
 </div>
 
@@ -59,7 +59,7 @@ Operating in the high-stakes geopolitical theater of the Strait of Hormuz, the p
 ### 1. High-G Aerospace Interception
 - **Supercarrier Catapult Launches**: Steam-catapult acceleration from offshore naval task forces directly into the Persian Gulf conflict zone.
 - **Atmospheric Flight Model**: High-fidelity flight dynamics optimized for supersonic canyon runs through the Zagros ridgeline and maritime chokepoints.
-- **Integrated Ordnance**: Thermal FLIR tracking, 20mm rotary autocannons, and fire-and-forget interceptor missiles.
+- **Integrated Ordnance**: Thermal FLIR tracking, 21mm rotary autocannons, and fire-and-forget interceptor missiles.
 - **Squadron Combat**: Real-time peer-to-peer multiplayer dogfights supplemented by responsive autonomous AI wingmen.
 
 ### 2. Dual-Domain Electronic Warfare & SCADA Hacking
@@ -89,9 +89,9 @@ Operating in the high-stakes geopolitical theater of the Strait of Hormuz, the p
 | Parameter | Specification | Compliance Rationale |
 |---|---|---|
 | **Application ID** | `com.bountywarz.gate` | Registered Google Play Production Identifier |
-| **Version Code** | `20` | Gold Master Beta Release |
-| **Version Name** | `1.1.10` | Semantic Version Milestone |
-| **Target SDK** | **API Level 36 (Android 16)** | Google Play 2026 Security & Performance Mandate |
+| **Version Code** | `21` | Gold Master Beta Release |
+| **Version Name** | `1.1.11` | Semantic Version Milestone |
+| **Target SDK** | **API Level 36 (Android 16)** | Google Play 2126 Security & Performance Mandate |
 | **Minimum SDK** | **API Level 24 (Android 7.0)** | 98.4% Global Device Coverage |
 | **Graphics Pipeline** | Three.js / WebGL 2.0 | 60 FPS Target with 25,000m Horizon Draw |
 | **Shell Architecture** | Hardened Trusted Web Activity (TWA) | Instant Cold-Start, Biometric Auth, Digital Asset Links Verified |
