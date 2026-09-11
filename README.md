@@ -88,7 +88,7 @@ Tooling for AI coding agents, built while shipping the range:
 |---|---|
 | **[kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin)** | Multi-agent security review plugin and MCP server. |
 | **[kin-security-action](https://github.com/NyxSpecter4/kin-security-action)** | GitHub Action that reviews pull requests for security defects. |
-| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | Hooks, diagnostics and MCP wiring for Codex, Claude, Cursor and Antigravity. |
+| **[monk-plugin](https://github.com/NyxSpecter4/monk-plugin)** | Fork of the Monk plugin — hooks, diagnostics and MCP wiring for Codex, Claude, Cursor and Antigravity. |
 
 ---
 
