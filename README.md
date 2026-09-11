@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # BountyWarz: Persian Gulf
 
@@ -100,6 +100,24 @@ Operating in the high-stakes geopolitical theater of the Strait of Hormuz, the p
 
 ---
 
+## Full Production Infrastructure & Tech Stack
+
+The BountyWarz platform operates on an enterprise distributed architecture engineered for sub-second latency, deterministic state replication, and real-time AI mentoring:
+
+| Layer | Provider / Tool | Operational Function |
+|---|---|---|
+| **Edge Delivery & Hosting** | **Vercel** | Global edge network, serverless compute, and asset acceleration |
+| **Relational & Auth Core** | **Supabase** | PostgreSQL persistence, Row-Level Security (RLS), and biometric pilot profiles |
+| **Version Control & CI/CD** | **GitHub** | Distributed CI/CD pipelines, release quality gates, and automated AAB builds |
+| **State Coordination** | **Redis (Upstash)** | Sub-millisecond multiplayer session state, lobby registry, and heartbeat telemetry |
+| **Tactical Voice Radio** | **ElevenLabs** | Low-latency neural speech synthesis for Athelgard AI wingman comms & squelch |
+| **Interactive Video Avatar**| **Simli** | Real-time audio-to-video facial animation for tactical AI briefings |
+| **Model Hub & Datasets** | **Hugging Face** | Host for `nyxspecter4/kin-cybersecurity-3b`, GGUFs, and weekly training cadences |
+| **Distributed AI Training** | **Together AI** | High-throughput fine-tuning and DPO optimization runs for KIN cybersecurity models |
+| **Exploit Simulation** | **Replicate** | Adversarial payload validation and synthetic CVE threat vector generation |
+
+---
+
 ## Sovereign Verification & Standards Alignment
 
 The BountyWarz platform replaces static training certificates with cryptographic, tamper-evident proficiency records:
@@ -112,7 +130,7 @@ The BountyWarz platform replaces static training certificates with cryptographic
 
 <div align="center">
 
-**Official Production Portal**: [bountywarz.com](https://bountywarz.com)
+**Official Production Portal**: [bountywarz.com](https://bountywarz.com) · [bountywarz.com/gulf](https://bountywarz.com/gulf)
 
 *A sovereign product of Kinetigor Defense Systems.*
 
