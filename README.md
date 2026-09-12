@@ -152,39 +152,12 @@ The games are the storefront. The four engines underneath are the platform — a
 - [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) — GitHub Action that reviews pull requests for security defects and reports them inline
 - [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) — multi-agent security review plugin + MCP server grounded in a fine-tuned security model
 - [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) — AI-coding-agent hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity
-- [kinetigor-ecosystem](https://github.com/NyxSpecter4#the-ecosystem) — the full public map: products, tooling, and live properties
+- [Ecosystem map](https://github.com/NyxSpecter4#the-factory-behind-the-storefront) — the full public map: products, tooling, and live properties
 
 ## Android
 
 - **BountyWarz: Persian Gulf** — `com.bountywarz.gate` v1.1.11 (API 36), on Google Play
 - **Persian Gulf Drone Recon** — `com.bountywarz.gulf` v1.0.0, the modular-world app (built + signed; new Play listing in progress)
-
----
-
-## Public Ecosystem Index
-
-_(folded in from the `kinetigor-ecosystem` repo on 2026-09-12 so the map lives on the profile instead of a one-file repo)_
-
-The map of the public surface. The games are the storefront; the four engines
-underneath are the platform — and the IP moat.
-
-**Flagship:** [BountyWarz: Persian Gulf](https://bountywarz.com/gulf) — a
-sovereign aerospace-combat & zero-trust cyber-warfare simulator on
-[bountywarz.com](https://bountywarz.com) and Android
-(`com.bountywarz.gate` v1.1.11 / API 36, [modular world](https://bountywarz.com/worlds/drone-persian-gulf/)).
-
----
-
-## The four engines (the factory)
-
-| Engine | What it is |
-|---|---|
-| **DPO Corpus** | Proprietary cybersecurity training data that makes the AI mentors (Athelgard, Gideon) real tutors instead of chat bots. |
-| **Nemeton** | The procedural engine that generates new cyber-range missions and worlds across cities from data, not hand-coded scenes. |
-| **Agent Skills** | An in-house AI development studio that fixes bugs, ships deployable code, and audits repositories. |
-| **Hekau Bus** | The architecture that keeps 3D flight physics and cybersecurity lessons in one conversation without the code breaking. |
-
-These are private by design. What you can see is what ships.
 
 ---
 
@@ -195,19 +168,22 @@ These are private by design. What you can see is what ships.
 | [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) | GitHub Action that reviews pull requests for security defects and reports them inline. |
 | [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) | Multi-agent security review plugin + MCP server for AI coding agents, grounded in a fine-tuned security model. |
 | [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) | Hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity — the bug-bounty harness. |
-| [night-league](https://github.com/NyxSpecter4/dream-football) | Night League — $200 auction fantasy football. Multiplayer auction room with a 4-letter code. |
+| [dream-football](https://github.com/NyxSpecter4/dream-football) | Dream Football — $200 auction fantasy football. Host a room, send a 4-letter code. (PR #1 renamed Night League → Dream Football.) |
 
 ## Live properties
 
-| Property | Link |
-|---|---|
-| Flagship arena | [bountywarz.com/gulf](https://bountywarz.com/gulf) |
-| Modular world | [bountywarz.com/worlds/drone-persian-gulf/](https://bountywarz.com/worlds/drone-persian-gulf/) |
-| Main site | [bountywarz.com](https://bountywarz.com) |
-| Kinetigor Desk | [kinetigor.com](https://kinetigor.com) |
-| OceanPulse | [oceanpulse](https://github.com/NyxSpecter4/oceanpulse) (private; 3D marine MMO) |
-| Thalia / Roost & Ruin | [roostandruin.com](https://roostandruin.com) |
-| WanderQuest | interactive branching manga (private) |
+| Property | Link | Serving (verified 2026-09-12) |
+|---|---|---|
+| Flagship builder | [bountywarz.com](https://bountywarz.com) | BountyWarz — London Drone Recon |
+| Flagship arena | [bountywarz.com/gulf](https://bountywarz.com/gulf) | BountyWarz: Persian Gulf |
+| Kinetigor Desk | [kinetigor.com](https://kinetigor.com) | Kinetigor Desk — Grand Multiplayer Workspace |
+| ATHELGARD | [athelgard.io](https://athelgard.io) | Athelgard — Stop the $340,000 Email |
+| Protocol Breach | [protocolbreach.com](https://protocolbreach.com) | PROTOCOL BREACH — Tactical Cyber Arena |
+| KIN Academy | [hackersjourney.com](https://hackersjourney.com) | KIN Academy — A Virtual Campus |
+| OceanPulse | [oceanpulse.vercel.app](https://oceanpulse.vercel.app) | OceanPulse |
+| Dream Football | [nl-play.vercel.app](https://nl-play.vercel.app) | Dream Football |
+| Makothoth | [makothoth.dev](https://makothoth.dev) | MAKOTHOTH — VR Math Showcase |
+| Roost & Ruin | [roostandruin.com](https://roostandruin.com) | *serving the flagship page today — host-retitle not firing; known gap* |
 
 ## Android
 
