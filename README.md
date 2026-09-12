@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # BountyWarz: Persian Gulf
 
@@ -152,6 +152,7 @@ The games are the storefront. The four engines underneath are the platform — a
 - [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) — GitHub Action that reviews pull requests for security defects and reports them inline
 - [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) — multi-agent security review plugin + MCP server grounded in a fine-tuned security model
 - [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) — AI-coding-agent hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity
+- [kin-cybersecurity-3b](https://huggingface.co/nyxspecter4/kin-cybersecurity-3b) — public weights of the fine-tuned security mentor ([GGUF build](https://huggingface.co/nyxspecter4/kin-cybersecurity-3b-gguf) for local run); live demo space: [kin-cybersec](https://huggingface.co/spaces/nyxspecter4/kin-cybersec)
 - [Ecosystem map](https://github.com/NyxSpecter4#the-factory-behind-the-storefront) — the full public map: products, tooling, and live properties
 
 ## Android
@@ -185,13 +186,10 @@ The games are the storefront. The four engines underneath are the platform — a
 | Makothoth | [makothoth.dev](https://makothoth.dev) | MAKOTHOTH — VR Math Showcase |
 | Roost & Ruin | [roostandruin.com](https://roostandruin.com) | *serving the flagship page today — host-retitle not firing; known gap* |
 
-## Android
-
-- **BountyWarz: Persian Gulf** — `com.bountywarz.gate` v1.1.11 (API 36), Google Play
-- **Persian Gulf Drone Recon** — `com.bountywarz.gulf` v1.0.0, the modular-world app (built + signed; new Play listing in progress)
 
 ---
 
 *The private monolith (`bountywarz`) holds the factory floor — DPO corpus
 pipelines, the Nemeton substrate, the comms-bus architecture, and the agent
 studio. It stays private because that is the moat.*
+
