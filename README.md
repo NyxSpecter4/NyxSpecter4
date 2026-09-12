@@ -152,7 +152,7 @@ The games are the storefront. The four engines underneath are the platform — a
 - [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) — GitHub Action that reviews pull requests for security defects and reports them inline
 - [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) — multi-agent security review plugin + MCP server grounded in a fine-tuned security model
 - [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) — AI-coding-agent hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity
-- [kinetigor-ecosystem](https://github.com/NyxSpecter4/kinetigor-ecosystem) — the full public map: products, tooling, and live properties
+- [kinetigor-ecosystem](https://github.com/NyxSpecter4#the-ecosystem) — the full public map: products, tooling, and live properties
 
 ## Android
 
@@ -195,7 +195,7 @@ These are private by design. What you can see is what ships.
 | [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) | GitHub Action that reviews pull requests for security defects and reports them inline. |
 | [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) | Multi-agent security review plugin + MCP server for AI coding agents, grounded in a fine-tuned security model. |
 | [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) | Hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity — the bug-bounty harness. |
-| [night-league](https://github.com/NyxSpecter4/night-league) | Night League — $200 auction fantasy football. Multiplayer auction room with a 4-letter code. |
+| [night-league](https://github.com/NyxSpecter4/dream-football) | Night League — $200 auction fantasy football. Multiplayer auction room with a 4-letter code. |
 
 ## Live properties
 
