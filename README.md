@@ -135,3 +135,26 @@ The BountyWarz platform replaces static training certificates with cryptographic
 *A sovereign product of Kinetigor Defense Systems.*
 
 </div>
+
+---
+
+## The Factory Behind the Storefront
+
+The games are the storefront. The four engines underneath are the platform — and they are the IP moat:
+
+1. **DPO Corpus** — proprietary cybersecurity training data that turns the AI mentors (Athelgard, Gideon) into real tutors instead of chat bots.
+2. **Nemeton** — the procedural engine that generates new cyber-range missions and worlds across cities from data, not hand-coded scenes.
+3. **Agent Skills** — an in-house AI development studio that fixes bugs, ships deployable code, and audits repositories.
+4. **Hekau Bus** — the core architecture that keeps 3D flight physics and cybersecurity lessons in one conversation without the code breaking.
+
+## Open Source We Ship From That Engine Room
+
+- [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) — GitHub Action that reviews pull requests for security defects and reports them inline
+- [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) — multi-agent security review plugin + MCP server grounded in a fine-tuned security model
+- [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) — AI-coding-agent hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity
+- [kinetigor-ecosystem](https://github.com/NyxSpecter4/kinetigor-ecosystem) — the full public map: products, tooling, and live properties
+
+## Android
+
+- **BountyWarz: Persian Gulf** — `com.bountywarz.gate` v1.1.11 (API 36), on Google Play
+- **Persian Gulf Drone Recon** — `com.bountywarz.gulf` v1.0.0, the modular-world app (built + signed; new Play listing in progress)
