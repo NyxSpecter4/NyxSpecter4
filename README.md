@@ -158,3 +158,64 @@ The games are the storefront. The four engines underneath are the platform — a
 
 - **BountyWarz: Persian Gulf** — `com.bountywarz.gate` v1.1.11 (API 36), on Google Play
 - **Persian Gulf Drone Recon** — `com.bountywarz.gulf` v1.0.0, the modular-world app (built + signed; new Play listing in progress)
+
+---
+
+## Public Ecosystem Index
+
+_(folded in from the `kinetigor-ecosystem` repo on 2026-09-12 so the map lives on the profile instead of a one-file repo)_
+
+The map of the public surface. The games are the storefront; the four engines
+underneath are the platform — and the IP moat.
+
+**Flagship:** [BountyWarz: Persian Gulf](https://bountywarz.com/gulf) — a
+sovereign aerospace-combat & zero-trust cyber-warfare simulator on
+[bountywarz.com](https://bountywarz.com) and Android
+(`com.bountywarz.gate` v1.1.11 / API 36, [modular world](https://bountywarz.com/worlds/drone-persian-gulf/)).
+
+---
+
+## The four engines (the factory)
+
+| Engine | What it is |
+|---|---|
+| **DPO Corpus** | Proprietary cybersecurity training data that makes the AI mentors (Athelgard, Gideon) real tutors instead of chat bots. |
+| **Nemeton** | The procedural engine that generates new cyber-range missions and worlds across cities from data, not hand-coded scenes. |
+| **Agent Skills** | An in-house AI development studio that fixes bugs, ships deployable code, and audits repositories. |
+| **Hekau Bus** | The architecture that keeps 3D flight physics and cybersecurity lessons in one conversation without the code breaking. |
+
+These are private by design. What you can see is what ships.
+
+---
+
+## Public repositories
+
+| Repo | What it is |
+|---|---|
+| [kin-security-action](https://github.com/NyxSpecter4/kin-security-action) | GitHub Action that reviews pull requests for security defects and reports them inline. |
+| [kin-security-plugin](https://github.com/NyxSpecter4/kin-security-plugin) | Multi-agent security review plugin + MCP server for AI coding agents, grounded in a fine-tuned security model. |
+| [monk-plugin](https://github.com/NyxSpecter4/monk-plugin) | Hooks, diagnostics, and MCP wiring for Codex, Claude, Cursor, and Antigravity — the bug-bounty harness. |
+| [night-league](https://github.com/NyxSpecter4/night-league) | Night League — $200 auction fantasy football. Multiplayer auction room with a 4-letter code. |
+
+## Live properties
+
+| Property | Link |
+|---|---|
+| Flagship arena | [bountywarz.com/gulf](https://bountywarz.com/gulf) |
+| Modular world | [bountywarz.com/worlds/drone-persian-gulf/](https://bountywarz.com/worlds/drone-persian-gulf/) |
+| Main site | [bountywarz.com](https://bountywarz.com) |
+| Kinetigor Desk | [kinetigor.com](https://kinetigor.com) |
+| OceanPulse | [oceanpulse](https://github.com/NyxSpecter4/oceanpulse) (private; 3D marine MMO) |
+| Thalia / Roost & Ruin | [roostandruin.com](https://roostandruin.com) |
+| WanderQuest | interactive branching manga (private) |
+
+## Android
+
+- **BountyWarz: Persian Gulf** — `com.bountywarz.gate` v1.1.11 (API 36), Google Play
+- **Persian Gulf Drone Recon** — `com.bountywarz.gulf` v1.0.0, the modular-world app (built + signed; new Play listing in progress)
+
+---
+
+*The private monolith (`bountywarz`) holds the factory floor — DPO corpus
+pipelines, the Nemeton substrate, the comms-bus architecture, and the agent
+studio. It stays private because that is the moat.*
