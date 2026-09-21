@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Athelgard">
+<meta name="theme-color" content="#7c3aed">
+<link rel="apple-touch-icon" href="https://bountywarz.com/app-icon-192.webp">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Athelgard · Phone desk</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:#07090e;color:#eaf0fb;min-height:100vh;padding:14px;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.avatar{width:52px;height:52px;border-radius:50%;border:2px solid #ffd700;background:#121a30;object-fit:cover}
+.title{font-weight:800;font-size:1.12rem}
+.sub{font-size:.76rem;color:#9fb4d8;line-height:1.35}
+.card{background:#121a30;border:1px solid #23314f;border-radius:14px;padding:14px;margin:10px 0}
+.card h3{margin:0 0 8px;font-size:.78rem;color:#ffd700;text-transform:uppercase;letter-spacing:.04em}
+.ok{border-color:#22c55e}
+.warn{border-color:#f59e0b}
+.alert{border-color:#ef4444}
+.box{display:flex;gap:8px;margin:8px 0}
+.box textarea,.box input{flex:1;background:#0e1530;border:1px solid #2a3a5c;border-radius:12px;padding:12px;color:#eaf0fb;font-size:1rem;min-height:48px}
+.box button,button.chip,.btn{background:#7c3aed;color:#fff;border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer}
+.btn{display:inline-block;text-decoration:none;font-size:.82rem}
+.btn.secondary{background:#1b2742;border:1px solid #2f4068;color:#cfe0ff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#1b2742;border:1px solid #2f4068;color:#cfe0ff;border-radius:18px;padding:8px 12px;font-size:.82rem}
+.reply{white-space:pre-wrap;font-size:.9rem;line-height:1.45;max-height:46vh;overflow:auto}
+.small{font-size:.76rem;color:#8b9bb8;line-height:1.45}
+code,pre{background:#0e1530;border-radius:8px;padding:2px 6px;font-size:.72rem;white-space:pre-wrap;word-break:break-word}
+pre{padding:10px;display:block}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:.74rem}
+td,th{border:1px solid #23314f;padding:6px;text-align:left;vertical-align:top}
+th{color:#a78bfa}
+a{color:#3da9fc}
+</style>
+</head>
+<body>
+<div class="header">
+  <img class="avatar" src="https://bountywarz.com/app-icon-512.webp" alt="Athelgard">
+  <div>
+    <div class="title">Athelgard 🦉 · phone desk</div>
+    <div class="sub">You are the pilot. She is airframe + autopilot.<br>Hermes = hangar. Obsidian = logbook.</div>
+  </div>
+</div>
+
+<div class="card" id="health-card"><h3>Radio</h3><div id="health-body" class="small">Checking desk…</div></div>
+
+<div class="card">
+  <h3>Fly her</h3>
+  <div class="box">
+    <textarea id="msg" placeholder="help · diagnose · sortie · kimi hunt · submit CHAL HTB{flag}" enterkeyhint="send"></textarea>
+    <button type="button" id="send">Fly</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="reply card" id="reply" style="display:none;margin-top:10px"></div>
+  <div class="btn-row">
+    <button type="button" class="btn secondary" id="copy-obsidian">Copy to Obsidian</button>
+    <a class="btn secondary" id="open-obsidian" href="#">Open in Obsidian</a>
+    <button type="button" class="btn secondary" id="copy-hermes">Copy Hermes brief</button>
+  </div>
+  <p class="small">Replies go through live inbound <code>/api/athelgard-desk-inbound</code>. Empty Holmes bay still taxis — she needs a payload to hunt.</p>
+</div>
+
+<div class="card">
+  <h3>Termux · right now · no clone</h3>
+  <p class="small">Paste this in Termux. Do <strong>not</strong> clone bountywarz on the phone.</p>
+  <pre id="termux-install">curl -fsSL https://raw.githubusercontent.com/NyxSpecter4/bountywarz/cursor/athelgard-extension-app-dee4/scripts/termux-athelgard.sh -o ~/athel.sh &amp;&amp; chmod +x ~/athel.sh &amp;&amp; echo &quot;source ~/athel.sh&quot; &gt;&gt; ~/.bashrc &amp;&amp; source ~/athel.sh &amp;&amp; athel help</pre>
+  <div class="btn-row">
+    <button type="button" class="btn secondary" id="copy-termux">Copy install</button>
+    <button type="button" class="btn secondary" id="copy-oneshot">Copy one-shot</button>
+  </div>
+  <p class="small">Then: <code>athel help</code> · <code>athel diagnose</code> · <code>athel sortie</code></p>
+  <pre>python3 -c &#39;import json,sys,urllib.request; m=&quot; &quot;.join(sys.argv[1:]) or &quot;help&quot;; r=urllib.request.Request(&quot;https://athelgard.io/api/athelgard-desk-inbound&quot;,data=json.dumps({&quot;message&quot;:m,&quot;authorName&quot;:&quot;Captain&quot;,&quot;platform&quot;:&quot;termux&quot;}).encode(),headers={&quot;Content-Type&quot;:&quot;application/json&quot;}); print(json.load(urllib.request.urlopen(r,timeout=90)).get(&quot;reply&quot;) or &quot;&quot;)&#39; help</pre>
+</div>
+
+<div class="card">
+  <h3>How the three seats fit</h3>
+  <table>
+    <tr><th>Seat</th><th>Job</th></tr>
+    <tr><td>You (Captain)</td><td>Pilot. Fly from this app or Termux.</td></tr>
+    <tr><td>Athelgard</td><td>Airframe + autopilot. Hunt brain. Not Hermes.</td></tr>
+    <tr><td>Kinetigor desk</td><td>Cockpit chrome — <a href="https://desk.kinetigor.com">https://desk.kinetigor.com</a></td></tr>
+    <tr><td>Hermes Gate</td><td>Merge PRs only. Never hunt.</td></tr>
+    <tr><td>Hermes Scribe</td><td>Paste replies into Obsidian. Never hunt.</td></tr>
+    <tr><td>Obsidian</td><td>Logbook. Not the engine.</td></tr>
+  </table>
+  <div class="btn-row">
+    <a class="btn" href="https://desk.kinetigor.com">Open Kinetigor desk</a>
+    <a class="btn secondary" href="https://ctf.hackthebox.com/event/3504/challenges">Holmes board</a>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Add this app to the home screen</h3>
+  <p class="small"><strong>iPhone:</strong> Safari → Share → Add to Home Screen<br>
+  <strong>Android:</strong> Chrome menu → Install app / Add to Home Screen</p>
+</div>
+
+<script>
+var ORIGIN='https://athelgard.io';
+var INBOUND='https://athelgard.io/api/athelgard-desk-inbound';
+var LIVE_INBOUND='https://athelgard.io/api/athelgard-desk-inbound';
+var PHONE_HUNT=ORIGIN+'/api/athelgard-phone-hunt';
+var HEALTH=ORIGIN+'/api/athelgard-desk-health';
+var LAST_ORDER='';
+var LAST_REPLY='';
+var TERMUX_INSTALL="curl -fsSL https://raw.githubusercontent.com/NyxSpecter4/bountywarz/cursor/athelgard-extension-app-dee4/scripts/termux-athelgard.sh -o ~/athel.sh && chmod +x ~/athel.sh && echo \"source ~/athel.sh\" >> ~/.bashrc && source ~/athel.sh && athel help";
+var TERMUX_ONESHOT="python3 -c 'import json,sys,urllib.request; m=\" \".join(sys.argv[1:]) or \"help\"; r=urllib.request.Request(\"https://athelgard.io/api/athelgard-desk-inbound\",data=json.dumps({\"message\":m,\"authorName\":\"Captain\",\"platform\":\"termux\"}).encode(),headers={\"Content-Type\":\"application/json\"}); print(json.load(urllib.request.urlopen(r,timeout=90)).get(\"reply\") or \"\")' help";
+var chips=['help','diagnose','sortie','who are you','kimi hunt','submit CHAL HTB{flag}'];
+chips.forEach(function(c){
+  var b=document.createElement('button');
+  b.className='chip';b.type='button';b.textContent=c;
+  b.onclick=function(){document.getElementById('msg').value=c;send()};
+  document.getElementById('chips').appendChild(b);
+});
+function setReply(t){
+  var r=document.getElementById('reply');
+  r.style.display='block';
+  r.textContent=t;
+  LAST_REPLY=t;
+  refreshObsidianLink();
+}
+function refreshObsidianLink(){
+  var md=obsidianNote(LAST_ORDER,LAST_REPLY);
+  var a=document.getElementById('open-obsidian');
+  a.href='obsidian://new?file='+encodeURIComponent('Athelgard/Phone-Log')+'&content='+encodeURIComponent(md);
+}
+function obsidianNote(order,reply){
+  return '# Athelgard phone log\n\n- Pilot: Captain\n- Airframe: Athelgard\n- Hangar: Hermes Gate + Hermes Scribe (do not fly)\n\n## '+new Date().toISOString()+'\n\n**Order**\n\n```\n'+(order||'(none)')+'\n```\n\n**Reply**\n\n'+(reply||'(none)')+'\n';
+}
+function hermesBrief(reply){
+  return 'HERMES HANGAR BRIEF — you are not the pilot.\n\nHermes Gate (HERMES_THONG): merge-gate PRs only. Do not fly Athelgard. Do not restore Discord. Do not hunt Holmes.\nHermes Scribe (second Hermes): append the block below to Obsidian note Athelgard/Phone-Log.md. Do not fly.\nCaptain flies from Termux (athel …) or the phone cockpit /phone. Athelgard is airframe + autopilot.\n\n'+(reply||'(no sortie yet)');
+}
+function copyText(s){
+  if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(s);
+  var i=document.createElement('textarea');i.value=s;document.body.appendChild(i);i.select();document.execCommand('copy');i.remove();
+}
+function postOrder(url, msg){
+  return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,authorName:'Captain',platform:'phone-desk',auto_reply:false})}).then(function(x){return x.json()});
+}
+function send(){
+  var v=document.getElementById('msg').value.trim();
+  if(!v)return;
+  LAST_ORDER=v;
+  setReply('Flying…');
+  postOrder(INBOUND,v).then(function(d){
+    if(d && (d.reply||d.reply_short) && d.status!=='mock_fallback'){
+      setReply(d.reply||d.reply_short);
+      return;
+    }
+    return postOrder(LIVE_INBOUND,v).then(function(d2){
+      if(d2 && (d2.reply||d2.reply_short)) { setReply(d2.reply||d2.reply_short); return; }
+      return postOrder(PHONE_HUNT,v).then(function(d3){
+        setReply((d3&&(d3.reply||d3.reply_short||d3.error))||JSON.stringify(d3||d2||d));
+      });
+    });
+  }).catch(function(){
+    return postOrder(LIVE_INBOUND,v).then(function(d){
+      setReply((d&&(d.reply||d.reply_short||d.error))||'Inbound failed');
+    }).catch(function(e){setReply('Failed: '+e.message);});
+  });
+}
+function loadHealth(){
+  var el=document.getElementById('health-body');
+  var card=document.getElementById('health-card');
+  fetch(HEALTH).then(function(r){return r.json()}).then(function(d){
+    var ready=d&&(d.desk_runtime_ready||d.ok);
+    card.className='card '+(ready?'ok':'warn');
+    el.innerHTML='Desk '+(ready?'UP':'DEGRADED')+' · '+(d.health_version||'health')+'<br>Inbound live: <code>athelgard.io/api/athelgard-desk-inbound</code>';
+  }).catch(function(){
+    card.className='card warn';
+    el.textContent='Local health missed — Termux / live inbound still flies her.';
+  });
+}
+document.getElementById('send').onclick=send;
+document.getElementById('msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+document.getElementById('copy-obsidian').onclick=function(){copyText(obsidianNote(LAST_ORDER,LAST_REPLY));};
+document.getElementById('copy-hermes').onclick=function(){copyText(hermesBrief(LAST_REPLY));};
+document.getElementById('copy-termux').onclick=function(){copyText(TERMUX_INSTALL);};
+document.getElementById('copy-oneshot').onclick=function(){copyText(TERMUX_ONESHOT);};
+loadHealth();
+refreshObsidianLink();
+try{
+  var q=new URLSearchParams(location.search).get('order');
+  if(q){document.getElementById('msg').value=decodeURIComponent(q);send();}
+}catch(_){}
+</script>
+</body></html>
