@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Athelgard Sidecar — LIVE DEMO</title>
+<style>
+body{margin:0;font:13px system-ui;background:#010409;color:#e6edf3;height:100vh;display:flex;flex-direction:column}
+#bar{padding:6px 12px;background:#161b22;border-bottom:1px solid #30363d;font-size:12px}
+#bar b{color:#a371f7}
+#split{flex:1;display:flex;min-height:0}
+iframe{border:0;height:100%}
+#page{flex:1}
+#side{width:380px;border-left:2px solid #a371f7}
+</style>
+<script>
+// ---- Mock extension runtime, defined BEFORE iframes load. ----
+// The parent tab plays background.js: routes messages between frames
+// (squad bus) and owns shared storage state.
+const listeners = { page: [], side: [] };
+const store = { local: {}, session: {} };
+const mkStorage = b => ({
+  get: (d) => Promise.resolve({ ...d, ...(store[b] || {}) }),
+  set: (p) => { Object.assign(store[b] || (store[b] = {}), p); return Promise.resolve(); }
+});
+function deliver(kind, m) { (listeners[kind] || []).forEach(f => { try { f(m, {}, () => {}); } catch (e) {} }); }
+function hub(m, from) {
+  // mirrors background.js
+  if (m.type === 'PAGE_CONTEXT') { store.session.lastContext = { ...m, at: Date.now() }; if (from !== 'side') deliver('side', m); return; }
+  if (m.type === 'STAGE_FLAG') {
+    const arr = store.local.stagedFlags || (store.local.stagedFlags = []);
+    arr.push({ ...m.flag, stagedAt: Date.now(), status: 'STAGED', by: 'athelgard' });
+    deliver('side', { type: 'FLAGS_UPDATED', flags: arr });
+    return;
+  }
+  if (m.type === 'APPROVE_FLAG' || m.type === 'DISCARD_FLAG') {
+    const arr = store.local.stagedFlags || [];
+    const f = arr.find(x => x.flag === m.flag);
+    if (f) f.status = m.type === 'APPROVE_FLAG' ? 'APPROVED' : 'DISCARDED';
+    deliver('side', { type: 'FLAGS_UPDATED', flags: arr });
+    return;
+  }
+  const to = from === 'page' ? 'side' : 'page';
+  deliver(to, m);
+}
+window.setChrome = function (kind) {
+  return {
+    storage: { local: mkStorage('local'), session: mkStorage('session') },
+    runtime: {
+      sendMessage: (m) => { hub(m, kind); return Promise.resolve(); },
+      onMessage: { addListener: (f) => listeners[kind].push(f) }
+    },
+    tabs: { query: () => Promise.resolve([{ id: 1 }]), sendMessage: () => Promise.resolve() }
+  };
+};
+</script>
+</head>
+<body>
+<div id="bar">🦉 <b>ATHELGARD SIDECAR — live demo</b> · left: fake Holmes challenge page (flags planted) · right: the real sidepanel UI · parent frame plays "background.js" (squad bus hub)</div>
+<div id="split">
+  <iframe id="page" src="demo/fake-page.html"></iframe>
+  <iframe id="side" src="demo/demo-sidecar.html"></iframe>
+</div>
+</body></html>

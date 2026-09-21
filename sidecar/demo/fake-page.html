@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>SHERLOCK: Watson's Dead Man Switch</title>
+<style>body{font:14px Georgia,serif;max-width:760px;margin:24px auto;padding:0 16px;background:#f6f1e7;color:#1c1a17}
+h1{border-bottom:3px double #1c1a17}
+pre{background:#e8e0cf;padding:12px;overflow:auto}
+.tag{background:#1c1a17;color:#f6f1e7;padding:0 4px}</style></head>
+<body>
+<h1>🕵️ SHERLOCK — Case File 07: The Reichenbach Directive</h1>
+<p><b>Scenario:</b> Dr. Watson vanished while tracing blackmail payments for APT <span class="tag">NAPOLEON</span>.
+His dead-man switch fired. Mycroft has quarantined the <span class="tag">DIOGENES</span> relay logs.</p>
+<h2>Exhibit A — relay.log</h2>
+<pre>2026-09-17T03:12:04Z diogenes-01 sshd[881]: Accepted publickey for watson from 10.0.4.17
+2026-09-17T03:14:44Z diogenes-01 cron: deadman payload unsealed -> nonce=HTB{w4ts0n_dead_m4n_sw1tch_uns3aled}
+2026-09-17T03:15:02Z diogenes-01 sshd[881]: session closed for watson</pre>
+<h2>Exhibit B — deadman.conf</h2>
+<pre>[switch]
+owner = j.watson
+trigger = 72h silence
+backup_contact = sherlock@221b.london
+recovery_blob = HTB{m0ri4rty_st33rs_th3_truth}</pre>
+<h2>Exhibit C — payment ledger fragment</h2>
+<pre>tx 0x9f3a...e1 -> NAPOLEON wallet
+memo field: "HTB{bl4ckm4il_p4yb00k_hex_dump}"</pre>
+<p><i>Three flags are hidden on this page. Athelgard (right panel) should find and stage all of them.</i></p>
+<script src="mock.js"></script>
+<script src="../content.js"></script>
+</body></html>

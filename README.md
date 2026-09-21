@@ -2,6 +2,8 @@
 
 # NyxSpecter4
 
+**Live cockpit (run her in the browser, then Add to Home Screen):** [Lookout HUD](https://nyxspecter4.github.io/NyxSpecter4/) · [Phone desk](https://nyxspecter4.github.io/NyxSpecter4/phone.html) · [Kimi sidecar demo](https://raw.githack.com/Kinetigor-CTF/athelgard-sidecar/main/demo.html)
+
 ### Founder & Principal Systems Architect · Kinetigor Defense Systems
 
 [![Google Play](https://img.shields.io/badge/Google%20Play-BountyWarz%20Flagship-0288D1?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.bountywarz.gate)

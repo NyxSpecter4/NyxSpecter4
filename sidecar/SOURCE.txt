@@ -1,0 +1,3 @@
+Mirrored from https://github.com/Kinetigor-CTF/athelgard-sidecar (MIT).
+Live demo: https://raw.githack.com/Kinetigor-CTF/athelgard-sidecar/main/demo.html
+Do not load this folder AND kinetigor-desk with huntr-sidebar — huntr-sidebar + this sidecar is the double team.

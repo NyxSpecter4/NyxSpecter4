@@ -1,7 +1,7 @@
 {
-  "name": "Athelgard Phone Desk",
+  "name": "Athelgard Lookout",
   "short_name": "Athelgard",
-  "description": "Fly Athelgard from the phone — live inbound radio",
+  "description": "Fly Athelgard — Lookout HUD, Kimi sidecar, phone radio",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#07090e",

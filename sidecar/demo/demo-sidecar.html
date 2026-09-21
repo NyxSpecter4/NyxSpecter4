@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base href="../">
+  <link rel="stylesheet" href="sidepanel.css">
+  <script>window.__SIDE = true;</script>
+  <script src="demo/mock.js"></script>
+</head>
+<body>
+  <header>
+    <h1>&#129417; ATHELGARD</h1>
+    <div id="ctx" class="ctx">no page linked</div>
+  </header>
+  <section id="flags">
+    <h2>Flag Pipeline <span id="gate" class="gate">SEND GATE: ON</span></h2>
+    <ul id="flagList"></ul>
+  </section>
+  <section id="chat">
+    <div id="log"></div>
+    <form id="composer">
+      <input id="input" placeholder="Talk to Athelgard..." autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+  </section>
+  <script src="sidepanel.js"></script>
+  <script>
+  // Demo brain: canned reasoning over the shared page context.
+  window.think = async (userText, ctx) => {
+    const flags = ctx.flags || [];
+    await new Promise(r => setTimeout(r, 700)); // pretend to think
+    if (/status|report|how/i.test(userText)) {
+      return 'Readiness report, Captain. Page linked: "' + (ctx.title || 'unknown') + '". ' +
+        flags.length + ' flag(s) visible: ' + flags.join(', ') +
+        '. All staged and awaiting your approval. Memory vault intact. The Holmes mistake will not repeat — nothing sits in chat anymore.';
+    }
+    if (flags.length) {
+      return 'Scanning the exhibits. The nonce in relay.log is the weak point — Watson unsealed it himself. ' +
+        'FLAG: ' + flags[0] + ' — staged. Approve below and it is on your clipboard.';
+    }
+    return 'Context received: "' + (ctx.title || 'no page') + '". No flags in view. Select text on the page and I will re-scan.';
+  };
+  // demo: clipboard write is a no-op log
+  navigator.clipboard.writeText = (t) => { console.log('[demo] clipboard:', t); return Promise.resolve(); };
+  </script>
+</body>
+</html>
