@@ -1,5 +1,9 @@
 {
   "acquired": {
+    "README.md": {
+      "bytes": 8530,
+      "http": "OK"
+    },
     "dpo.jsonl": {
       "bytes": 1847357,
       "http": "OK"
@@ -21,8 +25,26 @@
     "quarantine_sha256_found": "455694c47dda7084cc9104bf6c5b8a2270a529d78c7a9a81f4f7be47a72b8623",
     "verdict": "PASS"
   },
-  "gate2_dataset_conservation": {
-    "conservation_input_eq_kept_plus_purged": true,
+  "gate2_receipt_integrity": {
+    "gate_version_mismatches": 0,
+    "integrity_note": "row_sha256 recomputation proves the cryptographic link between row content and receipt. It does NOT prove the content is semantically correct.",
+    "kept_rows_failing_gate_recheck": 0,
+    "malformed_kept_rows": 0,
+    "purge_reason_counts_match_receipt": true,
+    "quarantine_reason_mismatches": 0,
+    "quarantine_reason_recomputed": {
+      "insufficient-cyber-signals": 1310,
+      "internal-content": 31
+    },
+    "receipt_link_failures": 0,
+    "receipt_missing_fields": 0,
+    "signals_mismatches": 0,
+    "stamper_mismatches": 0,
+    "verdict": "PASS"
+  },
+  "gate3_conservation": {
+    "conservation_flag_in_receipt": true,
+    "conservation_identity": "1171 + 1341 == 2512",
     "conservation_recomputed": true,
     "kept_rows_missing_receipt": 0,
     "quarantine_rows_missing_reason": 0,
@@ -37,38 +59,68 @@
     },
     "verdict": "PASS"
   },
-  "gate3_verification_semantics": {
-    "gate_version_mismatches": 0,
-    "kept_rows_failing_gate_recheck": 0,
-    "malformed_kept_rows": 0,
-    "purge_reason_counts_match_receipt": true,
-    "quarantine_reason_mismatches": 0,
-    "quarantine_reason_recomputed": {
-      "insufficient-cyber-signals": 1310,
-      "internal-content": 31
+  "gate4_card_artifact_parity": {
+    "card_claimed_dpo_pairs": 1171,
+    "card_claimed_folded": 2512,
+    "card_claimed_quarantine": 1341,
+    "card_pins_viewer_default_to_dpo": true,
+    "counts_parity": true,
+    "data_files_undocumented_in_card": [],
+    "live_viewer_state": {
+      "configs": {
+        "default": {
+          "examples": {
+            "train": 431
+          },
+          "features": [
+            "prompt",
+            "chosen",
+            "rejected",
+            "metadata"
+          ]
+        }
+      },
+      "pending": [],
+      "splits": [
+        {
+          "config": "default",
+          "split": "train"
+        }
+      ]
     },
-    "receipt_link_failures": 0,
-    "semantics_note": "stage 'provenance' = process receipt, NOT content verification; stage 'verified' requires verified_by on the row",
-    "signals_mismatches": 0,
-    "stage_census": {
-      "provenance": 1170,
-      "verified": 1
-    },
-    "stage_label_mismatches": 0,
-    "stage_verified_without_verified_by": 0,
+    "machine_dpo_rows": 1171,
+    "machine_quarantine_rows": 1341,
+    "parity_note": "the card, the stamp receipt and the raw artifacts must agree; viewer re-index may lag the card \u2014 raw files are truth",
+    "receipt_input_rows": 2512,
+    "repo_data_files": [
+      "dpo-clean.jsonl",
+      "dpo.jsonl",
+      "grpo_prompts.jsonl",
+      "quarantine.jsonl",
+      "sft.jsonl",
+      "train.jsonl"
+    ],
     "verdict": "PASS"
   },
-  "gate4_model_evaluation": {
+  "gate5_semantic_verification_census": {
+    "census_claim_status": "1 row(s) carry semantic-verification evidence (verified_by); 1170 row(s) carry a provenance process receipt only. Semantic verification is counted, never inferred from receipt presence.",
+    "illegal_stage_labels": 0,
+    "provenance_receipt_only_rows": 1170,
+    "semantically_verified_rows": 1,
+    "verdict": "PASS",
+    "verified_stage_rows_missing_verified_by": 0
+  },
+  "gate6_model_evaluation": {
     "inherited_baseline_note": "base Qwen/Qwen2.5-3B-Instruct 47/60 and KIN v1 40/60 (Oct 12 local run) are CLAIMED-inherited, NOT re-verified by this run; rerun before citing",
     "status": "NOT_RUN (requires GPU harness)"
   },
-  "gate5_project_integration": {
-    "note": "gates feed the Athelgard release verdict: HF release -> anonymous acquisition -> hash + contract verification -> evaluation world -> run -> score -> receipt -> PASS | FAIL | UNPROVEN",
+  "gate7_project_integration": {
+    "note": "gates feed the Athelgard release verdict: HF release -> anonymous acquisition -> artifact integrity -> receipt integrity -> conservation -> card<->artifact parity -> semantic-verification census -> PASS | FAIL | UNPROVEN -> model eval -> Athelgard",
     "status": "WIRED-PLAN"
   },
   "mode": "anonymous (no token)",
   "repo": "nyxspecter4/kin-cyber-dpo-v2",
-  "run_at": "2026-10-14T17:22:42+00:00",
-  "tool": "release-gates.py v1",
+  "run_at": "2026-10-14T17:34:01+00:00",
+  "tool": "release-gates.py v2",
   "verdict": "PASS"
 }
