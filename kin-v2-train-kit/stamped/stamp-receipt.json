@@ -1,0 +1,24 @@
+{
+  "already_stamped": 0,
+  "conservation": true,
+  "gate": "cyber-signals-v1",
+  "input_rows": 2512,
+  "kept": 1171,
+  "mode": "write",
+  "output_rows": 1171,
+  "output_sha256": "cc076f18a27045ff8f65d193882eee83562f691fb158cc426ebd9c9fcdde34ca",
+  "purge_reasons": {
+    "insufficient-cyber-signals": 1310,
+    "internal-content": 31
+  },
+  "purged": 1341,
+  "quarantine_sha256": "455694c47dda7084cc9104bf6c5b8a2270a529d78c7a9a81f4f7be47a72b8623",
+  "readme_count": null,
+  "source": "canonical/dpo.jsonl",
+  "stages": {
+    "provenance": 1170,
+    "verified": 1
+  },
+  "stamped_at": "2026-10-14T15:59:15+00:00",
+  "stamper": "stamp-receipts.py v1"
+}

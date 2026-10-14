@@ -5,6 +5,7 @@ Everything needed to train **KIN v2** (Qwen2.5-3B cybersecurity DPO successor) o
 ## Contents
 
 - `data/dpo-v2-train.jsonl.gz.b64` — prebuilt v2 training corpus: **2,512 DPO pairs** = 1,637 canonical (HF `nyxspecter4/kin-cyber-dpo-v2` `dpo.jsonl`) + 875 staged unique pairs folded from the 19 `dpo-v3-pr-review-pairs-*.jsonl` batches. gzip+base64, 1,028,076 bytes. Fold-verified twice (independent replica of the fold/dedup logic: zero duplicates, zero invalid rows, zero bad JSON).
+- `stamped/` — the executed on-domain stamp of that corpus (Oct 14, 2026): **1,171 receipt-bearing DPO pairs** + **1,341 quarantined rows** (reasons on every row, never deleted) + the machine-checkable `stamp-receipt.json`. Zero-auth. See `stamped/README.md`.
 - `scripts/` — the four pipeline scripts, mirrored verbatim from the build repo:
   - `fold-dpo-batches.py` — canonical fold/dedup logic (not needed for the prebuilt corpus; included for provenance and re-verification)
   - `prepare_kin_data.py` — DPO → SFT conversion (expects **1,171 SFT rows** from the union corpus)
