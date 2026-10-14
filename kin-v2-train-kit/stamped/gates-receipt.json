@@ -1,0 +1,74 @@
+{
+  "acquired": {
+    "dpo.jsonl": {
+      "bytes": 1847357,
+      "http": "OK"
+    },
+    "quarantine.jsonl": {
+      "bytes": 1772553,
+      "http": "OK"
+    },
+    "stamp-receipt.json": {
+      "bytes": 652,
+      "http": "OK"
+    }
+  },
+  "gate1_artifact_integrity": {
+    "byte_identity": true,
+    "dpo_sha256_expected": "cc076f18a27045ff8f65d193882eee83562f691fb158cc426ebd9c9fcdde34ca",
+    "dpo_sha256_found": "cc076f18a27045ff8f65d193882eee83562f691fb158cc426ebd9c9fcdde34ca",
+    "quarantine_sha256_expected": "455694c47dda7084cc9104bf6c5b8a2270a529d78c7a9a81f4f7be47a72b8623",
+    "quarantine_sha256_found": "455694c47dda7084cc9104bf6c5b8a2270a529d78c7a9a81f4f7be47a72b8623",
+    "verdict": "PASS"
+  },
+  "gate2_dataset_conservation": {
+    "conservation_input_eq_kept_plus_purged": true,
+    "conservation_recomputed": true,
+    "kept_rows_missing_receipt": 0,
+    "quarantine_rows_missing_reason": 0,
+    "receipt_input_rows": 2512,
+    "receipt_kept": 1171,
+    "receipt_purged": 1341,
+    "rows_kept_found": 1171,
+    "rows_quarantine_found": 1341,
+    "unparseable_lines": {
+      "kept": 0,
+      "quarantine": 0
+    },
+    "verdict": "PASS"
+  },
+  "gate3_verification_semantics": {
+    "gate_version_mismatches": 0,
+    "kept_rows_failing_gate_recheck": 0,
+    "malformed_kept_rows": 0,
+    "purge_reason_counts_match_receipt": true,
+    "quarantine_reason_mismatches": 0,
+    "quarantine_reason_recomputed": {
+      "insufficient-cyber-signals": 1310,
+      "internal-content": 31
+    },
+    "receipt_link_failures": 0,
+    "semantics_note": "stage 'provenance' = process receipt, NOT content verification; stage 'verified' requires verified_by on the row",
+    "signals_mismatches": 0,
+    "stage_census": {
+      "provenance": 1170,
+      "verified": 1
+    },
+    "stage_label_mismatches": 0,
+    "stage_verified_without_verified_by": 0,
+    "verdict": "PASS"
+  },
+  "gate4_model_evaluation": {
+    "inherited_baseline_note": "base Qwen/Qwen2.5-3B-Instruct 47/60 and KIN v1 40/60 (Oct 12 local run) are CLAIMED-inherited, NOT re-verified by this run; rerun before citing",
+    "status": "NOT_RUN (requires GPU harness)"
+  },
+  "gate5_project_integration": {
+    "note": "gates feed the Athelgard release verdict: HF release -> anonymous acquisition -> hash + contract verification -> evaluation world -> run -> score -> receipt -> PASS | FAIL | UNPROVEN",
+    "status": "WIRED-PLAN"
+  },
+  "mode": "anonymous (no token)",
+  "repo": "nyxspecter4/kin-cyber-dpo-v2",
+  "run_at": "2026-10-14T17:22:42+00:00",
+  "tool": "release-gates.py v1",
+  "verdict": "PASS"
+}
