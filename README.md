@@ -19,6 +19,24 @@
 
 ---
 
+## 🧪 Service — AI Agent Reality Check ($99 pilot)
+
+I independently test AI agents and chatbots against a fixed set of scenarios and document what passes, fails, and remains unproven.
+
+**$99 pilot** — one authorized text-based chatbot or agent:
+
+- Five agreed tests (up to two runs per test)
+- Expected-versus-observed evidence table
+- PASS / FAIL / UNPROVEN findings
+- Three prioritized recommendations
+- Concise report — five-day turnaround, one revision included
+
+Bounded QA evaluation. Not penetration testing, not compliance certification, not a security guarantee.
+
+**Inquiries:** `contact@bountywarz.com`
+
+---
+
 ## 🌐 Executive Overview
 
 Kinetigor Defense Systems develops high-fidelity 3D spatial simulation environments and verification-hardened machine intelligence for critical infrastructure resilience, electronic warfare modeling, and cyber workforce readiness.
