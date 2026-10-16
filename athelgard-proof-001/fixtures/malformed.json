@@ -1,0 +1,9 @@
+{
+  "protocol": "athelgard-envelope/1",
+  "challenge_id": "moorpost-credential-reuse-001",
+  "actor_id": "participant-mal10",
+  "action": "Partial attempt.",
+  "evidence": { "finding": "incomplete" },
+  "captured_at": "2026-10-15T19:30:00Z",
+  "evidence_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+}

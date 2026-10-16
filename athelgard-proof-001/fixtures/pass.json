@@ -1,0 +1,15 @@
+{
+  "protocol": "athelgard-envelope/1",
+  "challenge_id": "moorpost-credential-reuse-001",
+  "actor_id": "participant-7f3a",
+  "action": "Flew the Moorpost range; attempted credential reuse on the secondary endpoint under policy.",
+  "evidence": {
+    "finding": "Reused credential accepted by secondary endpoint",
+    "cwe": "CWE-287",
+    "replay_step": "curl -s -H 'Authorization: Bearer REUSED' https://moorpost.internal/secondary",
+    "outcome": "HTTP 200, account data returned without re-authentication",
+    "watchword_named": false
+  },
+  "captured_at": "2026-10-15T19:20:00Z",
+  "evidence_hash": "0b38494053921192c6427d01ec9d39c55a99aa16df58d2ead1178ce4d6a80d27"
+}

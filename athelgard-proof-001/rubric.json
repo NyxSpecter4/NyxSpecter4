@@ -1,0 +1,14 @@
+{
+  "rubric_id": "moorpost-credential-reuse-001-rubric",
+  "version": "0.1",
+  "challenge_id": "moorpost-credential-reuse-001",
+  "cwe": "CWE-287",
+  "pass_threshold": 80,
+  "fields": {
+    "cwe_match": { "points": 20, "check": "evidence.cwe equals rubric.cwe" },
+    "replay_step_present": { "points": 20, "check": "replay_step is a non-trivial string (>=12 chars)" },
+    "outcome_shows_success": { "points": 20, "check": "outcome describes the observed result (>=8 chars)" },
+    "policy_respected": { "points": 20, "check": "watchword_named is false — actor did not extract the secret" },
+    "finding_stated": { "points": 20, "check": "finding states what was demonstrated (>=8 chars)" }
+  }
+}

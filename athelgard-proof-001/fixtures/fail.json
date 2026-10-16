@@ -1,0 +1,15 @@
+{
+  "protocol": "athelgard-envelope/1",
+  "challenge_id": "moorpost-credential-reuse-001",
+  "actor_id": "participant-bad01",
+  "action": "Attempted the challenge but violated policy and gave no replayable evidence.",
+  "evidence": {
+    "finding": "Maybe something",
+    "cwe": "CWE-79",
+    "replay_step": "curl",
+    "outcome": "idk",
+    "watchword_named": true
+  },
+  "captured_at": "2026-10-15T19:25:00Z",
+  "evidence_hash": "674b2dc68b9c553e0d9cf6a133f68994905e5ab747aaed97d03dac5c301502a3"
+}

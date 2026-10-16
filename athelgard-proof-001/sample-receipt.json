@@ -1,0 +1,21 @@
+{
+  "status": "evaluated",
+  "protocol_version": "athelgard-envelope/1",
+  "challenge_id": "moorpost-credential-reuse-001",
+  "actor_id": "participant-7f3a",
+  "evidence_hash": "0b38494053921192c6427d01ec9d39c55a99aa16df58d2ead1178ce4d6a80d27",
+  "rubric_hash": "a677d9ad0016d9b02101b23335317bf38bda0d43f43e49b73c1939b8e103ed01",
+  "evaluator_version": "athelgard-evaluator/0.1",
+  "field_results": [
+    { "field": "cwe_match", "points": 20, "max": 20, "passed": true, "check": "evidence.cwe equals rubric.cwe" },
+    { "field": "replay_step_present", "points": 20, "max": 20, "passed": true, "check": "replay_step is a non-trivial string (>=12 chars)" },
+    { "field": "outcome_shows_success", "points": 20, "max": 20, "passed": true, "check": "outcome describes the observed result (>=8 chars)" },
+    { "field": "policy_respected", "points": 20, "max": 20, "passed": true, "check": "watchword_named is false — actor did not extract the secret" },
+    { "field": "finding_stated", "points": 20, "max": 20, "passed": true, "check": "finding states what was demonstrated (>=8 chars)" }
+  ],
+  "total_score": 100,
+  "max_score": 100,
+  "verdict": "PASS",
+  "evaluated_at": "2026-10-15T20:00:00Z",
+  "receipt_id": "5c2e179ed0dc8049ea1b971880a926b8abd0073e9796d642d5d14f4df929191f"
+}
