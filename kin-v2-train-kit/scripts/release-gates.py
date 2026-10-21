@@ -1,46 +1,45 @@
 #!/usr/bin/env python3
 """
-release-gates.py v2 — Athelgard release gates for the KIN HF estate.
+release-gates.py v3 — KIN HF estate release-closure gates.
 
-Implements the claim-discipline standard: every release artifact is treated as
-UNPROVEN until independently reproduced. This script performs that reproduction
-ANONYMOUSLY (no token, no auth) against the live Hugging Face repo, exactly the
-way a stranger would, and emits a machine-checkable verdict.
+Release closure only. No training, no benchmarking, no ranking claims.
 
-Gate architecture (v2 — receipt integrity is NOT semantic verification):
+ANONYMOUS executor: no token, no auth, exactly the way a stranger would.
+Every release artifact is UNPROVEN until independently reproduced; this tool
+performs the reproduction and emits a machine-checkable verdict.
 
   Gate 1  ARTIFACT INTEGRITY      artifact -> sha256 -> stamp receipt ->
          anonymous download -> sha256 again -> compare. PASS = byte identity.
-  Gate 2  RECEIPT INTEGRITY      every row's receipt hash is RECOMPUTED from
-         the exact stamp-receipts.py formula (the cryptographic link is
-         checked, not trusted); receipt fields, gate version, signals and
-         stage labels are re-derived per row. This proves LINKAGE, not that
-         the cybersecurity answers are correct.
+  Gate 2  RECEIPT INTEGRITY      every row's receipt hash RECOMPUTED from the
+         exact stamp-receipts.py formula (linkage, not content correctness);
+         receipt fields, gate version, signals, stage labels re-derived per row.
   Gate 3  CONSERVATION           input == kept + quarantine; every kept row
-         has a receipt; every quarantined row has a recomputed reason.
-  Gate 4  CARD<->ARTIFACT PARITY (hard gate) the rendered card's claimed
-         counts must equal the machine-derived counts; the card must pin the
-         viewer's default config to the receipt-bearing dpo.jsonl; every data
-         file present in the repo must be documented in the card's file
-         table. A release whose files say one thing and whose public
-         description says another CANNOT receive PASS.
-  Gate 5  SEMANTIC VERIFICATION CENSUS  separate from receipt integrity:
-         counts rows that carry actual semantic-verification evidence
-         (verified_by on the row). The census is reported explicitly and is
-         never inflated by provenance receipts.
+         has a receipt; every quarantined row has a recomputed reason; sft
+         row count must equal the kept count.
+  Gate 4  CARD<->ARTIFACT PARITY  raw README claimed counts == machine-derived;
+         the rendered public card shows the shipped count; the card carries no
+         superseded totals; configs YAML pins dpo/quarantine/sft; the public
+         file tree contains exactly the release data files (no legacy files).
+  Gate 5  SEMANTIC VERIFICATION CENSUS  verified_by counted, never inferred
+         from receipts; provenance receipts never count as verification.
+  Gate 6  VIEWER<->RELEASE PARITY the Dataset Viewer must serve exactly the
+         pinned configs with exactly the shipped row counts. Pending, stale,
+         failed, or API-error viewer state => UNPROVEN, never PASS. Bounded
+         polling; every checked endpoint and status is recorded.
 
-  Gate 6  MODEL EVALUATION        out of scope here (needs GPU). Any inherited
-         benchmark number is reported as CLAIMED, never VERIFIED.
-  Gate 7  PROJECT INTEGRATION    wired plan (Athelgard release verdict chain).
+  Gate 7  MODEL EVALUATION        NOT RUN (requires GPU). Inherited benchmark
+         numbers are CLAIMED, never VERIFIED.
+  Gate 8  ATHELGARD INTEGRATION  NOT READY (wired plan).
 
-Verdicts: PASS | FAIL | UNPROVEN  (maps to the platform STATUS-CLAIM PROTOCOL:
-VERIFIED / CLAIMED / MISSING). No vibes, no rank extrapolations, no marketing
-renaming of provenance as verified.
+Verdicts: PASS | FAIL | UNPROVEN.
+Exit codes: 0 = PASS, 1 = FAIL, 2 = UNPROVEN.
+v3.1: a hard-gate FAIL (gates 1-5) outranks UNPROVEN and skips the viewer
+      poll entirely (fail fast). The receipt carries an explicit
+      hard_gate_failures list.
 
 Usage:
-  python3 release-gates.py --repo nyxspecter4/kin-cyber-dpo-v2 [--out gates-receipt.json]
-
-Exit codes: 0 = all gates PASS, 1 = any FAIL, 2 = UNPROVEN (artifacts absent).
+  python3 release-gates.py --repo nyxspecter4/kin-cyber-dpo-v2 [--ref main]
+                           [--out gates-receipt.json] [--viewer-timeout 900]
 """
 import argparse
 import hashlib
@@ -48,19 +47,47 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.request
 from datetime import datetime, timezone
 
 BASE = "https://huggingface.co"
-# Gate constants — VERBATIM from kin-deploy/stamp-receipts.py (blob daa1b185)
+DSV = "https://datasets-server.huggingface.co"
+RELEASE_DATA_FILES = {"dpo.jsonl", "quarantine.jsonl", "sft.jsonl"}
+LEGACY_FILES = {"train.jsonl", "dpo-clean.jsonl", "grpo_prompts.jsonl"}
+SUPERSEDED_TOTALS = ["1,331", "1331 DPO", "1,471", "1,495", "1,635 DPO"]
 GATE_VERSION = "cyber-signals-v1"
 STAMPER = "stamp-receipts.py v1"
+TOOL_VERSION = "release-gates.py v3.1"
 INTERNAL = ["athelgard","hunt-harbor","cryptnoir","bountywarz","protocolbreach","makothoth",
             "anchor_intro","panel_voice","anchor_synthesis","sign_off","fitness landscape"]
 CYBER = ["CVE-","XSS","SQL injection","buffer overflow","RCE","MFA","EDR","SIEM","phishing",
          "ransomware","malware","exploit","vulnerability","OWASP","CWE","zero-day","MITRE",
          "ATT&CK","Sigma","YARA","DFIR","SOC","CrowdStrike","Splunk","log4shell","solarwinds",
          "colonial pipeline","mgm","Kubernetes","Docker","IAM","OAuth","SAML","zero trust"]
+
+ENDPOINTS = []  # every checked public endpoint + status, recorded in the receipt
+
+
+def record(endpoint, status, detail=""):
+    ENDPOINTS.append({"endpoint": endpoint, "status": status, "detail": str(detail)[:200],
+                      "checked_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+
+
+def fetch_bytes(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "release-gates/3 (anonymous)"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        return r.read()
+
+
+def try_fetch(url, tag):
+    try:
+        data = fetch_bytes(url)
+        record(url, "OK", f"{len(data)} bytes")
+        return data
+    except Exception as e:
+        record(url, f"ERROR {getattr(e, 'code', type(e).__name__)}", str(e)[:120])
+        return None
 
 
 def matched_signals(text):
@@ -69,7 +96,6 @@ def matched_signals(text):
 
 
 def row_sha256(row):
-    """Exact stamp-receipts.py identity hash (canonicalized pair content)."""
     canon = json.dumps(
         {"prompt": row.get("prompt"), "chosen": row.get("chosen"), "rejected": row.get("rejected")},
         sort_keys=True, ensure_ascii=False,
@@ -78,7 +104,6 @@ def row_sha256(row):
 
 
 def gate_verdict(row):
-    """Exact stamp-receipts.py gate: None if kept, reason string if purged."""
     prompt = row.get("prompt") or ""
     chosen = row.get("chosen") or ""
     if not (isinstance(prompt, str) and isinstance(chosen, str)):
@@ -92,110 +117,106 @@ def gate_verdict(row):
     return None
 
 
-def fetch_bytes(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "release-gates/2 (anonymous)"})
-    with urllib.request.urlopen(req, timeout=300) as r:
-        return r.read()
+def sha256_bytes(b):
+    return hashlib.sha256(b).hexdigest()
 
 
-def fetch(url, dest):
-    data = fetch_bytes(url)
-    with open(dest, "wb") as f:
-        f.write(data)
-    return len(data)
-
-
-def sha256_file(path):
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def load_jsonl(path):
+def load_jsonl_bytes(b):
     rows, bad = [], 0
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                rows.append(json.loads(line))
-            except json.JSONDecodeError:
-                bad += 1
+    try:
+        text = b.decode("utf-8")
+    except UnicodeDecodeError:
+        # v3.1 (Finding D fix): corrupt-byte artifacts fail CLOSED with a clean
+        # receipt instead of crashing with a traceback. The sha mismatch is
+        # already caught by Gate 1; this keeps the verdict path alive.
+        return [], 1
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            bad += 1
     return rows, bad
 
 
-def viewer_state(repo):
-    """Live datasets-server state, recorded as evidence (re-index may lag)."""
-    state = {}
-    try:
-        j = json.loads(fetch_bytes(
-            f"https://datasets-server.huggingface.co/splits?dataset={repo}").decode())
-        state["splits"] = [
-            {"config": s.get("config"), "split": s.get("split")} for s in j.get("splits", [])
-        ]
-        state["pending"] = [p.get("config") for p in j.get("pending", [])]
-    except Exception as e:
-        state["splits_error"] = str(e)[:200]
-    try:
-        j = json.loads(fetch_bytes(
-            f"https://datasets-server.huggingface.co/info?dataset={repo}").decode())
-        state["configs"] = {
-            cfg: {"features": list(v.get("features", {}).keys()),
-                  "examples": {s: sv.get("num_examples")
-                               for s, sv in v.get("splits", {}).items()}}
-            for cfg, v in j.get("dataset_info", {}).items()
-        }
-    except Exception as e:
-        state["info_error"] = str(e)[:200]
-    return state
+def poll_viewer(repo, expected, timeout, interval):
+    """Bounded poll of the public viewer API. Returns (state, verdict)."""
+    deadline = time.time() + timeout
+    last = None
+    while True:
+        splits = try_fetch(f"{DSV}/splits?dataset={repo}", "viewer-splits")
+        info = try_fetch(f"{DSV}/info?dataset={repo}", "viewer-info")
+        if splits is not None and info is not None:
+            try:
+                sj = json.loads(splits)
+                ij = json.loads(info)
+                pending = sj.get("pending", [])
+                failed = sj.get("failed", [])
+                configs = {c for c in ij.get("dataset_info", {})}
+                examples = {cfg: {s: sv.get("num_examples")
+                                  for s, sv in v.get("splits", {}).items()}
+                            for cfg, v in ij.get("dataset_info", {}).items()}
+                last = {"configs": sorted(configs), "examples": examples,
+                        "pending": pending, "failed": failed}
+                if not pending and not failed and configs == set(expected):
+                    counts_ok = all(examples.get(c, {}).get("train") == expected[c]["train"] for c in expected)
+                    if counts_ok:
+                        return last, "PASS"
+            except Exception as e:
+                last = {"parse_error": str(e)[:150]}
+        if time.time() >= deadline:
+            return last, "UNPROVEN"
+        time.sleep(interval)
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--repo", required=True, help="HF dataset repo id (owner/name)")
+    ap.add_argument("--repo", required=True)
+    ap.add_argument("--ref", default="main")
     ap.add_argument("--out", default="gates-receipt.json")
     ap.add_argument("--workdir", default=None)
+    ap.add_argument("--viewer-timeout", type=int, default=900)
+    ap.add_argument("--viewer-poll-interval", type=int, default=30)
     args = ap.parse_args()
     wd = args.workdir or "gates-work"
     os.makedirs(wd, exist_ok=True)
-
     run_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    artifacts = {}
-    try:
-        for fname in ("dpo.jsonl", "quarantine.jsonl", "stamp-receipt.json", "README.md"):
-            size = fetch(f"{BASE}/datasets/{args.repo}/resolve/main/{fname}", os.path.join(wd, fname))
-            artifacts[fname] = {"bytes": size, "http": "OK"}
-    except Exception as e:
-        receipt = {"tool": "release-gates.py v2", "run_at": run_at, "repo": args.repo,
-                   "mode": "anonymous", "verdict": "UNPROVEN",
-                   "reason": f"artifact acquisition failed: {e}"}
-        open(args.out, "w", encoding="utf-8").write(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-        print(json.dumps(receipt, indent=2, sort_keys=True))
-        return 2
 
-    stamp = json.load(open(os.path.join(wd, "stamp-receipt.json"), encoding="utf-8"))
-    card = open(os.path.join(wd, "README.md"), encoding="utf-8").read()
+    artifacts = {}
+    blob = {}
+    for fname in ("dpo.jsonl", "quarantine.jsonl", "sft.jsonl", "stamp-receipt.json", "README.md"):
+        data = try_fetch(f"{BASE}/datasets/{args.repo}/resolve/{args.ref}/{fname}", f"artifact:{fname}")
+        if data is None:
+            receipt = {"tool": TOOL_VERSION, "run_at": run_at, "repo": args.repo, "ref": args.ref,
+                       "mode": "anonymous (no token)", "verdict": "UNPROVEN",
+                       "reason": f"artifact acquisition failed: {fname}",
+                       "checked_public_endpoints": ENDPOINTS}
+            open(args.out, "w", encoding="utf-8").write(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+            print(json.dumps(receipt, indent=2, sort_keys=True))
+            return 2
+        blob[fname] = data
+        artifacts[fname] = {"bytes": len(data), "sha256": sha256_bytes(data), "http": "OK"}
+
+    stamp = json.loads(blob["stamp-receipt.json"].decode("utf-8"))
+    card = blob["README.md"].decode("utf-8")
 
     # ---------------- Gate 1: artifact integrity ----------------
     g1 = {
         "dpo_sha256_expected": stamp.get("output_sha256"),
-        "dpo_sha256_found": sha256_file(os.path.join(wd, "dpo.jsonl")),
+        "dpo_sha256_found": artifacts["dpo.jsonl"]["sha256"],
         "quarantine_sha256_expected": stamp.get("quarantine_sha256"),
-        "quarantine_sha256_found": sha256_file(os.path.join(wd, "quarantine.jsonl")),
+        "quarantine_sha256_found": artifacts["quarantine.jsonl"]["sha256"],
     }
     g1["byte_identity"] = (g1["dpo_sha256_expected"] == g1["dpo_sha256_found"]
                            and g1["quarantine_sha256_expected"] == g1["quarantine_sha256_found"])
     gate1 = "PASS" if g1["byte_identity"] else "FAIL"
 
     # ---------------- Gate 2: receipt integrity ----------------
-    # Proves the cryptographic LINK between each row and its receipt.
-    # It does NOT prove the row's cybersecurity content is correct —
-    # that is a separate concern (Gate 5 census + Gate 6 model eval).
-    kept_rows, kept_bad = load_jsonl(os.path.join(wd, "dpo.jsonl"))
-    q_rows, q_bad = load_jsonl(os.path.join(wd, "quarantine.jsonl"))
+    kept_rows, kept_bad = load_jsonl_bytes(blob["dpo.jsonl"])
+    q_rows, q_bad = load_jsonl_bytes(blob["quarantine.jsonl"])
+    sft_rows, sft_bad = load_jsonl_bytes(blob["sft.jsonl"])
     link_fail, gate_mismatch, signals_mismatch, malformed = 0, 0, 0, 0
     missing_fields, stampers_bad = 0, 0
     for r in kept_rows:
@@ -219,13 +240,11 @@ def main():
             gate_mismatch += 1
         if rec.get("signals") != matched_signals((r.get("prompt") or "") + " " + (r.get("chosen") or "")):
             signals_mismatch += 1
-    # gate re-evaluation: kept rows must pass the on-domain gate, quarantined rows must fail with the recorded reason
     kept_should_be_gated = sum(1 for r in kept_rows if gate_verdict(r) is not None)
     q_reason_recheck, q_wrong_reason = {}, 0
     for r in q_rows:
         reason = r.get("purge_reason")
-        recomputed = gate_verdict(r)
-        if reason != recomputed:
+        if reason != gate_verdict(r):
             q_wrong_reason += 1
         q_reason_recheck[reason] = q_reason_recheck.get(reason, 0) + 1
     reason_counts_match = all(stamp.get("purge_reasons", {}).get(k, 0) == v
@@ -242,9 +261,6 @@ def main():
         "quarantine_reason_recomputed": q_reason_recheck,
         "quarantine_reason_mismatches": q_wrong_reason,
         "purge_reason_counts_match_receipt": reason_counts_match,
-        "integrity_note": ("row_sha256 recomputation proves the cryptographic link "
-                           "between row content and receipt. It does NOT prove the "
-                           "content is semantically correct."),
     }
     gate2 = "PASS" if (link_fail == 0 and missing_fields == 0 and gate_mismatch == 0
                        and signals_mismatch == 0 and stampers_bad == 0 and malformed == 0
@@ -258,24 +274,22 @@ def main():
     q_no_reason = sum(1 for r in q_rows if "purge_reason" not in r)
     g3 = {
         "receipt_input_rows": stamp.get("input_rows"),
-        "receipt_kept": stamp.get("kept"),
-        "receipt_purged": stamp.get("purged"),
-        "rows_kept_found": len(kept_rows),
-        "rows_quarantine_found": len(q_rows),
-        "conservation_flag_in_receipt": stamp.get("conservation"),
-        "conservation_recomputed": len(kept_rows) + len(q_rows) == stamp.get("input_rows"),
+        "kept": len(kept_rows), "quarantine": len(q_rows), "sft": len(sft_rows),
         "conservation_identity": f"{len(kept_rows)} + {len(q_rows)} == {stamp.get('input_rows')}",
-        "unparseable_lines": {"kept": kept_bad, "quarantine": q_bad},
+        "conservation_recomputed": len(kept_rows) + len(q_rows) == stamp.get("input_rows"),
+        "conservation_flag_in_receipt": stamp.get("conservation"),
+        "sft_rows_equal_kept_rows": len(sft_rows) == len(kept_rows),
+        "unparseable_lines": {"kept": kept_bad, "quarantine": q_bad, "sft": sft_bad},
         "kept_rows_missing_receipt": kept_no_receipt,
         "quarantine_rows_missing_reason": q_no_reason,
     }
-    gate3 = "PASS" if (
-        g3["conservation_flag_in_receipt"] and g3["conservation_recomputed"]
-        and stamp.get("kept") == len(kept_rows) and stamp.get("purged") == len(q_rows)
-        and kept_no_receipt == 0 and q_no_reason == 0 and kept_bad == 0 and q_bad == 0
-    ) else "FAIL"
+    gate3 = "PASS" if (g3["conservation_flag_in_receipt"] and g3["conservation_recomputed"]
+                       and stamp.get("kept") == len(kept_rows) and stamp.get("purged") == len(q_rows)
+                       and g3["sft_rows_equal_kept_rows"]
+                       and kept_no_receipt == 0 and q_no_reason == 0
+                       and kept_bad == 0 and q_bad == 0 and sft_bad == 0) else "FAIL"
 
-    # ---------------- Gate 4: card<->artifact parity (hard gate) ----------------
+    # ---------------- Gate 4: card<->artifact parity ----------------
     def num_from(pattern, text):
         m = re.search(pattern, text)
         return int(m.group(1).replace(",", "")) if m else None
@@ -283,50 +297,63 @@ def main():
     card_dpo = num_from(r"Total DPO Pairs:\s*([\d,]+)", card)
     card_qua = num_from(r"([\d,]+)\s+gated-out rows", card)
     card_folded = num_from(r"before the on-domain gate:\s*([\d,]+)\s+pairs", card)
-    counts_parity = (card_dpo == len(kept_rows)
-                     and card_qua == len(q_rows)
+    counts_parity = (card_dpo == len(kept_rows) and card_qua == len(q_rows)
                      and card_folded == stamp.get("input_rows"))
-    # the card must pin the viewer default config to the receipt-bearing dpo.jsonl
-    configs_ok = False
+    superseded_present = [s for s in SUPERSEDED_TOTALS if s in card]
     ym = re.search(r"^configs:.*?(?=^---|\Z)", card, re.M | re.S)
-    if ym:
-        block = ym.group(0)
-        configs_ok = bool(re.search(r"path:\s*dpo\.jsonl", block)) and bool(
-            re.search(r"default:\s*true", block))
-    # every data file in the repo must be documented in the card
-    tree_files = []
-    try:
-        tree = json.loads(fetch_bytes(
-            f"{BASE}/api/datasets/{args.repo}/tree/main?recursive=true").decode())
-        tree_files = [t["path"] for t in tree
-                      if t.get("type") == "file" and t["path"].endswith(".jsonl")]
-    except Exception as e:
-        tree_files = [f"tree_error: {str(e)[:150]}"]
-    undocumented = [p for p in tree_files if p not in card] if tree_files and not str(tree_files[0]).startswith("tree_error") else []
-    view = viewer_state(args.repo)
+    configs_ok = bool(ym) and all(re.search(rf"path:\s*{re.escape(f)}", ym.group(0))
+                                  for f in ("dpo.jsonl", "quarantine.jsonl", "sft.jsonl")) \
+        and bool(re.search(r"default:\s*true", ym.group(0))) \
+        and "dpo.jsonl" in re.search(r"- config_name: dpo.*?(?=- config_name:|\Z)", ym.group(0), re.S).group(0)
+    # public file tree (main): exactly the release data files, no legacy
+    tree = try_fetch(f"{BASE}/api/datasets/{args.repo}/tree/main?recursive=true", "tree")
+    tree_jsonl, tree_state = [], "unavailable"
+    if tree is not None:
+        try:
+            tree_jsonl = sorted(t["path"] for t in json.loads(tree)
+                                if t.get("type") == "file" and t["path"].endswith(".jsonl"))
+            tree_state = "ok"
+        except Exception as e:
+            tree_state = f"parse_error {str(e)[:80]}"
+    tree_ok = tree_state == "ok" and set(tree_jsonl) == RELEASE_DATA_FILES
+    legacy_in_tree = sorted(set(tree_jsonl) & LEGACY_FILES)
+    # rendered public card
+    page_url = f"{BASE}/datasets/{args.repo}" if args.ref == "main" else \
+        f"{BASE}/datasets/{args.repo}/blob/{args.ref}/README.md"
+    page = try_fetch(page_url, "rendered-card")
+    rendered_ok, rendered_note = None, "not fetched"
+    if page is not None:
+        h = page.decode("utf-8", "replace")
+        want = f"Total DPO Pairs: {len(kept_rows):,}"
+        rendered_ok = (want in h) and not any(s in h for s in ("1,331", "1331 DPO"))
+        rendered_note = f"rendered card contains '{want}': {want in h}"
+    # for a tag run, also verify tag README == main README so the rendered main page represents this ref
+    tag_matches_main = None
+    if args.ref != "main":
+        main_readme = try_fetch(f"{BASE}/datasets/{args.repo}/resolve/main/README.md", "main-readme-for-tag-compare")
+        tag_matches_main = main_readme is not None and main_readme == blob["README.md"]
     g4 = {
-        "card_claimed_dpo_pairs": card_dpo,
-        "machine_dpo_rows": len(kept_rows),
-        "card_claimed_quarantine": card_qua,
-        "machine_quarantine_rows": len(q_rows),
-        "card_claimed_folded": card_folded,
-        "receipt_input_rows": stamp.get("input_rows"),
+        "card_claimed_dpo_pairs": card_dpo, "machine_dpo_rows": len(kept_rows),
+        "card_claimed_quarantine": card_qua, "machine_quarantine_rows": len(q_rows),
+        "card_claimed_folded": card_folded, "receipt_input_rows": stamp.get("input_rows"),
         "counts_parity": counts_parity,
-        "card_pins_viewer_default_to_dpo": configs_ok,
-        "repo_data_files": tree_files,
-        "data_files_undocumented_in_card": undocumented,
-        "live_viewer_state": view,
-        "parity_note": ("the card, the stamp receipt and the raw artifacts must agree; "
-                        "viewer re-index may lag the card — raw files are truth"),
+        "superseded_totals_in_card": superseded_present,
+        "configs_pinned": configs_ok,
+        "public_tree_data_files": tree_jsonl, "tree_state": tree_state,
+        "legacy_files_in_tree": legacy_in_tree,
+        "tree_contains_exactly_release_files": tree_ok,
+        "rendered_card_ok": rendered_ok, "rendered_card_endpoint": page_url,
+        "rendered_card_note": rendered_note,
+        "tag_readme_matches_main": tag_matches_main,
     }
-    gate4 = "PASS" if (counts_parity and configs_ok and not undocumented) else "FAIL"
+    gate4 = "PASS" if (counts_parity and not superseded_present and configs_ok
+                       and tree_ok and not legacy_in_tree
+                       and rendered_ok is True) else "FAIL"
+    if rendered_ok is None and gate4 == "FAIL":
+        pass  # still FAIL: surfaces must agree before release passes
 
     # ---------------- Gate 5: semantic verification census ----------------
-    # Receipt integrity (Gate 2) is linkage. This gate counts SEMANTIC
-    # verification evidence only: a row counts as semantically verified
-    # solely when it carries verified_by. Provenance receipts never count.
-    sem_rows, sem_missing_by, stage_mismatch = 0, 0, 0
-    provenance_only = 0
+    sem_rows, sem_missing_by, stage_mismatch, provenance_only = 0, 0, 0, 0
     for r in kept_rows:
         meta = r.get("metadata") if isinstance(r.get("metadata"), dict) else {}
         rec = meta.get("receipt") if isinstance(meta.get("receipt"), dict) else {}
@@ -345,46 +372,85 @@ def main():
             stage_mismatch += 1
     g5 = {
         "semantically_verified_rows": sem_rows,
-        "provenance_receipt_only_rows": provenance_only,
+        "provenance_only_rows": provenance_only,
         "verified_stage_rows_missing_verified_by": sem_missing_by,
         "illegal_stage_labels": stage_mismatch,
         "census_claim_status": (
-            f"{sem_rows} row(s) carry semantic-verification evidence (verified_by); "
-            f"{provenance_only} row(s) carry a provenance process receipt only. "
-            "Semantic verification is counted, never inferred from receipt presence."),
+            f"{len(kept_rows)} receipt-bearing rows; {sem_rows} semantically "
+            f"verified and {provenance_only} provenance-only."),
     }
     gate5 = "PASS" if (sem_missing_by == 0 and stage_mismatch == 0) else "FAIL"
 
-    verdict = "PASS" if all(g == "PASS" for g in (gate1, gate2, gate3, gate4, gate5)) else "FAIL"
+    # ---------------- Gate 6: viewer<->release parity ----------------
+    expected_viewer = {"dpo": {"train": len(kept_rows)},
+                       "quarantine": {"train": len(q_rows)},
+                       "sft": {"train": len(sft_rows)}}
+    # v3.1 (Finding B fix): fail fast. A hard-gate FAIL (gates 1-5) means fraud
+    # or breakage is already detected; the bounded viewer poll is skipped so no
+    # verdict waits out the full --viewer-timeout after a known failure.
+    hard_gate_names = ["gate1_artifact_integrity", "gate2_receipt_integrity",
+                       "gate3_conservation", "gate4_card_artifact_parity",
+                       "gate5_semantic_verification_census"]
+    hard_verdicts = dict(zip(hard_gate_names, [gate1, gate2, gate3, gate4, gate5]))
+    hard_gate_failures = [n for n, g in hard_verdicts.items() if g == "FAIL"]
+    g6 = {
+        "viewer_configs_expected": {k: v["train"] for k, v in expected_viewer.items()},
+        "rule": ("pending/stale/failed viewer or API errors => UNPROVEN, never PASS; "
+                 "bounded polling; all endpoints recorded"),
+    }
+    if hard_gate_failures:
+        g6["viewer_state_final"] = None
+        g6["skipped_reason"] = ("hard-gate FAIL: " + ", ".join(hard_gate_failures)
+                                + " — viewer poll bypassed (fail fast; v3.1 Finding B fix)")
+        gate6 = "SKIPPED"
+        hard_gates = [gate1, gate2, gate3, gate4, gate5]
+    else:
+        viewer_state, viewer_verdict = poll_viewer(args.repo, expected_viewer,
+                                                   args.viewer_timeout, args.viewer_poll_interval)
+        g6["viewer_state_final"] = viewer_state
+        gate6 = viewer_verdict
+        hard_gates = [gate1, gate2, gate3, gate4, gate5, gate6]
+
+    # v3.1 (Finding A fix): FAIL outranks UNPROVEN. A detected hard-gate failure
+    # is never masked by an unreachable or inconclusive viewer; exit-code
+    # automation can always distinguish "fraud detected" from "viewer down".
+    if any(g == "FAIL" for g in hard_gates):
+        verdict = "FAIL"
+    elif all(g == "PASS" for g in hard_gates):
+        verdict = "PASS"
+    else:
+        verdict = "UNPROVEN"
+
     receipt = {
-        "tool": "release-gates.py v2",
+        "tool": TOOL_VERSION,
         "run_at": run_at,
         "repo": args.repo,
+        "ref": args.ref,
         "mode": "anonymous (no token)",
-        "acquired": artifacts,
+        "artifact_hashes": {f: artifacts[f]["sha256"] for f in artifacts},
         "gate1_artifact_integrity": {"verdict": gate1, **g1},
         "gate2_receipt_integrity": {"verdict": gate2, **g2},
         "gate3_conservation": {"verdict": gate3, **g3},
         "gate4_card_artifact_parity": {"verdict": gate4, **g4},
         "gate5_semantic_verification_census": {"verdict": gate5, **g5},
-        "gate6_model_evaluation": {
-            "status": "NOT_RUN (requires GPU harness)",
-            "inherited_baseline_note": ("base Qwen/Qwen2.5-3B-Instruct 47/60 and KIN v1 40/60 "
-                                        "(Oct 12 local run) are CLAIMED-inherited, NOT re-verified by this run; "
-                                        "rerun before citing"),
-        },
-        "gate7_project_integration": {
-            "status": "WIRED-PLAN",
-            "note": ("gates feed the Athelgard release verdict: HF release -> anonymous acquisition "
-                     "-> artifact integrity -> receipt integrity -> conservation -> card<->artifact "
-                     "parity -> semantic-verification census -> PASS | FAIL | UNPROVEN -> model eval "
-                     "-> Athelgard"),
-        },
+        "gate6_viewer_release_parity": {"verdict": gate6, **g6},
+        "gate7_model_evaluation": {
+            "status": "NOT RUN (requires GPU harness)",
+            "inherited_note": ("base 47/60 and candidate-v1 40/60 (Oct 12 local run) are "
+                               "CLAIMED-inherited; rerun before any use")},
+        "gate8_athelgard_integration": {"status": "NOT READY (wired plan; consumes receipts only)"},
+        "stage_census": {"provenance_only": provenance_only, "semantically_verified": sem_rows},
+        "hard_gate_failures": hard_gate_failures,
+        "checked_public_endpoints": ENDPOINTS,
         "verdict": verdict,
     }
     open(args.out, "w", encoding="utf-8", newline="\n").write(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    print(json.dumps(receipt, indent=2, sort_keys=True))
-    return 0 if verdict == "PASS" else 1
+    print(json.dumps({k: receipt[k] for k in ("tool", "run_at", "ref", "verdict")}))
+    for k in receipt:
+        if k.startswith("gate") and isinstance(receipt[k], dict) and "verdict" in receipt[k]:
+            print(f"  {k}: {receipt[k]['verdict']}")
+    print("  stage_census:", receipt["stage_census"])
+    return {"PASS": 0, "FAIL": 1, "UNPROVEN": 2}[verdict]
 
 
 if __name__ == "__main__":
