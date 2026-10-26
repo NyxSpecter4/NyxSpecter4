@@ -29,17 +29,19 @@ One canonical receipt for every trust state; state-specific evidence rides insid
 
 ## Per-state required evidence
 
-| State | Question | Gate requires | Refuses when |
-|-------|----------|--------------|--------------|
-| CLAIMED | What exactly are we saying? | exact proposition + falsifier + claimant + timestamp | no falsifier; unfalsifiable claim |
-| BUILT | Does the claimed artifact exist? | evidence type `artifact`: locator + digest or byte size | a description of a thing is not the thing |
-| MEASURED | What did observation find? | `hash` / `test` / `observation` with a raw result | evidence is narration; measurement presented as a pass |
-| VERIFIED | Does the measurement substantiate the claim? | `test` / `judge`: pre-registered rule, expected, observed, verdict | rule written after the result; unparseable evidence |
-| STAGED | Is the verified change prepared for release? | `commit` **and** `manifest` (release-candidate identity + file manifest + target list) | any file lacks a digest; drift undisclosed |
-| DEPLOYED | Did those exact staged bytes reach the target? | `deployment`: **target-side** observation tying live bytes to the staged candidate | "deploy command succeeded" alone — the deployer narrates; the target must be observed |
-| LIVE-VERIFIED | Does the deployed system independently satisfy its claim? | `observation` at a public/live locator, post-deploy, independent instrument | re-audit never ran; same-path self-check |
-| OFFERED | Can a stranger obtain it on advertised terms? | `publication`: offer locator + terms + claim parity | a gorgeous repo is not an offer |
-| SOLD | Did a real transaction occur? | `transaction`: platform/escrow record + delivery status | narrated sale; buyer PII is not required to prove a transaction |
+| State | Question | Gate mode | Gate requires | Refuses when |
+|-------|----------|-----------|---------------|--------------|
+| CLAIMED | What exactly are we saying? | **none** (registration only) | exact proposition + falsifier + claimant + timestamp | no falsifier; unfalsifiable claim |
+| BUILT | Does the claimed artifact exist? | **any-of** | evidence type `artifact`: locator + digest or byte size | a description of a thing is not the thing |
+| MEASURED | What did observation find? | **any-of** | `hash` / `test` / `observation` with a raw result | evidence is narration; measurement presented as a pass |
+| VERIFIED | Does the measurement substantiate the claim? | **any-of** | `test` / `judge`: pre-registered rule, expected, observed, verdict | rule written after the result; unparseable evidence |
+| STAGED | Is the verified change prepared for release? | **all-of (the only conjunctive gate)** | `commit` **and** `manifest` (release-candidate identity + file manifest + target list) | any file lacks a digest; drift undisclosed |
+| DEPLOYED | Did those exact staged bytes reach the target? | **any-of** | `deployment`: **target-side** observation tying live bytes to the staged candidate | "deploy command succeeded" alone — the deployer narrates; the target must be observed |
+| LIVE-VERIFIED | Does the deployed system independently satisfy its claim? | **any-of** | `observation` at a public/live locator, post-deploy, independent instrument | re-audit never ran; same-path self-check |
+| OFFERED | Can a stranger obtain it on advertised terms? | **any-of** | `publication`: offer locator + terms + claim parity | a gorgeous repo is not an offer |
+| SOLD | Did a real transaction occur? | **any-of** | `transaction`: platform/escrow record + delivery status | narrated sale; buyer PII is not required to prove a transaction |
+
+**Gate mode semantics (explicit since the second-witness reproduction):** `any-of` = at least one listed evidence type must appear; `all-of` = every listed type must appear; `none` = registration only, promotes nothing. Only STAGED is conjunctive. The original table left mode implicit; a stranger implementing the judge from this spec inferred all-of and wrongly refused four receipts — a spec a stranger can only approximate is not a spec. The judge source has carried `mode` since commit `99540db1`; the documentation now matches it.
 
 ## The judge
 

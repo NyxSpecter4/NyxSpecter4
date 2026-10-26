@@ -69,3 +69,21 @@ All 10 receipts (R0-R6, E01-E03) and the judge were re-fetched from the target a
 - Anonymous spot-check: raw.githubusercontent.com served R2-measured.json byte-identical to the target-API digest (4cf209eb95981f187185dca710ddfcdfde39ded8, 1914 B) — match: true
 
 Terminal observation recorded. PROOF-RUN-001 stands executed: one real artifact traversed CLAIMED to LIVE-VERIFIED with an executed fail-closed judge at every rung, the negative control was refused by the machine, and no narrator promoted anything. The run closes with the board unchanged except: kin-trust-protocol v1.0.0 = LIVE-VERIFIED.
+
+## Reproduction record — the second judge (late Oct 26)
+
+A second witness implemented the judge independently from this spec, in a different programming language, inheriting no conclusion, and executed it over the target-fetched receipts.
+
+**First run: 6/10 agreement. Four divergences, all traced — every one a bug in the second judge, none in the protocol:**
+
+1. **R6 refused** — the witness's judge invented underscore state names (LIVE_VERIFIED); the spec writes LIVE-VERIFIED. Witness bug.
+2. **R2, R3 refused** — the witness's judge read every gate as all-of; the gates are any-of alternatives except STAGED (commit AND manifest — the only conjunctive gate). Witness bug.
+3. **R0 refused** — the witness's judge demanded a previous_state for CLAIMED; CLAIMED is the chain origin and previous_state null is correct. Witness bug.
+
+**After fixes: 10/10 identical verdicts** — E01/E02/R0-R6 ACCEPTED, E03 REFUSED + QUARANTINED on the same gate reason, exit 1. Two judges, two authors, two languages, target-fetched receipts, identical outcomes.
+
+**Real defect found in this protocol's own documentation, fixed in this commit:** the README's per-state gate table never stated gate mode (any-of vs all-of). The witness had to infer it, and inferred wrong. Fix: explicit mode column + semantics note. That is the difference between a spec a stranger can implement and one they can only approximate.
+
+**Provenance:** relay-recorded by the owner from the witness's executed reproduction (divergence table preserved verbatim above). This record is authored by the Vibe/GLM seat from the owner's relay; the witness's own artifacts remain with the witness — the relay is the durable trace the estate log holds.
+
+**Lesson locked:** independent verification is not someone else agrees — it is someone else implements it, and every divergence is reconciled. Two honest judges disagreed on 40% of cases and neither lied. Receipt is not reproduction; after this record, the proof run is reproduction.
