@@ -1,0 +1,18 @@
+{
+  "model_name": "kin-cyber-v2",
+  "model_name_note": "historical conversion name; this repo is nyxspecter4/kin-cybersecurity-3b (renamed from kin-sft-lora, Sep 13 2026)",
+  "base_architecture": "Qwen/Qwen2.5-3B-Instruct",
+  "lora_target": "nyxspecter4/kin-sft-lora",
+  "lora_target_note": "historical pre-rename id; canonical id is nyxspecter4/kin-cybersecurity-3b",
+  "quant_formats": [
+    "Q4_K_M",
+    "Q5_K_M",
+    "Q8_0",
+    "FP16"
+  ],
+  "ollama_support": true,
+  "offline_safe": true,
+  "dpo_dataset": "nyxspecter4/kin-cyber-dpo-v2",
+  "honesty_note": "the earlier zero-leak verification claim (a boolean asserted with no receipt or hash artifact behind it) was removed on 2026-10-26; the estate does not publish unbacked verification claims",
+  "updated_at": "2026-09-01T02:26:16.784Z"
+}

@@ -1,0 +1,7 @@
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python
+transformers
+accelerate
+huggingface_hub
+torch
+audioop-lts>=0.2.1
