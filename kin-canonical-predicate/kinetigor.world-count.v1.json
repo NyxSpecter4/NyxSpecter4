@@ -1,0 +1,38 @@
+{
+  "predicate_id": "kinetigor.world-count.v1",
+  "status": "MEASURED — PENDING OWNER RATIFICATION (predicate + entry-point set)",
+  "recorded_at": "2026-10-26T22:12:01.037Z",
+  "repository": "NyxSpecter4/bountywarz",
+  "commit_sha": "188776b6a67c44c610acfeda8e7641edf6a22745",
+  "ref": "main (pinned)",
+  "root": "worlds/",
+  "depth": "immediate children only",
+  "excluded_prefixes": [
+    "_restage-",
+    ".(dot-prefixed)"
+  ],
+  "accepted_entrypoints": [
+    "index.html",
+    "play.html",
+    "game.html",
+    "app.html"
+  ],
+  "entrypoint_match": "exact filename at depth 1, case-insensitive as stored; no .htm variants",
+  "count": 299,
+  "qualifying_paths_file": "worlds-launchset-main.txt",
+  "tree_digest": "71991e675a76c473fa50505ea60eba8d65bbf9c0d3585f5df36077e0697c43c1",
+  "serialization": "qualifying names sorted by code unit, joined single LF, no trailing newline, UTF-8, SHA-256 hex lowercase",
+  "relation_to_CANONICAL_PREDICATE_001": {
+    "note": "launch-set is a strict subset of the HTML-any predicate (every launch name is a depth-1 HTML file)",
+    "html_any_main_count": 300,
+    "html_bearing_but_no_ratified_launch_name": 1,
+    "delta_file": "worlds-html-not-launch-main.txt",
+    "delta_digest": "04889ce2c53c51eab5829719154aa2c72f320b2297630a84fd1a8305558af91f"
+  },
+  "instruments": [
+    "GitHub contents-API top-level listing of worlds/ (this seat, sequential, retry)",
+    "GitHub code search, 4 filename: queries (index/play/game/app.html) under path:worlds, depth-1 filter — total 323 raw, 322 depth-1, 299 distinct eligible dirs"
+  ],
+  "master_note": "master NOT yet swept under this predicate (code search is default-branch-only; per-dir sweep completed once today under the HTML-any predicate: master=278). One command away.",
+  "falsifier": "any qualifying path omitted, excluded path included, duplicate path counted, or result generated from another ref"
+}
