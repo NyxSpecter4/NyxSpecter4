@@ -58,3 +58,14 @@ The record of the final observation necessarily lives outside the observed set: 
 - kin-v7-flag-redaction kit v2: BUILT. Not executed; no MEASURED claim.
 - Shipping Dock: RED, unchanged; kin-security-scan.zip has still not crossed the evidence horizon.
 - Trunk recovery, Athelgard/Droid lane: unchanged by this run.
+
+## Closing loop (post-push, executed 2026-10-26T20:26:23Z)
+
+All 10 receipts (R0-R6, E01-E03) and the judge were re-fetched from the target at refs/heads/main and the judge executed over the complete chain from those target bytes:
+
+- R0, R1, R2, R3, R4, R5, R6, E01, E02: ACCEPTED (9/9)
+- E03: REFUSED, disposition QUARANTINED — exactly as pre-registered
+- P3 adjacency re-verified from target bytes: R1-R6 strictly adjacent CLAIMED to LIVE-VERIFIED, no rung skipped
+- Anonymous spot-check: raw.githubusercontent.com served R2-measured.json byte-identical to the target-API digest (4cf209eb95981f187185dca710ddfcdfde39ded8, 1914 B) — match: true
+
+Terminal observation recorded. PROOF-RUN-001 stands executed: one real artifact traversed CLAIMED to LIVE-VERIFIED with an executed fail-closed judge at every rung, the negative control was refused by the machine, and no narrator promoted anything. The run closes with the board unchanged except: kin-trust-protocol v1.0.0 = LIVE-VERIFIED.
