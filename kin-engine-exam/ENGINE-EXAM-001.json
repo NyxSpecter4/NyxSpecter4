@@ -1,0 +1,39 @@
+{
+  "artifact": "ENGINE-EXAM-001",
+  "status": "PREREGISTERED — NOT RUN",
+  "committed": "2026-10-26",
+  "purpose": "Rules-before-results receipt: the exam that will judge the Kinetigor Trust Engine candidate is timestamped BEFORE the kernel exists and may not be reshaped around the implementation.",
+  "kernel_state": "MK-MVP-001 SPECIFIED — NOT IMPLEMENTED. The kernel this exam will test DOES NOT YET EXIST.",
+  "claim_under_test": "One unchanged trust kernel can adjudicate materially different domains through adapters and policies alone.",
+  "cases": {
+    "primary": 24,
+    "cross_domain_leakage": 12,
+    "unknown_policy_controls": 4,
+    "total": 40
+  },
+  "domains": [
+    "A Moorpost — legitimate control completion",
+    "B Auditor’s Desk — evidence-backed audit acceptance",
+    "C Agent Assurance — bounded completion under delegated authority",
+    "D Release Verification — target-side deployment substantiation (frozen as written; dataset-verification would be a post-exam fifth-domain amendment)"
+  ],
+  "pass_criterion": "24/24 expected primary verdicts + 12/12 alien-policy refusals + 4/4 unknown-policy refusals + zero false acceptances + zero domain branches in the kernel + unchanged kernel bytes + independent reproduction.",
+  "promotion_rule": "On complete pass only: Moorpost Trust Kernel → Kinetigor Trust Engine. Anything less leaves the artifact classified COMPONENT; failures preserved verbatim.",
+  "g1_ref_law": "A frozen SHA without its ref is a swappable kernel. G1 names ref + SHA. Verified first-party at commit time: sha256(www/moorpost-kernel.js @ main @ 188776b6) = bedf4dc5094adae637bbc636fcff87de7f9fb73df814e76b23d3dbd735ecdf36 (6,884 B, git blob 5f22f4e13e94a82b94c6ce38f474c29ae20dcb23); master @ 64917c12 carries a DIFFERENT file (4,975 B, sha256 3c293392…, git blob f16e640463…) — the constant is main-only.",
+  "grounding": {
+    "estate_scoped_search": "0 hits for ENGINE-EXAM-001 and REFUSED_WRONG_DOMAIN (repo- and org-scoped, 2026-10-26, re-verified two seats)",
+    "scope_law": "A search claim names its scope and case policy; unscoped global REFUSED_WRONG_DOMAIN returns 2 unrelated noise hits (third-party PTP benchmark)",
+    "units_law": "A size claim states its unit: prove-engine.cjs 7,718 B / 7,688 chars; moorpost-kernel.js 6,884 B / 6,874 chars"
+  },
+  "spec_sha256": "e71be925fcf64ce659181afeceed85fbd63ead2c33aef80f94502a9d20a318dc",
+  "spec_bytes": 21449,
+  "execution_order": [
+    "1. Commit the matrix exactly as preregistered (THIS COMMIT)",
+    "2. Record commit SHA + blob digests (this receipt)",
+    "3. Implement MK-MVP-001 afterward — the implementation must not be able to rewrite the exam that judges it",
+    "4. Freeze the kernel SHA with its ref",
+    "5. Run the complete exam unchanged",
+    "6. Promote only on complete pass"
+  ],
+  "binding": "The committed matrix file (kin-engine-exam/ENGINE-EXAM-001.md, sha256 above) is the frozen exam. Any change to it after MK-MVP-001 implementation begins is an exam-tamper event and must be recorded as such."
+}
