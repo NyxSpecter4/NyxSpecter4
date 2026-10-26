@@ -25,8 +25,8 @@
     "scope_law": "A search claim names its scope and case policy; unscoped global REFUSED_WRONG_DOMAIN returns 2 unrelated noise hits (third-party PTP benchmark)",
     "units_law": "A size claim states its unit: prove-engine.cjs 7,718 B / 7,688 chars; moorpost-kernel.js 6,884 B / 6,874 chars"
   },
-  "spec_sha256": "fa6df1b1d292da7851b141cfc71f96262a77c2fffe1ebe972a29dc04de96ff73",
-  "spec_bytes": 24215,
+  "spec_sha256": "1989eb89c72ce6844846d8117a35620f0434f0c44b503a1405fa7422fe683a27",
+  "spec_bytes": 25080,
   "execution_order": [
     "1. Commit the matrix exactly as preregistered (THIS COMMIT)",
     "2. Record commit SHA + blob digests (this receipt)",
@@ -53,7 +53,12 @@
       "pass_rule": "pass only when EVERY identity field matches; the commit pin outranks the branch label",
       "mvp_kernel_rule": "MK-MVP-001 kernel receives its OWN identity tuple, frozen separately; the relay-kernel digest is never reused as the MVP digest",
       "pre_run_status": "PREREGISTERED — NOT RUN; amendment predates any exam run and any MK-MVP-001 implementation",
-      "lineage": "be9f198c (original preregistration) preserved; both commits in lineage; no run has occurred"
+      "lineage": "be9f198c (original preregistration) preserved; both commits in lineage; no run has occurred",
+      "amendment_commit": "03a25d61461cf83ea06852cb00a8c354b604d543",
+      "amendment_commit_md_git_blob": "bb596fa29f52cfc5fe640df9d572a501aaffc57f",
+      "amendment_commit_md_sha256": "fa6df1b1d292da7851b141cfc71f96262a77c2fffe1ebe972a29dc04de96ff73",
+      "amendment_commit_json_git_blob": "0ca53729defea6662a7eaff66d01d021995142ce",
+      "record_note": "AMENDMENT-1 commit SHA and blob identities recorded per execution-order step 2 (record commit + blob digests). This metadata-record pass completes the lineage; no rule, case, verdict, or gate changed."
     }
   ]
 }
