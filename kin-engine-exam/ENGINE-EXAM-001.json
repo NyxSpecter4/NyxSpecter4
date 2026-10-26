@@ -25,8 +25,8 @@
     "scope_law": "A search claim names its scope and case policy; unscoped global REFUSED_WRONG_DOMAIN returns 2 unrelated noise hits (third-party PTP benchmark)",
     "units_law": "A size claim states its unit: prove-engine.cjs 7,718 B / 7,688 chars; moorpost-kernel.js 6,884 B / 6,874 chars"
   },
-  "spec_sha256": "e71be925fcf64ce659181afeceed85fbd63ead2c33aef80f94502a9d20a318dc",
-  "spec_bytes": 21449,
+  "spec_sha256": "fa6df1b1d292da7851b141cfc71f96262a77c2fffe1ebe972a29dc04de96ff73",
+  "spec_bytes": 24215,
   "execution_order": [
     "1. Commit the matrix exactly as preregistered (THIS COMMIT)",
     "2. Record commit SHA + blob digests (this receipt)",
@@ -35,5 +35,25 @@
     "5. Run the complete exam unchanged",
     "6. Promote only on complete pass"
   ],
-  "binding": "The committed matrix file (kin-engine-exam/ENGINE-EXAM-001.md, sha256 above) is the frozen exam. Any change to it after MK-MVP-001 implementation begins is an exam-tamper event and must be recorded as such."
+  "binding": "The committed matrix file (kin-engine-exam/ENGINE-EXAM-001.md, sha256 above) is the frozen exam. Any change to it after MK-MVP-001 implementation begins is an exam-tamper event and must be recorded as such.",
+  "amendments": [
+    {
+      "amendment_id": "G1-IDENTITY-TUPLE",
+      "date": "2026-10-26",
+      "original_preregistration_commit": "be9f198c",
+      "amends": "G1 ref law replaced by complete frozen identity tuple; grounding restated as zero estate-scoped, case-sensitive exact-code hits; Domain D retained as Release Verification",
+      "g1_kernel_identity": {
+        "repository": "NyxSpecter4/bountywarz",
+        "ref": "refs/heads/main",
+        "immutable_commit": "188776b6a67c44c610acfeda8e7641edf6a22745",
+        "path": "www/moorpost-kernel.js",
+        "git_blob": "5f22f4e13e94a82b94c6ce38f474c29ae20dcb23",
+        "sha256": "bedf4dc5094adae637bbc636fcff87de7f9fb73df814e76b23d3dbd735ecdf36"
+      },
+      "pass_rule": "pass only when EVERY identity field matches; the commit pin outranks the branch label",
+      "mvp_kernel_rule": "MK-MVP-001 kernel receives its OWN identity tuple, frozen separately; the relay-kernel digest is never reused as the MVP digest",
+      "pre_run_status": "PREREGISTERED — NOT RUN; amendment predates any exam run and any MK-MVP-001 implementation",
+      "lineage": "be9f198c (original preregistration) preserved; both commits in lineage; no run has occurred"
+    }
+  ]
 }
