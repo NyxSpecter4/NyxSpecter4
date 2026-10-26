@@ -1,0 +1,48 @@
+{
+  "receipt_id": "CANONICAL-PREDICATE-001",
+  "subject": "world-count ontology — NyxSpecter4/bountywarz worlds/",
+  "status": "MEASURED — PENDING OWNER RATIFICATION",
+  "recorded_at": "2026-10-26T21:49:51.000Z",
+  "predicate": {
+    "rules": [
+      "P1: not _restage-*",
+      "P2: not dot-prefixed",
+      "P3: >=1 depth-1 file matching /\\.html?$/i"
+    ],
+    "serialization": "names sorted by code unit, joined LF, no trailing newline, UTF-8, SHA-256"
+  },
+  "runs": {
+    "main": {
+      "ref": "main",
+      "commit": "188776b6a67c44c610acfeda8e7641edf6a22745",
+      "listed_dirs": 324,
+      "restage": 23,
+      "eligible": 301,
+      "pass": 300,
+      "digest": "68946bf5b56d6292ec240d6843cf18f52dee21b7707cd0db8eda20ea711bc04d",
+      "set_file": "worlds-main.txt"
+    },
+    "master": {
+      "ref": "master",
+      "commit": "64917c1239fda6f442917e0fec7fffbb2a131516",
+      "listed_dirs": 303,
+      "restage": 24,
+      "eligible": 279,
+      "pass": 278,
+      "digest": "451d603ff4e1b9c7dd68429a7f7036fecb50157da4c28ecc2e5acb4567a6208c",
+      "set_file": "worlds-master.txt"
+    }
+  },
+  "named_failures": {
+    "sgrok-onboarding": "AMBIVALENT — depth-1 has only dirs (art/, spec/); fails P3 on both trunks; owner to adjudicate ontology"
+  },
+  "instruments": [
+    "contents-API depth-1 per-dir listing (sequential, retry; 502 storms disclosed)",
+    "code search extension:html path:worlds (main/default branch only): total=336 depth1=334 dirs=300 — set-equal with listing on main, symmetric difference 0"
+  ],
+  "reconciliation": {
+    "298": "matches nothing",
+    "REPO AUDIT 141": "REJECT — unreproduced",
+    "prior 324/301 main + 303/279 master": "confirmed by this run"
+  }
+}
