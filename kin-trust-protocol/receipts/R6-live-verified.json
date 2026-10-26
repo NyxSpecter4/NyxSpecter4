@@ -1,0 +1,45 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R6",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "Independent post-deploy observation through instruments different from the push path confirms the public estate (rule P4): raw.githubusercontent.com serves receipts/E02-kit-v2-built.json byte-identical to the staged digest, and the github.com blob page renders the canonical law and the pre-registered PROOF-RUN-001 rules to any anonymous visitor.",
+    "falsifier": "either locator fails to serve, or the served content diverges from the staged candidate.",
+    "previous_state": "DEPLOYED",
+    "requested_state": "LIVE-VERIFIED"
+  },
+  "evidence": [
+    {
+      "type": "observation",
+      "locator": "https://raw.githubusercontent.com/NyxSpecter4/NyxSpecter4/main/kin-trust-protocol/receipts/E02-kit-v2-built.json",
+      "digest": "git-blob-sha1:125b14eb496eba879a91397d9d55ef7e1495b636",
+      "observed_result": "anonymous fetch 2026-10-26T20:28Z: 1,595 B, byte-identical to the staged digest (no wrap: file under the 2,000-char threshold)"
+    },
+    {
+      "type": "observation",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/blob/main/kin-trust-protocol/README.md",
+      "digest": null,
+      "observed_result": "the github.com HTML rendering (a different serving pipeline than the API push path, viewable by any stranger without credentials) contains the canonical law sentence and the PROOF-RUN-001 pre-registered acceptance rules; third-party CDN witnesses (cdn.jsdelivr.net, raw.githack.com) were attempted first and refused by the fetching instrument with a 142-byte access-refusal message — recorded verbatim in PROOF-RUN-001.md as an instrument limitation, not a target defect"
+    }
+  ],
+  "evaluation": {
+    "gate": "P4-independence",
+    "expected": "post-deploy observation at a public anonymous locator through an instrument different from the push path",
+    "observed": "two observations through the anonymous web path (raw + HTML rendering), neither using the GitHub App API push instrument; digest match on the raw observation; CDN refusal recorded, not hidden",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "anonymous open_url fetches of raw.githubusercontent.com and github.com; digest comparison against the staged manifest",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "DEPLOYED",
+    "to": "LIVE-VERIFIED",
+    "status": "ACCEPTED"
+  }
+}

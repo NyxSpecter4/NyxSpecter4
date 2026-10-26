@@ -1,0 +1,39 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R1",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "kin-trust-protocol v1.0.0 exists on NyxSpecter4/NyxSpecter4 main as commit 99540db11e21dffc3416ca022d100aae3e9b2310: exactly 7 files — README.md (6,696 B), receipt.schema.json (4,600 B), validate_receipt.js (10,090 B), receipts R0/E01/E02/E03 — each byte-identical to the authored source.",
+    "falsifier": "any file missing from the commit, file count differing from 7, or any git-blob digest differing from the manifest recorded in this receipt.",
+    "previous_state": "CLAIMED",
+    "requested_state": "BUILT"
+  },
+  "evidence": [
+    {
+      "type": "artifact",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/commit/99540db11e21dffc3416ca022d100aae3e9b2310",
+      "digest": "commit:99540db11e21dffc3416ca022d100aae3e9b2310",
+      "observed_result": "7 files pushed 2026-10-26T20:22Z and re-fetched from the GitHub contents API: README.md 6,696 B sha 35fe46f7eac8e1a3523f2aa54c59e0b3343986e4; receipt.schema.json 4,600 B sha 0a53f5794feae59340c126058402abdbb076a66e; validate_receipt.js 10,090 B sha c74a7cd7369bf4fed12e64080ab48edd52c97230; R0-claim.json 1,465 B sha 54283eb31836363d2b83eb14c5e2cb218a69afd0; E01-hf-remediation-staged.json 2,544 B sha afd8370be0fb95922bfcb988840f32549b08da57; E02-kit-v2-built.json 1,595 B sha 125b14eb496eba879a91397d9d55ef7e1495b636; E03-negative-hf-deployed.json 2,067 B sha 943ba337290566c59e50029b7d4061ebb1ad484e"
+    }
+  ],
+  "evaluation": {
+    "gate": "built-needs-artifact",
+    "expected": "artifact locator + digest, measured at the target",
+    "observed": "commit exists on main with exactly the 7 manifest files; all 7 post-push re-fetches byte-identical",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "GitHub App API push + contents-API re-fetch; git-blob sha1 computed locally (FIPS 180-1 vectors self-tested)",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "CLAIMED",
+    "to": "BUILT",
+    "status": "ACCEPTED"
+  }
+}

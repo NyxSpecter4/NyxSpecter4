@@ -1,0 +1,45 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R4",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "Release candidate kin-trust-protocol v1.0.0 (commit 99540db11e21dffc3416ca022d100aae3e9b2310 on main) is staged with a complete digest manifest and a rollback plan (git revert of 99540db11e21dffc3416ca022d100aae3e9b2310); its serving targets are the public GitHub surface: github.com pages, the contents API, and raw.githubusercontent.com.",
+    "falsifier": "the commit is absent from main, the manifest lacks any file digest, or no rollback path exists.",
+    "previous_state": "VERIFIED",
+    "requested_state": "STAGED"
+  },
+  "evidence": [
+    {
+      "type": "commit",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/commit/99540db11e21dffc3416ca022d100aae3e9b2310",
+      "digest": "commit:99540db11e21dffc3416ca022d100aae3e9b2310",
+      "observed_result": "single-purpose release-candidate commit on main containing exactly the 7 protocol files"
+    },
+    {
+      "type": "manifest",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/tree/99540db11e21dffc3416ca022d100aae3e9b2310/kin-trust-protocol",
+      "digest": null,
+      "observed_result": "7-file digest manifest (all shas in KTP-001-R2); targets: github.com blob/tree pages, contents API, raw.githubusercontent.com; rollback: git revert 99540db11e21dffc3416ca022d100aae3e9b2310"
+    }
+  ],
+  "evaluation": {
+    "gate": "staged-needs-commit-and-manifest",
+    "expected": "release-candidate commit identity AND staged manifest with digests and target list",
+    "observed": "both present; every file carries a git-blob sha1; rollback path stated",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "manifest compiled from the pushed payload digests; targets enumerated from the repo serving surfaces; rollback = git revert",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "VERIFIED",
+    "to": "STAGED",
+    "status": "ACCEPTED"
+  }
+}

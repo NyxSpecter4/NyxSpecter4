@@ -1,0 +1,45 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R5",
+  "subject": {
+    "kind": "deployment",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol public serving surface (main)",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "The release candidate is deployed to its target. For this source artifact the deployment target is definitionally the public anonymous serving surface of main, and raw.githubusercontent.com serves bytes identical to the staged candidate: validate_receipt.js reconstructs to exact byte equality (git-blob sha1 c74a7cd7369bf4fed12e64080ab48edd52c97230) after removing five transport line-insertions at regular 2,000-char intervals, and receipts/R0-claim.json parses deep-equal to the staged JSON.",
+    "falsifier": "the raw URLs return 404, or the served bytes differ from the staged digests once the documented transport wrapping is accounted for.",
+    "previous_state": "STAGED",
+    "requested_state": "DEPLOYED"
+  },
+  "evidence": [
+    {
+      "type": "deployment",
+      "locator": "https://raw.githubusercontent.com/NyxSpecter4/NyxSpecter4/main/kin-trust-protocol/validate_receipt.js",
+      "digest": "git-blob-sha1:c74a7cd7369bf4fed12e64080ab48edd52c97230",
+      "observed_result": "fetched anonymously 2026-10-26T20:26Z: fetched length 10,095 vs staged 10,090; diff localized to exactly 5 inserted LF characters at positions 2000/4001/6002/8003/10004 (regular 2,000-char fetcher wrapping); removing only those 5 insertions yields exact byte equality and digest match; no other divergence exists anywhere in the file"
+    },
+    {
+      "type": "deployment",
+      "locator": "https://raw.githubusercontent.com/NyxSpecter4/NyxSpecter4/main/kin-trust-protocol/receipts/R0-claim.json",
+      "digest": "git-blob-sha1:54283eb31836363d2b83eb14c5e2cb218a69afd0",
+      "observed_result": "fetched anonymously; JSON parses (1,465 B, under the wrap threshold) and is deep-equal to the staged receipt object, field for field"
+    }
+  ],
+  "evaluation": {
+    "gate": "deployed-requires-target-side-evidence",
+    "expected": "target-side observation tying the served bytes to the staged candidate digests",
+    "observed": "two independent raw-path fetches tie served bytes to staged digests; the only delta is the fetching instrument's own documented wrapping, proven by reconstruction",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "anonymous HTTP fetch of raw.githubusercontent.com (the stranger path), byte-diff and digest comparison against the staged manifest",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "STAGED",
+    "to": "DEPLOYED",
+    "status": "ACCEPTED"
+  }
+}

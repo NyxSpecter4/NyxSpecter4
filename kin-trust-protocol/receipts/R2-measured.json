@@ -1,0 +1,39 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R2",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "All 7 files served by the GitHub contents API at refs/heads/main measure byte-for-byte equal to the pushed payloads: 7/7 git-blob sha1 matches and 7/7 byte-size matches (pre-registered rule P2).",
+    "falsifier": "any single file whose measured digest or byte size differs from the pushed manifest.",
+    "previous_state": "BUILT",
+    "requested_state": "MEASURED"
+  },
+  "evidence": [
+    {
+      "type": "hash",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/tree/99540db11e21dffc3416ca022d100aae3e9b2310/kin-trust-protocol",
+      "digest": "7/7 git-blob-sha1 match: 35fe46f7eac8e1a3523f2aa54c59e0b3343986e4, 0a53f5794feae59340c126058402abdbb076a66e, c74a7cd7369bf4fed12e64080ab48edd52c97230, 54283eb31836363d2b83eb14c5e2cb218a69afd0, afd8370be0fb95922bfcb988840f32549b08da57, 125b14eb496eba879a91397d9d55ef7e1495b636, 943ba337290566c59e50029b7d4061ebb1ad484e",
+      "observed_result": "each of the 7 target-served files re-fetched and hashed; every digest and byte size equals the push manifest (P2 all_match=true), measured 2026-10-26T20:24Z"
+    }
+  ],
+  "evaluation": {
+    "gate": "P2-bytes",
+    "expected": "every file's target-served git-blob digest equals the locally pushed digest",
+    "observed": "7/7 sha1 match, 7/7 size match, zero divergence",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "contents-API fetch of each path + locally computed git-blob sha1 (blob header + content, FIPS self-tested)",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "BUILT",
+    "to": "MEASURED",
+    "status": "ACCEPTED"
+  }
+}

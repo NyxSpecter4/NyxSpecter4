@@ -1,0 +1,39 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R3",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0 @99540db11e21dffc3416ca022d100aae3e9b2310"
+  },
+  "claim": {
+    "statement": "The judge, executed on target-fetched bytes over target-fetched receipts, produces exactly the pre-registered verdicts (rule P1): R0, E01 and E02 ACCEPTED, and the E03 negative control REFUSED with disposition QUARANTINED.",
+    "falsifier": "the judge rejects a well-formed receipt, accepts the E03 promotion, or returns any verdict not pre-registered in the README before execution.",
+    "previous_state": "MEASURED",
+    "requested_state": "VERIFIED"
+  },
+  "evidence": [
+    {
+      "type": "judge",
+      "locator": "kin-trust-protocol/validate_receipt.js @99540db11e21dffc3416ca022d100aae3e9b2310",
+      "digest": "git-blob-sha1:c74a7cd7369bf4fed12e64080ab48edd52c97230",
+      "observed_result": "judge source fetched from the target and executed over the 4 target-fetched receipts: R0 ACCEPTED, E01 ACCEPTED, E02 ACCEPTED, E03 REFUSED + QUARANTINED, reason: gate DEPLOYED requires evidence of type deployment (TARGET-SIDE observation tying live bytes to the staged candidate — a deploy command is not evidence) — present types: commit"
+    }
+  ],
+  "evaluation": {
+    "gate": "P1-validity",
+    "expected": "pre-registered verdict set: R0/E01/E02 ACCEPTED, E03 REFUSED+QUARANTINED",
+    "observed": "exact match, zero unexpected verdicts; refusal reason matches the pre-registered DEPLOYED gate definition",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "judge source fetched via contents API, executed as a pure function over receipts fetched via contents API; verdicts compared against the pre-registered P1 rule from the README in the same commit",
+    "timestamp": "2026-10-26T20:25:55.118Z"
+  },
+  "transition": {
+    "from": "MEASURED",
+    "to": "VERIFIED",
+    "status": "ACCEPTED"
+  }
+}
