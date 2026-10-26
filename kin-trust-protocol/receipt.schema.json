@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "kinetigor.trust-receipt/v1",
+  "title": "Kinetigor Trust Receipt v1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "subject", "claim", "evidence", "evaluation", "provenance", "transition"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "kinetigor.trust-receipt/v1" },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "subject": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "type": "string", "description": "artifact|repo|commit|deployment|product|transaction|corpus|space|model|dataset" },
+        "id": { "type": "string", "description": "stable identifier a stranger can dereference" },
+        "version": { "type": ["string", "null"] }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "required": ["statement", "falsifier", "previous_state", "requested_state"],
+      "description": "claim.statement is immutable: if the proposition changes, that is a new receipt.",
+      "properties": {
+        "statement": { "type": "string", "minLength": 1, "description": "the exact proposition being asserted" },
+        "falsifier": { "type": "string", "minLength": 1, "description": "what would prove this claim false; a claim without a falsifier cannot progress" },
+        "previous_state": { "enum": ["CLAIMED", "BUILT", "MEASURED", "VERIFIED", "STAGED", "DEPLOYED", "LIVE-VERIFIED", "OFFERED", "SOLD", null] },
+        "requested_state": { "enum": ["CLAIMED", "BUILT", "MEASURED", "VERIFIED", "STAGED", "DEPLOYED", "LIVE-VERIFIED", "OFFERED", "SOLD"] }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "locator", "observed_result"],
+        "properties": {
+          "type": { "type": "string", "description": "artifact|hash|test|commit|manifest|observation|deployment|publication|transaction|judge" },
+          "locator": { "type": "string", "description": "where the evidence can be checked by anyone" },
+          "digest": { "type": ["string", "null"], "description": "required for types artifact, hash, deployment" },
+          "observed_result": { "type": "string", "description": "what was actually observed — narration is not observation" }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["gate", "expected", "observed", "verdict"],
+      "properties": {
+        "gate": { "type": "string", "description": "named acceptance rule" },
+        "expected": { "type": "string", "description": "acceptance condition, stated before evaluation" },
+        "observed": { "type": "string", "description": "measured result" },
+        "verdict": { "enum": ["PASS", "FAIL", "INDETERMINATE"] }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["actor", "method", "timestamp"],
+      "properties": {
+        "actor": { "type": "string", "description": "human or agent making the observation" },
+        "method": { "type": "string", "description": "how the evidence was obtained" },
+        "timestamp": { "type": "string", "description": "ISO-8601" }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "required": ["from", "to", "status"],
+      "properties": {
+        "from": { "enum": ["CLAIMED", "BUILT", "MEASURED", "VERIFIED", "STAGED", "DEPLOYED", "LIVE-VERIFIED", "OFFERED", "SOLD", null] },
+        "to": { "enum": ["CLAIMED", "BUILT", "MEASURED", "VERIFIED", "STAGED", "DEPLOYED", "LIVE-VERIFIED", "OFFERED", "SOLD"] },
+        "status": { "enum": ["ACCEPTED", "REFUSED", "QUARANTINED"] },
+        "quarantine": {
+          "type": "object",
+          "required": ["reason", "last_valid_state"],
+          "description": "QUARANTINED is an orthogonal disposition, not a rung: nothing loses previously earned proof because its next gate failed.",
+          "properties": {
+            "reason": { "type": "string" },
+            "last_valid_state": { "type": "string" }
+          }
+        }
+      }
+    },
+    "commercial_disposition": {
+      "enum": ["RETAIN", "LICENSE", "SELL_PRODUCT", "SELL_SERVICE", "SHOWCASE", "NOT_FOR_SALE"],
+      "description": "Orthogonal axis. Trust state and commercial disposition are independent values; neither implies the other."
+    },
+    "references": {
+      "type": "object",
+      "description": "links to prior receipts this one builds on, e.g. measurement_receipt_ids, staged_receipt_id, deployment_receipt_id, live_verify_receipt_id, offer_receipt_id",
+      "additionalProperties": true
+    }
+  }
+}

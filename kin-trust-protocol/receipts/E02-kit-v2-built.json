@@ -1,0 +1,39 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-E02",
+  "subject": {
+    "kind": "artifact",
+    "id": "NyxSpecter4/NyxSpecter4:kin-v7-flag-redaction",
+    "version": "v2 (commit 947682d3)"
+  },
+  "claim": {
+    "statement": "The v2 redaction kit exists in source control at kin-v7-flag-redaction/ on the public profile repo, superseding v1.",
+    "falsifier": "folder absent from main, files missing, or bytes differ from the pushed payload",
+    "previous_state": "CLAIMED",
+    "requested_state": "BUILT"
+  },
+  "evidence": [
+    {
+      "type": "artifact",
+      "locator": "https://github.com/NyxSpecter4/NyxSpecter4/tree/main/kin-v7-flag-redaction",
+      "digest": "commit:947682d318ce9bebc6e88589f27f978b02d776d3",
+      "observed_result": "exactly 2 files: redact_v7_flag.py (8,519 B) + README.md (3,238 B); owner-seat verified 2026-10-26T19:53:18Z; post-push re-fetch byte-identical; kit never executed against the dataset (no MEASURED claim)"
+    }
+  ],
+  "evaluation": {
+    "gate": "built-needs-artifact",
+    "expected": "artifact locator + content digest, measured at the target",
+    "observed": "present and byte-verified; existence proven, execution and corpus transformation NOT claimed",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed; independently receipted by owner seat",
+    "method": "GitHub App API fetch, byte sizes and commit identity checked post-push",
+    "timestamp": "2026-10-26T20:22:29.940Z"
+  },
+  "transition": {
+    "from": "CLAIMED",
+    "to": "BUILT",
+    "status": "ACCEPTED"
+  }
+}

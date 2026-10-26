@@ -1,0 +1,32 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-R0",
+  "subject": {
+    "kind": "product",
+    "id": "NyxSpecter4/NyxSpecter4:kin-trust-protocol",
+    "version": "v1.0.0"
+  },
+  "claim": {
+    "statement": "A machine-checkable Kinetigor Trust Protocol — canonical receipt envelope (falsifier mandatory), fail-closed judge, and receipt chain — is published at kin-trust-protocol/ on NyxSpecter4/NyxSpecter4 main and passes its own gates, including refusing an unsupported STAGED-to-DEPLOYED promotion for the live HF estate.",
+    "falsifier": "The judge is missing from the repo, rejects a well-formed receipt, accepts an unsupported promotion, or the public serving path serves bytes different from the pushed bytes.",
+    "previous_state": null,
+    "requested_state": "CLAIMED"
+  },
+  "evidence": [],
+  "evaluation": {
+    "gate": "claim-registration",
+    "expected": "exact proposition + falsifier registered before any build",
+    "observed": "claim registered in this commit; PROOF-RUN-001 acceptance rules P1-P4 pre-registered in kin-trust-protocol/README.md before any execution",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed",
+    "method": "authored claim + pre-registered acceptance rules; no execution has occurred at registration time",
+    "timestamp": "2026-10-26T20:22:29.940Z"
+  },
+  "transition": {
+    "from": null,
+    "to": "CLAIMED",
+    "status": "ACCEPTED"
+  }
+}

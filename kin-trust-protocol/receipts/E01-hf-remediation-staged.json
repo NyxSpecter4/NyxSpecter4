@@ -1,0 +1,45 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "KTP-001-E01",
+  "subject": {
+    "kind": "repo",
+    "id": "NyxSpecter4/bountywarz:kin-deploy",
+    "version": "commits 9f1260af + 28852d6e + 188776b6"
+  },
+  "claim": {
+    "statement": "The HF estate remediation (adversarial-audit P0-P2 fixes) is verified and STAGED for release on bountywarz main: deploy scripts cover the full gateway + cards + manifest, staged cards are byte-synced to the live hand-written honesty cards, and the manifest carries no unbacked verification claim.",
+    "falsifier": "the staged files are absent from main, diverge from the live honesty cards, carry the removed zero-leak claim or deploy-trigger comment, or lack post-push byte verification.",
+    "previous_state": "VERIFIED",
+    "requested_state": "STAGED"
+  },
+  "evidence": [
+    {
+      "type": "commit",
+      "locator": "https://github.com/NyxSpecter4/bountywarz/commit/9f1260afa31a16125ce35ab022e0c49105e635d2",
+      "digest": "commit:9f1260afa31a16125ce35ab022e0c49105e635d2",
+      "observed_result": "exactly 9 files on bountywarz main (deploy_kin.py, direct-hf-push.py, space-card/model-card/gguf-card/dataset-card/v7-dataset-card/kinetigor-deprecated-card READMEs, model-card/gguf_manifest.json), owner-seat verified 2026-10-26T19:51:19Z; follow-ups 28852d6e (manifest note reword) and 188776b6 (v7 card honesty fix, 3639->4117 B)"
+    },
+    {
+      "type": "manifest",
+      "locator": "https://github.com/NyxSpecter4/bountywarz/tree/main/kin-deploy",
+      "digest": null,
+      "observed_result": "staged manifest verified this session: v7 + deprecated cards byte-identical to live honesty cards (drift audited, not clobbered); staged app.py 15,410 B clean (verification translator + refusal gate); quickstart filename = kin-sft-lora-Q4_K_M.gguf; zero_leak_verified key absent; no deploy-trigger comment"
+    }
+  ],
+  "evaluation": {
+    "gate": "staged-needs-commit-and-manifest",
+    "expected": "release-candidate commit identity AND staged manifest with drift disclosed",
+    "observed": "both present; re-fetched and byte-verified post-push; no live HF claim made",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe/GLM seat (agent), owner-directed; independently receipted by owner seat",
+    "method": "GitHub App API fetch + byte comparison against push payloads; owner-seat cross-check 2026-10-26T19:51-19:53Z",
+    "timestamp": "2026-10-26T20:22:29.940Z"
+  },
+  "transition": {
+    "from": "VERIFIED",
+    "to": "STAGED",
+    "status": "ACCEPTED"
+  }
+}
