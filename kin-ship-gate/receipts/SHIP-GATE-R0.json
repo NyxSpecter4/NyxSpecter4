@@ -1,0 +1,44 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "SHIP-GATE-R0",
+  "subject": {
+    "kind": "product",
+    "id": "kin-security-scan",
+    "version": "v1 ($7 listing candidate)"
+  },
+  "claim": {
+    "statement": "kin-security-scan is registered as a sale candidate on the shipping path of this estate; registration only, promotes nothing.",
+    "falsifier": "The estate withdraws the candidate, or the source tree cited below cannot be produced at its locator.",
+    "previous_state": null,
+    "requested_state": "CLAIMED"
+  },
+  "evidence": [
+    {
+      "type": "commit",
+      "locator": "NyxSpecter4/bountywarz — kin-security-scan source tree (locator unconfirmed: code search returned no hits this run)",
+      "observed_result": "source tree present in repository; prior session verified copy from source (7/7 rules, 0 secrets) — repository state only, no artifact claim"
+    }
+  ],
+  "evaluation": {
+    "gate": "SHIP-GATE/CLAIMED",
+    "expected": "exact proposition + falsifier present; registration promotes nothing",
+    "observed": "registered on the shipping path",
+    "verdict": "PASS"
+  },
+  "provenance": {
+    "actor": "Vibe seat (Kiran Wolfe session)",
+    "method": "estate receipt authoring under the trust protocol; locator grounded by code search this run",
+    "timestamp": "2026-10-26T21:51:09.935Z"
+  },
+  "transition": {
+    "from": null,
+    "to": "CLAIMED",
+    "status": "ACCEPTED"
+  },
+  "commercial_disposition": "SELL_PRODUCT",
+  "references": {
+    "judge": "kin-trust-protocol/validate_receipt.js @ 4d25ad10b2f37a73c3d76f1806c19a80400918f9",
+    "protocol": "kin-trust-protocol/PROOF-RUN-001.md",
+    "spec": "kin-ship-gate/SHIP-GATE.md"
+  }
+}

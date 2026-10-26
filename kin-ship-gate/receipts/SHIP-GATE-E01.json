@@ -1,0 +1,54 @@
+{
+  "schema": "kinetigor.trust-receipt/v1",
+  "receipt_id": "SHIP-GATE-E01",
+  "subject": {
+    "kind": "product",
+    "id": "kin-security-scan",
+    "version": "v1 ($7 listing candidate)"
+  },
+  "claim": {
+    "statement": "kin-security-scan.zip exists at the shipping dock as a non-zero artifact, ready to be packed into an OFFERED listing (BUILT).",
+    "falsifier": "The artifact is absent or zero bytes at the target locator — commits prove repository state only, not artifact presence.",
+    "previous_state": "CLAIMED",
+    "requested_state": "BUILT"
+  },
+  "evidence": [
+    {
+      "type": "commit",
+      "locator": "NyxSpecter4/bountywarz — kin-security-scan source tree (locator unconfirmed: code search returned no hits this run)",
+      "observed_result": "repository source verified in prior session (7/7 rules, 0 secrets) — repository state only"
+    },
+    {
+      "type": "observation",
+      "locator": "Shipping Dock — expected artifact: kin-security-scan.zip (delivery to Vibe seat, session 2026-10-26)",
+      "observed_result": "artifact never arrived; 0 bytes at this seat — dock RED"
+    }
+  ],
+  "evaluation": {
+    "gate": "SHIP-GATE/BUILT",
+    "expected": "evidence of type artifact — locator + digest or byte size, measured at the target",
+    "observed": "no artifact-type evidence exists; kin-security-scan.zip never arrived; 0 bytes observed at this seat",
+    "verdict": "FAIL"
+  },
+  "provenance": {
+    "actor": "Vibe seat (Kiran Wolfe session)",
+    "method": "direct observation at expected delivery location; dock inventory this session",
+    "timestamp": "2026-10-26T21:51:09.935Z"
+  },
+  "transition": {
+    "from": "CLAIMED",
+    "to": "BUILT",
+    "status": "QUARANTINED",
+    "quarantine": {
+      "reason": "BUILT gate unsatisfiable: artifact missing — kin-security-scan.zip never arrived at the dock (0 bytes at this seat). Unblock: artifact observed non-zero at the target, then re-receipt.",
+      "last_valid_state": "CLAIMED"
+    }
+  },
+  "commercial_disposition": "SELL_PRODUCT",
+  "references": {
+    "judge": "kin-trust-protocol/validate_receipt.js @ 4d25ad10b2f37a73c3d76f1806c19a80400918f9",
+    "registration": "SHIP-GATE-R0",
+    "protocol": "kin-trust-protocol/PROOF-RUN-001.md",
+    "spec": "kin-ship-gate/SHIP-GATE.md"
+  }
+}

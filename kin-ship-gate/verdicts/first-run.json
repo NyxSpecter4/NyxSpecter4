@@ -1,0 +1,25 @@
+{
+  "run_id": "SHIP-GATE-FIRST-RUN",
+  "recorded_at": "2026-10-26T21:51:09.935Z",
+  "judge": "kin-trust-protocol/validate_receipt.js @ 4d25ad10b2f37a73c3d76f1806c19a80400918f9",
+  "seat": "Vibe (Kiran Wolfe session)",
+  "note": "judge executed in-sandbox from the byte-fetched source (shebang stripped, CLI path inert via module guards); verdicts below are its verbatim output",
+  "verdicts": {
+    "SHIP-GATE-R0": {
+      "receipt_id": "SHIP-GATE-R0",
+      "receipt_valid": true,
+      "promotion": "ACCEPTED",
+      "disposition": null,
+      "reasons": []
+    },
+    "SHIP-GATE-E01": {
+      "receipt_id": "SHIP-GATE-E01",
+      "receipt_valid": false,
+      "promotion": "REFUSED",
+      "disposition": "QUARANTINED",
+      "reasons": [
+        "gate BUILT requires evidence of type artifact (artifact locator + digest or byte size, measured at the target) — present types: commit, observation"
+      ]
+    }
+  }
+}
