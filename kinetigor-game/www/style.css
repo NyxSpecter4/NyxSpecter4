@@ -1,0 +1,104 @@
+/* The Princetown Packet — Verifier's Run */
+:root {
+  --ink: #0d0f12;
+  --ink2: #14171c;
+  --panel: #191d23;
+  --line: #2a2f37;
+  --parchment: #e8e2d0;
+  --dim: #9a958a;
+  --gold: #c9a44a;
+  --cyan: #5fb3b3;
+  --pass: #7fb96a;
+  --fail: #c96a5f;
+  --refuse: #c9a44a;
+  --quarantine: #a98fc9;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ink); color: var(--parchment);
+  font-family: Georgia, "Times New Roman", serif; line-height: 1.55;
+}
+#app { max-width: 1060px; margin: 0 auto; padding: 0 20px 60px; }
+#topbar {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: 26px 0 14px; border-bottom: 1px solid var(--line);
+}
+.brand-title { font-size: 26px; letter-spacing: 3px; color: var(--gold); }
+.brand-sub { font-size: 12px; letter-spacing: 1.5px; color: var(--dim); margin-top: 4px; }
+#runmeta { text-align: right; font-family: var(--mono); font-size: 12px; color: var(--dim); }
+#runmeta b { color: var(--cyan); font-weight: normal; }
+#foot {
+  margin-top: 50px; padding-top: 14px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; font-size: 11px; color: var(--dim);
+}
+h1, h2, h3 { font-weight: normal; }
+h2 { color: var(--gold); letter-spacing: 1px; font-size: 20px; margin: 0 0 8px; }
+a { color: var(--cyan); }
+.dim { color: var(--dim); }
+.mono { font-family: var(--mono); font-size: 12px; }
+.panel {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 18px 20px; margin: 16px 0;
+}
+.callout {
+  border-left: 3px solid var(--gold); background: var(--ink2);
+  padding: 12px 16px; margin: 14px 0; font-size: 15px;
+}
+.callout .lab { color: var(--gold); font-size: 11px; letter-spacing: 2px; display: block; margin-bottom: 4px; }
+button {
+  font-family: var(--mono); font-size: 13px; cursor: pointer;
+  background: var(--ink2); color: var(--parchment);
+  border: 1px solid var(--gold); border-radius: 4px;
+  padding: 8px 16px; letter-spacing: 1px;
+}
+button:hover { background: #20242b; }
+button.ghost { border-color: var(--line); color: var(--dim); }
+button.primary { background: var(--gold); color: var(--ink); font-weight: bold; }
+input, textarea {
+  font-family: var(--mono); font-size: 13px; width: 100%;
+  background: var(--ink); color: var(--cyan);
+  border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px;
+}
+label.f { display: block; margin: 10px 0 4px; font-size: 12px; letter-spacing: 1px; color: var(--dim); font-family: var(--mono); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; color: var(--dim); font-weight: normal; font-size: 11px; letter-spacing: 1px; border-bottom: 1px solid var(--line); padding: 6px 8px; }
+td { border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+.hash { font-family: var(--mono); font-size: 11px; color: var(--cyan); word-break: break-all; }
+.badge { font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 3px; letter-spacing: 1px; }
+.v-PASS { background: rgba(127,185,106,.15); color: var(--pass); border: 1px solid var(--pass); }
+.v-FAIL { background: rgba(201,106,95,.15); color: var(--fail); border: 1px solid var(--fail); }
+.v-REFUSE { background: rgba(201,164,74,.15); color: var(--refuse); border: 1px solid var(--refuse); }
+.v-QUARANTINE { background: rgba(169,143,201,.15); color: var(--quarantine); border: 1px solid var(--quarantine); }
+.locked { opacity: .45; }
+.rail { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+.rail button { border-color: var(--line); color: var(--dim); }
+.rail button.active { border-color: var(--gold); color: var(--gold); }
+.rail button.solved { color: var(--pass); border-color: var(--pass); }
+.verdict-card { border: 1px solid var(--line); border-radius: 6px; background: var(--ink2); padding: 14px 16px; margin: 14px 0; }
+.verdict-card .big { font-size: 22px; letter-spacing: 3px; margin-right: 12px; }
+.receipt-line { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-top: 8px; }
+.receipt-line b { color: var(--cyan); font-weight: normal; word-break: break-all; }
+.stagegrid { display: grid; grid-template-columns: 1fr 340px; gap: 18px; }
+@media (max-width: 900px) { .stagegrid { grid-template-columns: 1fr; } }
+.small { font-size: 12px; }
+pre.canon {
+  font-family: var(--mono); font-size: 11px; color: var(--cyan);
+  background: var(--ink); border: 1px solid var(--line); border-radius: 4px;
+  padding: 10px; white-space: pre-wrap; word-break: break-all; margin: 8px 0;
+}
+.lensout { font-family: var(--mono); font-size: 12px; color: var(--parchment); margin-top: 8px; }
+.lensout .ok { color: var(--pass); }
+.lensout .no { color: var(--fail); }
+.checks { font-family: var(--mono); font-size: 11px; }
+.checks .ok { color: var(--pass); }
+.checks .no { color: var(--fail); }
+.home-hero { text-align: center; padding: 50px 20px 20px; }
+.home-hero .title { font-size: 40px; letter-spacing: 6px; color: var(--gold); }
+.home-hero .sub { color: var(--dim); letter-spacing: 2px; font-size: 13px; margin-top: 8px; }
+.home-hero p { max-width: 640px; margin: 22px auto; font-size: 16px; }
+.chainline { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--dim); }
+.chainline .arrow { color: var(--gold); }
+.chainitem { padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--ink); }
+details summary { cursor: pointer; color: var(--dim); font-family: var(--mono); font-size: 12px; }
+details pre { font-size: 11px; }

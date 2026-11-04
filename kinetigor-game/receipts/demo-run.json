@@ -1,0 +1,463 @@
+{
+  "schema": "kinetigor.game-run/1",
+  "run_id": "run-demo-0001",
+  "player": "Demo Verifier",
+  "exported_at": "2026-11-04T10:20:00Z",
+  "expected_final_receipt_id": "rcpt-8304c38eb53d5260",
+  "receipts": [
+    {
+      "claim": {
+        "falsifier": "Recomputing sha256 over the canonical record fields yields a digest different from the warrant entry.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The commission warrant record WRNT-2077-A17 carries an integrity digest that matches its own canonical bytes."
+      },
+      "evaluation": {
+        "expected": "submitted digest equals sha256 of the canonical WRNT-2077-A17 record fields",
+        "gate": "arrival-00/digest-recompute",
+        "observed": "submitted {\"digest\":\"c7b34e2301cbb22568cc082c293fdc2024683feafce6e950d3df8aca239190ff\",\"record_id\":\"WRNT-2077-A17\"}; recomputed digest of WRNT-2077-A17 matches its warrant entry",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/arrival-00/attempt/1",
+          "observed_result": "submitted {\"digest\":\"c7b34e2301cbb22568cc082c293fdc2024683feafce6e950d3df8aca239190ff\",\"record_id\":\"WRNT-2077-A17\"}; recomputed digest of WRNT-2077-A17 matches its warrant entry",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 1,
+        "chain": {
+          "entry_hash": "100acb7e5c701ac3cd72056e635512305e8525e501de678c882c65ad73d15e0c",
+          "prev_receipt": "GENESIS",
+          "seq": 0
+        },
+        "challenge_id": "arrival-00",
+        "reason_code": "S0_VERIFIED",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:11:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "arrival-00",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "ACCEPTED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-100acb7e5c701ac3"
+    },
+    {
+      "claim": {
+        "falsifier": "Recomputing the digest of PB-77-004's canonical content reproduces its recorded seal.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "Postbridge waybill PB-77-004 no longer matches the seal recorded for it."
+      },
+      "evaluation": {
+        "expected": "the submitted record is the unique waybill whose recomputed digest mismatches its recorded seal, and the submitted digest equals the recomputed one",
+        "gate": "postbridge-01/seal-mismatch",
+        "observed": "submitted {\"recomputed_digest\":\"4d2e8e89e5f2f265fd7a55619896d74252107a666e635de58ce131643d361e9a\",\"record_id\":\"PB-77-001\"}; PB-77-001 still matches its seal — the amendment is elsewhere",
+        "verdict": "FAIL"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/postbridge-01/attempt/1",
+          "observed_result": "submitted {\"recomputed_digest\":\"4d2e8e89e5f2f265fd7a55619896d74252107a666e635de58ce131643d361e9a\",\"record_id\":\"PB-77-001\"}; PB-77-001 still matches its seal — the amendment is elsewhere",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 1,
+        "chain": {
+          "entry_hash": "ac05d8a06e06981f7d53db83bcd588856447392cae35569550ca4a58131639b9",
+          "prev_receipt": "rcpt-100acb7e5c701ac3",
+          "seq": 1
+        },
+        "challenge_id": "postbridge-01",
+        "reason_code": "PB_SEAL_INTACT",
+        "run_id": "run-demo-0001",
+        "verdict": "FAIL"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:12:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "postbridge-01",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "REFUSED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-ac05d8a06e06981f"
+    },
+    {
+      "claim": {
+        "falsifier": "Recomputing the digest of PB-77-004's canonical content reproduces its recorded seal.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "Postbridge waybill PB-77-004 no longer matches the seal recorded for it."
+      },
+      "evaluation": {
+        "expected": "the submitted record is the unique waybill whose recomputed digest mismatches its recorded seal, and the submitted digest equals the recomputed one",
+        "gate": "postbridge-01/seal-mismatch",
+        "observed": "submitted {\"recomputed_digest\":\"096b80a1d2ea19be06143e109d740f316e2c8e79efea885843ce6e5475ace99a\",\"record_id\":\"PB-77-004\"}; PB-77-004 recomputes to 096b80a1d2ea19be… but its recorded seal commits the 09:40 original — amended after sealing",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/postbridge-01/attempt/2",
+          "observed_result": "submitted {\"recomputed_digest\":\"096b80a1d2ea19be06143e109d740f316e2c8e79efea885843ce6e5475ace99a\",\"record_id\":\"PB-77-004\"}; PB-77-004 recomputes to 096b80a1d2ea19be… but its recorded seal commits the 09:40 original — amended after sealing",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 2,
+        "chain": {
+          "entry_hash": "2709b5dd81b535f5d44e0c2095ba39bce02988b71764e6a5272f57e013b483d9",
+          "prev_receipt": "rcpt-ac05d8a06e06981f",
+          "seq": 2
+        },
+        "challenge_id": "postbridge-01",
+        "reason_code": "PB_AMENDMENT_FOUND",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:13:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "postbridge-01",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "ACCEPTED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-2709b5dd81b535f5"
+    },
+    {
+      "claim": {
+        "falsifier": "Walking the cache chain with the frozen contract places the first integrity failure elsewhere.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The depot cache chain first ceases to prove its claims at a specific receipt, identifiable by re-walking the chain under the frozen contract."
+      },
+      "evaluation": {
+        "expected": "first-bad receipt, reason code and last-valid receipt match a fresh validator walk of the cache chain",
+        "gate": "cache-02/chain-walk",
+        "observed": "submitted {\"first_bad_receipt_id\":\"rcpt-8f85251047c7a53c\",\"last_valid_receipt_id\":\"rcpt-42ff1d11a280b0b1\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-8f85251047c7a53c (INVALID_HASH, INVALID_HASH); last valid state: rcpt-42ff1d11a280b0b1",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/cache-02/attempt/1",
+          "observed_result": "submitted {\"first_bad_receipt_id\":\"rcpt-8f85251047c7a53c\",\"last_valid_receipt_id\":\"rcpt-42ff1d11a280b0b1\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-8f85251047c7a53c (INVALID_HASH, INVALID_HASH); last valid state: rcpt-42ff1d11a280b0b1",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 1,
+        "chain": {
+          "entry_hash": "83df2b56875e1a2eda3f6d2e1da63ff004a6371faf5af0f7e0beb61f00ddf319",
+          "prev_receipt": "rcpt-2709b5dd81b535f5",
+          "seq": 3
+        },
+        "challenge_id": "cache-02",
+        "reason_code": "CACHE_QUARANTINE_ACCEPTED",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:14:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "cache-02",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "ACCEPTED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-83df2b56875e1a2e"
+    },
+    {
+      "claim": {
+        "falsifier": "Walking the cache chain with the frozen contract places the first integrity failure elsewhere.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The depot cache chain first ceases to prove its claims at a specific receipt, identifiable by re-walking the chain under the frozen contract."
+      },
+      "evaluation": {
+        "expected": "first-bad receipt, reason code and last-valid receipt match a fresh validator walk of the cache chain",
+        "gate": "cache-02/chain-walk",
+        "observed": "identical canonical evidence re-submitted to cache-02 in this run (first judged at attempt 1) — an integrity condition, quarantined",
+        "verdict": "INDETERMINATE"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/cache-02/attempt/2",
+          "observed_result": "identical canonical evidence re-submitted to cache-02 in this run (first judged at attempt 1) — an integrity condition, quarantined",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 2,
+        "chain": {
+          "entry_hash": "c0af971436d19c4defcbab0190a82f23b15fcdb99656167b824eefb7df13a0d5",
+          "prev_receipt": "rcpt-83df2b56875e1a2e",
+          "seq": 4
+        },
+        "challenge_id": "cache-02",
+        "reason_code": "REPLAY_DETECTED",
+        "run_id": "run-demo-0001",
+        "verdict": "QUARANTINE"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:15:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "cache-02",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "quarantine": {
+          "last_valid_state": "MEASURED",
+          "reason": "REPLAY_DETECTED"
+        },
+        "status": "QUARANTINED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-c0af971436d19c4d"
+    },
+    {
+      "claim": {
+        "falsifier": "Walking each packet's chain and recomputing each content digest accepts a different packet, or more than one.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "Exactly one delivery packet is both internally chained and committed by its chain to the content it presents."
+      },
+      "evaluation": {
+        "expected": "the chosen packet's chain validates and its content digest matches the chain's commitment, and the cited authority receipt is this run's cache PASS receipt",
+        "gate": "delivery-03/provenance-carries",
+        "observed": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"packet_id\":\"PKT-A\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
+        "verdict": "FAIL"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/delivery-03/attempt/1",
+          "observed_result": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"packet_id\":\"PKT-A\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 1,
+        "chain": {
+          "entry_hash": "58abcadb065b4b8aa05f500cf40abe2dbb20aec8e52aa1dd8f6117037c4ab862",
+          "prev_receipt": "rcpt-c0af971436d19c4d",
+          "seq": 5
+        },
+        "challenge_id": "delivery-03",
+        "reason_code": "DLV_NO_AUTHORITY",
+        "run_id": "run-demo-0001",
+        "verdict": "FAIL"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:16:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "delivery-03",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "REFUSED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-58abcadb065b4b8a"
+    },
+    {
+      "claim": {
+        "falsifier": "Walking each packet's chain and recomputing each content digest accepts a different packet, or more than one.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "Exactly one delivery packet is both internally chained and committed by its chain to the content it presents."
+      },
+      "evaluation": {
+        "expected": "the chosen packet's chain validates and its content digest matches the chain's commitment, and the cited authority receipt is this run's cache PASS receipt",
+        "gate": "delivery-03/provenance-carries",
+        "observed": "submitted {\"authority_receipt\":\"rcpt-83df2b56875e1a2e\",\"packet_id\":\"PKT-A\"}; packet PKT-A accepted: chain valid and content committed by it (digest ee7c13aced20fb4f…)",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/delivery-03/attempt/2",
+          "observed_result": "submitted {\"authority_receipt\":\"rcpt-83df2b56875e1a2e\",\"packet_id\":\"PKT-A\"}; packet PKT-A accepted: chain valid and content committed by it (digest ee7c13aced20fb4f…)",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 2,
+        "chain": {
+          "entry_hash": "0958d200754dbed43de57a856b4872c8e15049b88519c766ce872cc8b8ae99ff",
+          "prev_receipt": "rcpt-58abcadb065b4b8a",
+          "seq": 6
+        },
+        "challenge_id": "delivery-03",
+        "reason_code": "DLV_PROVENANCE_ACCEPTED",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:17:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "delivery-03",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "ACCEPTED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-0958d200754dbed4"
+    },
+    {
+      "claim": {
+        "falsifier": "Running the five checks on the dispatch yields a different quarantine, liar set, or deliverable.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The apex dispatch contains exactly one record that survives all five checks, one that must be quarantined, and narrators whose claims the checks refute."
+      },
+      "evaluation": {
+        "expected": "quarantine, liar set and deliverable match a fresh five-check run over the dispatch records",
+        "gate": "apex-04/five-checks",
+        "observed": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-203\",\"DX-204\"],\"quarantine_record\":\"DX-202\"}; the liar set differs — a narrator's claim matters only when the checks refute it",
+        "verdict": "FAIL"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/1",
+          "observed_result": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-203\",\"DX-204\"],\"quarantine_record\":\"DX-202\"}; the liar set differs — a narrator's claim matters only when the checks refute it",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 1,
+        "chain": {
+          "entry_hash": "8f2625396ff1b519bddf5cbe12b03e7a651ffe060071452e86674044e6a7003f",
+          "prev_receipt": "rcpt-0958d200754dbed4",
+          "seq": 7
+        },
+        "challenge_id": "apex-04",
+        "reason_code": "APEX_WRONG_LIARS",
+        "run_id": "run-demo-0001",
+        "verdict": "FAIL"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:18:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "apex-04",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "REFUSED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-8f2625396ff1b519"
+    },
+    {
+      "claim": {
+        "falsifier": "Running the five checks on the dispatch yields a different quarantine, liar set, or deliverable.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The apex dispatch contains exactly one record that survives all five checks, one that must be quarantined, and narrators whose claims the checks refute."
+      },
+      "evaluation": {
+        "expected": "quarantine, liar set and deliverable match a fresh five-check run over the dispatch records",
+        "gate": "apex-04/five-checks",
+        "observed": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-204\",\"DX-205\"],\"quarantine_record\":\"DX-202\"}; dispatch sealed: quarantined DX-202; liars DX-204, DX-205; deliverable DX-201",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/2",
+          "observed_result": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-204\",\"DX-205\"],\"quarantine_record\":\"DX-202\"}; dispatch sealed: quarantined DX-202; liars DX-204, DX-205; deliverable DX-201",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 2,
+        "chain": {
+          "entry_hash": "8304c38eb53d52606912ee80cb18541b44efa6846fea9cda60ec8b0b8a06c27c",
+          "prev_receipt": "rcpt-8f2625396ff1b519",
+          "seq": 8
+        },
+        "challenge_id": "apex-04",
+        "reason_code": "APEX_SEALED",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:19:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "apex-04",
+        "kind": "challenge",
+        "version": "1.0.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "ACCEPTED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-8304c38eb53d5260"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "namespace": "kinetigor.game-run/1",
+  "note": "frozen contract vectors — see CONTRACT.md; canonical bytes are UTF-8 of the canon() string",
+  "sha256": [
+    {
+      "input": "abc",
+      "expected": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "source": "FIPS 180-4"
+    },
+    {
+      "input": "",
+      "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "FIPS 180-4"
+    },
+    {
+      "input": "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
+      "expected": "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1",
+      "source": "FIPS 180-4 (two-block)"
+    },
+    {
+      "input": "The quick brown fox jumps over the lazy dog",
+      "expected": "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592",
+      "source": "common cross-check"
+    }
+  ],
+  "canon": [
+    {
+      "name": "flat-unsorted",
+      "canonical": "{\"a\":1,\"b\":2,\"c\":\"x\"}",
+      "sha256": "02a7f52064b5dbd6880e6d5fed7b9f5b1117a5bd8d3529d7a1a217e1ebd899b1"
+    },
+    {
+      "name": "nested-unsorted",
+      "canonical": "{\"a\":null,\"m\":\"q\\\"uote\",\"z\":{\"a\":true,\"d\":[3,1,2]}}",
+      "sha256": "84e2fdfc848274dbedcf8813239511efe747bf749181d0fbd5e843718feb4de5"
+    },
+    {
+      "name": "unicode",
+      "canonical": "{\"arr\":[{},[],null],\"key\":\"café ☕\",\"n\":-0.5}",
+      "sha256": "360d16cfaa9f621a2ef1fb30bac49ccab6beaa46f56dad973b4c3392bb21f78a"
+    },
+    {
+      "name": "empty",
+      "canonical": "{}",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  ],
+  "chain": {
+    "run_id": "run-vector-0001",
+    "receipts": [
+      {
+        "receipt_id": "rcpt-6797037e0e587dc2",
+        "seq": 0,
+        "prev_receipt": "GENESIS",
+        "entry_hash": "6797037e0e587dc2802d2a575879bc207b775c13c52cd588c193a853bf405d23",
+        "canonical_payload": "{\"claim\":{\"falsifier\":\"vector falsifier vector-a\",\"previous_state\":\"MEASURED\",\"requested_state\":\"VERIFIED\",\"statement\":\"vector claim vector-a\"},\"evaluation\":{\"expected\":\"vector expected condition\",\"gate\":\"vector/gate\",\"observed\":\"vector observation a\",\"verdict\":\"PASS\"},\"evidence\":[{\"locator\":\"kinetigor-game://run/run-vector-0001/challenge/vector-a/attempt/1\",\"observed_result\":\"vector observation a\",\"type\":\"judge\"}],\"game\":{\"attempt\":1,\"chain\":{\"prev_receipt\":\"GENESIS\",\"seq\":0},\"challenge_id\":\"vector-a\",\"reason_code\":\"V_PASS\",\"run_id\":\"run-vector-0001\",\"verdict\":\"PASS\"},\"provenance\":{\"actor\":\"Vector Verifier\",\"method\":\"deterministic challenge judge (kinetigor.game-run/1)\",\"timestamp\":\"2026-11-04T00:00:01Z\"},\"schema\":\"kinetigor.trust-receipt/v1\",\"subject\":{\"id\":\"vector-a\",\"kind\":\"challenge\",\"version\":\"1.0.0\"},\"transition\":{\"from\":\"MEASURED\",\"status\":\"ACCEPTED\",\"to\":\"VERIFIED\"}}",
+        "verdict": "PASS"
+      },
+      {
+        "receipt_id": "rcpt-f19f4be4bdf63e13",
+        "seq": 1,
+        "prev_receipt": "rcpt-6797037e0e587dc2",
+        "entry_hash": "f19f4be4bdf63e13ab0fdfe0073c7a92fed9d36b0cf638af3e6c31b68c8e774e",
+        "canonical_payload": "{\"claim\":{\"falsifier\":\"vector falsifier vector-a\",\"previous_state\":\"MEASURED\",\"requested_state\":\"VERIFIED\",\"statement\":\"vector claim vector-a\"},\"evaluation\":{\"expected\":\"vector expected condition\",\"gate\":\"vector/gate\",\"observed\":\"vector observation b\",\"verdict\":\"FAIL\"},\"evidence\":[{\"locator\":\"kinetigor-game://run/run-vector-0001/challenge/vector-a/attempt/2\",\"observed_result\":\"vector observation b\",\"type\":\"judge\"}],\"game\":{\"attempt\":2,\"chain\":{\"prev_receipt\":\"rcpt-6797037e0e587dc2\",\"seq\":1},\"challenge_id\":\"vector-a\",\"reason_code\":\"V_FAIL\",\"run_id\":\"run-vector-0001\",\"verdict\":\"FAIL\"},\"provenance\":{\"actor\":\"Vector Verifier\",\"method\":\"deterministic challenge judge (kinetigor.game-run/1)\",\"timestamp\":\"2026-11-04T00:00:02Z\"},\"schema\":\"kinetigor.trust-receipt/v1\",\"subject\":{\"id\":\"vector-a\",\"kind\":\"challenge\",\"version\":\"1.0.0\"},\"transition\":{\"from\":\"MEASURED\",\"status\":\"REFUSED\",\"to\":\"VERIFIED\"}}",
+        "verdict": "FAIL"
+      },
+      {
+        "receipt_id": "rcpt-a090241d60d2c398",
+        "seq": 2,
+        "prev_receipt": "rcpt-f19f4be4bdf63e13",
+        "entry_hash": "a090241d60d2c398e4174cd3e44cd290b4d109d12498544789d9d56f0a389dde",
+        "canonical_payload": "{\"claim\":{\"falsifier\":\"vector falsifier vector-b\",\"previous_state\":\"MEASURED\",\"requested_state\":\"VERIFIED\",\"statement\":\"vector claim vector-b\"},\"evaluation\":{\"expected\":\"vector expected condition\",\"gate\":\"vector/gate\",\"observed\":\"vector observation c\",\"verdict\":\"INDETERMINATE\"},\"evidence\":[{\"locator\":\"kinetigor-game://run/run-vector-0001/challenge/vector-b/attempt/1\",\"observed_result\":\"vector observation c\",\"type\":\"judge\"}],\"game\":{\"attempt\":1,\"chain\":{\"prev_receipt\":\"rcpt-f19f4be4bdf63e13\",\"seq\":2},\"challenge_id\":\"vector-b\",\"reason_code\":\"V_REPLAY\",\"run_id\":\"run-vector-0001\",\"verdict\":\"QUARANTINE\"},\"provenance\":{\"actor\":\"Vector Verifier\",\"method\":\"deterministic challenge judge (kinetigor.game-run/1)\",\"timestamp\":\"2026-11-04T00:00:03Z\"},\"schema\":\"kinetigor.trust-receipt/v1\",\"subject\":{\"id\":\"vector-b\",\"kind\":\"challenge\",\"version\":\"1.0.0\"},\"transition\":{\"from\":\"MEASURED\",\"quarantine\":{\"last_valid_state\":\"MEASURED\",\"reason\":\"V_REPLAY\"},\"status\":\"QUARANTINED\",\"to\":\"VERIFIED\"}}",
+        "verdict": "QUARANTINE"
+      }
+    ],
+    "validation": {
+      "valid": true,
+      "completed": false,
+      "reasons": []
+    }
+  }
+}
