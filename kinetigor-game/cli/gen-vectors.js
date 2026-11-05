@@ -7,8 +7,8 @@
 "use strict";
 var path = require("path");
 var fs = require("fs");
-var T = require(path.join(__dirname, "..", "core", "trust.js"));
-var V = require(path.join(__dirname, "..", "core", "validator.js"));
+var T = require(path.join(__dirname, "..", "www", "core", "trust.js"));
+var V = require(path.join(__dirname, "..", "www", "core", "validator.js"));
 var crypto = require("crypto");
 
 function crossCheck(str, expectedHex) {

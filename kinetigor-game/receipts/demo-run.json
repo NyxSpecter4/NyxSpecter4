@@ -2,8 +2,8 @@
   "schema": "kinetigor.game-run/1",
   "run_id": "run-demo-0001",
   "player": "Demo Verifier",
-  "exported_at": "2026-11-04T10:20:00Z",
-  "expected_final_receipt_id": "rcpt-8304c38eb53d5260",
+  "exported_at": "2026-11-04T10:21:00Z",
+  "expected_final_receipt_id": "rcpt-72cf601aa579eca6",
   "receipts": [
     {
       "claim": {
@@ -165,20 +165,20 @@
       "evaluation": {
         "expected": "first-bad receipt, reason code and last-valid receipt match a fresh validator walk of the cache chain",
         "gate": "cache-02/chain-walk",
-        "observed": "submitted {\"first_bad_receipt_id\":\"rcpt-8f85251047c7a53c\",\"last_valid_receipt_id\":\"rcpt-42ff1d11a280b0b1\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-8f85251047c7a53c (INVALID_HASH, INVALID_HASH); last valid state: rcpt-42ff1d11a280b0b1",
+        "observed": "submitted {\"first_bad_receipt_id\":\"rcpt-07a1654bc256cc63\",\"last_valid_receipt_id\":\"rcpt-68feeb23e81f4a89\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-07a1654bc256cc63 (INVALID_HASH, INVALID_HASH); last valid state: rcpt-68feeb23e81f4a89",
         "verdict": "PASS"
       },
       "evidence": [
         {
           "locator": "kinetigor-game://run/run-demo-0001/challenge/cache-02/attempt/1",
-          "observed_result": "submitted {\"first_bad_receipt_id\":\"rcpt-8f85251047c7a53c\",\"last_valid_receipt_id\":\"rcpt-42ff1d11a280b0b1\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-8f85251047c7a53c (INVALID_HASH, INVALID_HASH); last valid state: rcpt-42ff1d11a280b0b1",
+          "observed_result": "submitted {\"first_bad_receipt_id\":\"rcpt-07a1654bc256cc63\",\"last_valid_receipt_id\":\"rcpt-68feeb23e81f4a89\",\"reason_code\":\"INVALID_HASH\"}; cache quarantined at rcpt-07a1654bc256cc63 (INVALID_HASH, INVALID_HASH); last valid state: rcpt-68feeb23e81f4a89",
           "type": "judge"
         }
       ],
       "game": {
         "attempt": 1,
         "chain": {
-          "entry_hash": "83df2b56875e1a2eda3f6d2e1da63ff004a6371faf5af0f7e0beb61f00ddf319",
+          "entry_hash": "ac0c3af5d869afb44aa31ed1320b33da31ee87965806137ca72c9ba10ec5b469",
           "prev_receipt": "rcpt-2709b5dd81b535f5",
           "seq": 3
         },
@@ -203,7 +203,7 @@
         "status": "ACCEPTED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-83df2b56875e1a2e"
+      "receipt_id": "rcpt-ac0c3af5d869afb4"
     },
     {
       "claim": {
@@ -228,8 +228,8 @@
       "game": {
         "attempt": 2,
         "chain": {
-          "entry_hash": "c0af971436d19c4defcbab0190a82f23b15fcdb99656167b824eefb7df13a0d5",
-          "prev_receipt": "rcpt-83df2b56875e1a2e",
+          "entry_hash": "47897dc4b6feeaed3717b81cf40750815f1b92facf033f7bff7c78f69dca6c5a",
+          "prev_receipt": "rcpt-ac0c3af5d869afb4",
           "seq": 4
         },
         "challenge_id": "cache-02",
@@ -257,33 +257,33 @@
         "status": "QUARANTINED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-c0af971436d19c4d"
+      "receipt_id": "rcpt-47897dc4b6feeaed"
     },
     {
       "claim": {
-        "falsifier": "Walking each packet's chain and recomputing each content digest accepts a different packet, or more than one.",
+        "falsifier": "Re-running the vendored relay kernel over both logs accepts both paths, or refuses them at different hops with different codes.",
         "previous_state": "MEASURED",
         "requested_state": "VERIFIED",
-        "statement": "Exactly one delivery packet is both internally chained and committed by its chain to the content it presents."
+        "statement": "Exactly one relay path preserves trustworthy state through transfer; the other is first refused at a specific hop with a frozen refusal code."
       },
       "evaluation": {
-        "expected": "the chosen packet's chain validates and its content digest matches the chain's commitment, and the cited authority receipt is this run's cache PASS receipt",
-        "gate": "delivery-03/provenance-carries",
-        "observed": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"packet_id\":\"PKT-A\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
+        "expected": "the chosen path survives a fresh kernel walk; the other path's first refusal hop and code match the walk; the cited authority receipt is this run's cache PASS receipt",
+        "gate": "delivery-03/relay-state-preserved",
+        "observed": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-R\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
         "verdict": "FAIL"
       },
       "evidence": [
         {
           "locator": "kinetigor-game://run/run-demo-0001/challenge/delivery-03/attempt/1",
-          "observed_result": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"packet_id\":\"PKT-A\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
+          "observed_result": "submitted {\"authority_receipt\":\"rcpt-0000000000000000\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-R\"}; no PASS receipt from the cache desk carries that id — the delivery desk cannot act without your own quarantine authority",
           "type": "judge"
         }
       ],
       "game": {
         "attempt": 1,
         "chain": {
-          "entry_hash": "58abcadb065b4b8aa05f500cf40abe2dbb20aec8e52aa1dd8f6117037c4ab862",
-          "prev_receipt": "rcpt-c0af971436d19c4d",
+          "entry_hash": "236e6f7c353c2f05a9d2646cd510c6f97a3a7d17ceeb4b94f29b37790e759d4e",
+          "prev_receipt": "rcpt-47897dc4b6feeaed",
           "seq": 5
         },
         "challenge_id": "delivery-03",
@@ -300,46 +300,46 @@
       "subject": {
         "id": "delivery-03",
         "kind": "challenge",
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "transition": {
         "from": "MEASURED",
         "status": "REFUSED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-58abcadb065b4b8a"
+      "receipt_id": "rcpt-236e6f7c353c2f05"
     },
     {
       "claim": {
-        "falsifier": "Walking each packet's chain and recomputing each content digest accepts a different packet, or more than one.",
+        "falsifier": "Re-running the vendored relay kernel over both logs accepts both paths, or refuses them at different hops with different codes.",
         "previous_state": "MEASURED",
         "requested_state": "VERIFIED",
-        "statement": "Exactly one delivery packet is both internally chained and committed by its chain to the content it presents."
+        "statement": "Exactly one relay path preserves trustworthy state through transfer; the other is first refused at a specific hop with a frozen refusal code."
       },
       "evaluation": {
-        "expected": "the chosen packet's chain validates and its content digest matches the chain's commitment, and the cited authority receipt is this run's cache PASS receipt",
-        "gate": "delivery-03/provenance-carries",
-        "observed": "submitted {\"authority_receipt\":\"rcpt-83df2b56875e1a2e\",\"packet_id\":\"PKT-A\"}; packet PKT-A accepted: chain valid and content committed by it (digest ee7c13aced20fb4f…)",
-        "verdict": "PASS"
+        "expected": "the chosen path survives a fresh kernel walk; the other path's first refusal hop and code match the walk; the cited authority receipt is this run's cache PASS receipt",
+        "gate": "delivery-03/relay-state-preserved",
+        "observed": "submitted {\"authority_receipt\":\"rcpt-ac0c3af5d869afb4\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-M\"}; the kernel walk refuses PATH-M — state was not preserved through that relay",
+        "verdict": "FAIL"
       },
       "evidence": [
         {
           "locator": "kinetigor-game://run/run-demo-0001/challenge/delivery-03/attempt/2",
-          "observed_result": "submitted {\"authority_receipt\":\"rcpt-83df2b56875e1a2e\",\"packet_id\":\"PKT-A\"}; packet PKT-A accepted: chain valid and content committed by it (digest ee7c13aced20fb4f…)",
+          "observed_result": "submitted {\"authority_receipt\":\"rcpt-ac0c3af5d869afb4\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-M\"}; the kernel walk refuses PATH-M — state was not preserved through that relay",
           "type": "judge"
         }
       ],
       "game": {
         "attempt": 2,
         "chain": {
-          "entry_hash": "0958d200754dbed43de57a856b4872c8e15049b88519c766ce872cc8b8ae99ff",
-          "prev_receipt": "rcpt-58abcadb065b4b8a",
+          "entry_hash": "7be3fd7f34d0e0f3e79a0a58a08ec03ddbf604edcea6881a309f8f55432a17cd",
+          "prev_receipt": "rcpt-236e6f7c353c2f05",
           "seq": 6
         },
         "challenge_id": "delivery-03",
-        "reason_code": "DLV_PROVENANCE_ACCEPTED",
+        "reason_code": "DLV_WRONG_PATH",
         "run_id": "run-demo-0001",
-        "verdict": "PASS"
+        "verdict": "FAIL"
       },
       "provenance": {
         "actor": "Demo Verifier",
@@ -350,46 +350,46 @@
       "subject": {
         "id": "delivery-03",
         "kind": "challenge",
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "transition": {
         "from": "MEASURED",
-        "status": "ACCEPTED",
+        "status": "REFUSED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-0958d200754dbed4"
+      "receipt_id": "rcpt-7be3fd7f34d0e0f3"
     },
     {
       "claim": {
-        "falsifier": "Running the five checks on the dispatch yields a different quarantine, liar set, or deliverable.",
+        "falsifier": "Re-running the vendored relay kernel over both logs accepts both paths, or refuses them at different hops with different codes.",
         "previous_state": "MEASURED",
         "requested_state": "VERIFIED",
-        "statement": "The apex dispatch contains exactly one record that survives all five checks, one that must be quarantined, and narrators whose claims the checks refute."
+        "statement": "Exactly one relay path preserves trustworthy state through transfer; the other is first refused at a specific hop with a frozen refusal code."
       },
       "evaluation": {
-        "expected": "quarantine, liar set and deliverable match a fresh five-check run over the dispatch records",
-        "gate": "apex-04/five-checks",
-        "observed": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-203\",\"DX-204\"],\"quarantine_record\":\"DX-202\"}; the liar set differs — a narrator's claim matters only when the checks refute it",
-        "verdict": "FAIL"
+        "expected": "the chosen path survives a fresh kernel walk; the other path's first refusal hop and code match the walk; the cited authority receipt is this run's cache PASS receipt",
+        "gate": "delivery-03/relay-state-preserved",
+        "observed": "submitted {\"authority_receipt\":\"rcpt-ac0c3af5d869afb4\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-R\"}; PATH-R survives the relay: seal continuous, four stamps, bank ledger row commits. PATH-M was first refused at hop 2 (REFUSED_PROVENANCE).",
+        "verdict": "PASS"
       },
       "evidence": [
         {
-          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/1",
-          "observed_result": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-203\",\"DX-204\"],\"quarantine_record\":\"DX-202\"}; the liar set differs — a narrator's claim matters only when the checks refute it",
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/delivery-03/attempt/3",
+          "observed_result": "submitted {\"authority_receipt\":\"rcpt-ac0c3af5d869afb4\",\"first_refusal_code\":\"REFUSED_PROVENANCE\",\"first_refused_hop\":\"2\",\"relay_path\":\"PATH-R\"}; PATH-R survives the relay: seal continuous, four stamps, bank ledger row commits. PATH-M was first refused at hop 2 (REFUSED_PROVENANCE).",
           "type": "judge"
         }
       ],
       "game": {
-        "attempt": 1,
+        "attempt": 3,
         "chain": {
-          "entry_hash": "8f2625396ff1b519bddf5cbe12b03e7a651ffe060071452e86674044e6a7003f",
-          "prev_receipt": "rcpt-0958d200754dbed4",
+          "entry_hash": "b3dabd5d624bd88b13eb4a60c2dbe441c4c17b2250a0b8cac6f2c6e40d57ba9d",
+          "prev_receipt": "rcpt-7be3fd7f34d0e0f3",
           "seq": 7
         },
-        "challenge_id": "apex-04",
-        "reason_code": "APEX_WRONG_LIARS",
+        "challenge_id": "delivery-03",
+        "reason_code": "DLV_RELAY_ACCEPTED",
         "run_id": "run-demo-0001",
-        "verdict": "FAIL"
+        "verdict": "PASS"
       },
       "provenance": {
         "actor": "Demo Verifier",
@@ -398,48 +398,48 @@
       },
       "schema": "kinetigor.trust-receipt/v1",
       "subject": {
-        "id": "apex-04",
+        "id": "delivery-03",
         "kind": "challenge",
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "transition": {
         "from": "MEASURED",
-        "status": "REFUSED",
+        "status": "ACCEPTED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-8f2625396ff1b519"
+      "receipt_id": "rcpt-b3dabd5d624bd88b"
     },
     {
       "claim": {
-        "falsifier": "Running the five checks on the dispatch yields a different quarantine, liar set, or deliverable.",
+        "falsifier": "Resolving the same board against the same chain yields a different lane set, evidence set, or quarantine.",
         "previous_state": "MEASURED",
         "requested_state": "VERIFIED",
-        "statement": "The apex dispatch contains exactly one record that survives all five checks, one that must be quarantined, and narrators whose claims the checks refute."
+        "statement": "The board's ruling is fully determined by record state: lane authority resolves against the run's PASS receipts, and the five checks quarantine exactly one dispatch record."
       },
       "evaluation": {
-        "expected": "quarantine, liar set and deliverable match a fresh five-check run over the dispatch records",
-        "gate": "apex-04/five-checks",
-        "observed": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-204\",\"DX-205\"],\"quarantine_record\":\"DX-202\"}; dispatch sealed: quarantined DX-202; liars DX-204, DX-205; deliverable DX-201",
-        "verdict": "PASS"
+        "expected": "lane set, actionable evidence set and quarantine match resolution against this run's own receipts and a fresh five-check run over the dispatch rack",
+        "gate": "apex-04/board-ruling",
+        "observed": "submitted {\"actionable_cards\":[\"EC-301\",\"EC-303\",\"EC-304\",\"EC-307\"],\"go_lanes\":[\"LANE-A\",\"LANE-B\",\"LANE-C\",\"LANE-D\",\"LANE-E\"],\"quarantine_record\":\"DX-202\"}; lane set differs — lanes advance only on authority resolved against your own PASS receipts, whatever the cards claim",
+        "verdict": "FAIL"
       },
       "evidence": [
         {
-          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/2",
-          "observed_result": "submitted {\"deliverable_record\":\"DX-201\",\"liar_records\":[\"DX-204\",\"DX-205\"],\"quarantine_record\":\"DX-202\"}; dispatch sealed: quarantined DX-202; liars DX-204, DX-205; deliverable DX-201",
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/1",
+          "observed_result": "submitted {\"actionable_cards\":[\"EC-301\",\"EC-303\",\"EC-304\",\"EC-307\"],\"go_lanes\":[\"LANE-A\",\"LANE-B\",\"LANE-C\",\"LANE-D\",\"LANE-E\"],\"quarantine_record\":\"DX-202\"}; lane set differs — lanes advance only on authority resolved against your own PASS receipts, whatever the cards claim",
           "type": "judge"
         }
       ],
       "game": {
-        "attempt": 2,
+        "attempt": 1,
         "chain": {
-          "entry_hash": "8304c38eb53d52606912ee80cb18541b44efa6846fea9cda60ec8b0b8a06c27c",
-          "prev_receipt": "rcpt-8f2625396ff1b519",
+          "entry_hash": "b41c11300173839d8aaa7c0732b5bb1138646b3de100d171fdf0fcb70eb7b350",
+          "prev_receipt": "rcpt-b3dabd5d624bd88b",
           "seq": 8
         },
         "challenge_id": "apex-04",
-        "reason_code": "APEX_SEALED",
+        "reason_code": "APEX_WRONG_LANES",
         "run_id": "run-demo-0001",
-        "verdict": "PASS"
+        "verdict": "FAIL"
       },
       "provenance": {
         "actor": "Demo Verifier",
@@ -450,14 +450,64 @@
       "subject": {
         "id": "apex-04",
         "kind": "challenge",
-        "version": "1.0.0"
+        "version": "1.1.0"
+      },
+      "transition": {
+        "from": "MEASURED",
+        "status": "REFUSED",
+        "to": "VERIFIED"
+      },
+      "receipt_id": "rcpt-b41c11300173839d"
+    },
+    {
+      "claim": {
+        "falsifier": "Resolving the same board against the same chain yields a different lane set, evidence set, or quarantine.",
+        "previous_state": "MEASURED",
+        "requested_state": "VERIFIED",
+        "statement": "The board's ruling is fully determined by record state: lane authority resolves against the run's PASS receipts, and the five checks quarantine exactly one dispatch record."
+      },
+      "evaluation": {
+        "expected": "lane set, actionable evidence set and quarantine match resolution against this run's own receipts and a fresh five-check run over the dispatch rack",
+        "gate": "apex-04/board-ruling",
+        "observed": "submitted {\"actionable_cards\":[\"EC-301\",\"EC-303\",\"EC-304\",\"EC-307\"],\"go_lanes\":[\"LANE-A\",\"LANE-B\",\"LANE-C\",\"LANE-D\"],\"quarantine_record\":\"DX-202\"}; GO — dispatch released. Lanes LANE-A, LANE-B, LANE-C, LANE-D advance on chain authority; actionable evidence EC-301, EC-303, EC-304, EC-307; DX-202 quarantined by the five checks (nonce reuse).",
+        "verdict": "PASS"
+      },
+      "evidence": [
+        {
+          "locator": "kinetigor-game://run/run-demo-0001/challenge/apex-04/attempt/2",
+          "observed_result": "submitted {\"actionable_cards\":[\"EC-301\",\"EC-303\",\"EC-304\",\"EC-307\"],\"go_lanes\":[\"LANE-A\",\"LANE-B\",\"LANE-C\",\"LANE-D\"],\"quarantine_record\":\"DX-202\"}; GO — dispatch released. Lanes LANE-A, LANE-B, LANE-C, LANE-D advance on chain authority; actionable evidence EC-301, EC-303, EC-304, EC-307; DX-202 quarantined by the five checks (nonce reuse).",
+          "type": "judge"
+        }
+      ],
+      "game": {
+        "attempt": 2,
+        "chain": {
+          "entry_hash": "72cf601aa579eca6c4598c48ff49700edefaa1308421769cd56c3a7ff1813f6a",
+          "prev_receipt": "rcpt-b41c11300173839d",
+          "seq": 9
+        },
+        "challenge_id": "apex-04",
+        "reason_code": "APEX_GO",
+        "run_id": "run-demo-0001",
+        "verdict": "PASS"
+      },
+      "provenance": {
+        "actor": "Demo Verifier",
+        "method": "deterministic challenge judge (kinetigor.game-run/1)",
+        "timestamp": "2026-11-04T10:20:00Z"
+      },
+      "schema": "kinetigor.trust-receipt/v1",
+      "subject": {
+        "id": "apex-04",
+        "kind": "challenge",
+        "version": "1.1.0"
       },
       "transition": {
         "from": "MEASURED",
         "status": "ACCEPTED",
         "to": "VERIFIED"
       },
-      "receipt_id": "rcpt-8304c38eb53d5260"
+      "receipt_id": "rcpt-72cf601aa579eca6"
     }
   ]
 }

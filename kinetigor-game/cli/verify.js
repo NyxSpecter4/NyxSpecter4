@@ -24,8 +24,8 @@
 
 var fs = require("fs");
 var path = require("path");
-var V = require(path.join(__dirname, "..", "core", "validator.js"));
-var estateJudge = require(path.join(__dirname, "..", "vendor", "validate_receipt.js")).judge;
+var V = require(path.join(__dirname, "..", "www", "core", "validator.js"));
+var estateJudge = require(path.join(__dirname, "..", "www", "vendor", "validate_receipt.js")).judge;
 
 function main() {
   var args = process.argv.slice(2);

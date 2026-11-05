@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1620">
+<title>Princetown run verifier — standalone</title>
+<meta name="description" content="Standalone verifier for The Princetown Packet exported runs. Runs entirely on this page; no network, no accounts.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="topbar">
+  <div id="top-title">Princetown Run Verifier</div>
+</header>
+<main class="screen">
+  <div class="card">
+    <h2>Verify an exported run</h2>
+    <p>This page contains the same frozen validators the game uses. It does not trust the run file's own claims about itself: it re-walks every receipt, re-hashes every entry, and audits each receipt against the estate v1 judge. It works offline. Nothing leaves this page.</p>
+    <p class="field"><label for="file">Open a run file (princetown-run-*.json)</label><input type="file" id="file" accept="application/json,.json"></p>
+    <p class="field"><label for="paste">…or paste the run JSON</label><textarea id="paste" rows="4" style="width:100%;min-height:96px;border-radius:12px;border:1px solid #2a3f55;background:#0f1926;color:#e8eef4;font-size:16px;padding:10px"></textarea></p>
+    <p><button class="btn primary" id="go" style="width:100%">VERIFY</button></p>
+  </div>
+  <div id="report"></div>
+</main>
+<script src="core/trust.js"></script>
+<script src="core/kernel.js"></script>
+<script src="core/validator.js"></script>
+<script>
+"use strict";
+function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+function verdict(v) { return "<span class=\"badge " + esc(v) + "\">" + esc(v) + "</span>"; }
+function report(runFile) {
+  var V = KIN.Validator;
+  var rep = V.validateRun(runFile);
+  var html = "<div class=\"card verdict-card " + (rep.valid ? "pass" : "fail") + "\">";
+  html += "<h2>" + (rep.valid ? "CHAIN VALID" : "CHAIN INVALID") + (rep.completed ? " · COURSE COMPLETE" : "") + "</h2>";
+  html += "<p class=\"mono\">schema_ok: " + rep.schema_ok + " · receipts: " + runFile.receipts.length + " · run: " + esc(runFile.run_id) + "</p>";
+  if (rep.run_codes.length) html += "<p class=\"mono\">run codes: " + esc(rep.run_codes.join(", ")) + "</p>";
+  if (rep.reasons.length) {
+    html += "<p>Refusals (the walk stops at nothing — every break is listed):</p>";
+    rep.reasons.forEach(function (r) {
+      html += "<p class=\"mono\">seq " + r.seq + " (" + esc(r.receipt_id) + "): " + esc(r.codes.join(", ")) + "</p>";
+    });
+  }
+  html += "</div><div class=\"card\"><h3>Every receipt, re-judged</h3>";
+  runFile.receipts.forEach(function (r) {
+    html += "<p>" + verdict(r.game.verdict) + " <span class=\"mono\">" + esc(r.receipt_id) + "</span> <span class=\"small\">" + esc(r.game.challenge_id) + " · " + esc(r.game.reason_code) + "</span></p>";
+  });
+  html += "<p class=\"small\">For the estate v1 judge audit, run: node cli/verify.js &lt;run-file&gt; --v1-audit</p></div>";
+  document.getElementById("report").innerHTML = html;
+}
+function tryParse(text) {
+  try { return JSON.parse(text); } catch (e) { return null; }
+}
+document.getElementById("go").addEventListener("click", function () {
+  var f = document.getElementById("file").files[0];
+  if (f) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var runFile = tryParse(reader.result);
+      if (!runFile) { document.getElementById("report").innerHTML = "<div class=\"card verdict-card fail\"><h2>NOT VALID JSON</h2></div>"; return; }
+      report(runFile);
+    };
+    reader.readAsText(f);
+  } else {
+    var runFile = tryParse(document.getElementById("paste").value);
+    if (!runFile) { document.getElementById("report").innerHTML = "<div class=\"card verdict-card fail\"><h2>NOT VALID JSON</h2></div>"; return; }
+    report(runFile);
+  }
+});
+</script>
+</body>
+</html>

@@ -2,34 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1620">
 <title>The Princetown Packet — Verifier's Run</title>
+<meta name="description" content="A mobile CTF course: five stations, real validators, a receipt for every judgment.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Princetown">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-  <header id="topbar">
-    <div class="brand">
-      <div class="brand-title">THE PRINCETOWN PACKET</div>
-      <div class="brand-sub">VERIFIER'S RUN · a Competitive Cyber Rally course element · Course 001</div>
-    </div>
-    <div id="runmeta"></div>
-  </header>
-
-  <main id="main"></main>
-
-  <footer id="foot">
-    <span>MOORPOST organizes · the Rally competes · the Packet remembers.</span>
-    <span class="dim">receipts are kinetigor.trust-receipt/v1 · chain kinetigor.game-run/1</span>
-  </footer>
-</div>
-
-<script src="../core/trust.js"></script>
-<script src="../core/kernel.js"></script>
-<script src="../core/validator.js"></script>
-<script src="../core/challenges.js"></script>
-<script src="../core/game.js"></script>
+<header id="topbar">
+  <button id="btn-home" class="icon-btn" aria-label="Course map">&#9776;</button>
+  <div id="top-title">The Princetown Packet</div>
+  <button id="btn-chain" class="icon-btn" aria-label="Receipt chain">&#128279;</button>
+</header>
+<main id="screen" class="screen"></main>
+<nav id="actionbar" class="actionbar" aria-label="Actions"></nav>
+<div id="toast" class="toast" hidden></div>
+<script src="vendor/moorpost-kernel.js"></script>
+<script src="core/trust.js"></script>
+<script src="core/kernel.js"></script>
+<script src="core/validator.js"></script>
+<script src="core/challenges.js"></script>
+<script src="core/game.js"></script>
 <script src="fixtures.js"></script>
 <script src="ui.js"></script>
+<script>
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
 </body>
 </html>

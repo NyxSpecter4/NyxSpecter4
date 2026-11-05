@@ -18,14 +18,14 @@
 
 var path = require("path");
 var fs = require("fs");
-var T = require(path.join(__dirname, "..", "core", "trust.js"));
-var K = require(path.join(__dirname, "..", "core", "kernel.js"));
-var V = require(path.join(__dirname, "..", "core", "validator.js"));
-var C = require(path.join(__dirname, "..", "core", "challenges.js"));
-var Game = require(path.join(__dirname, "..", "core", "game.js"));
+var T = require(path.join(__dirname, "..", "www", "core", "trust.js"));
+var K = require(path.join(__dirname, "..", "www", "core", "kernel.js"));
+var V = require(path.join(__dirname, "..", "www", "core", "validator.js"));
+var C = require(path.join(__dirname, "..", "www", "core", "challenges.js"));
+var Game = require(path.join(__dirname, "..", "www", "core", "game.js"));
 require(path.join(__dirname, "..", "www", "fixtures.js")); /* KIN.FIXTURES */
 var F = globalThis.KIN.FIXTURES;
-var estateJudge = require(path.join(__dirname, "..", "vendor", "validate_receipt.js")).judge;
+var estateJudge = require(path.join(__dirname, "..", "www", "vendor", "validate_receipt.js")).judge;
 var FIXTURES_SOURCE = fs.readFileSync(path.join(__dirname, "..", "www", "fixtures.js"), "utf8");
 
 var passed = 0, failed = 0, failures = [];
@@ -180,7 +180,10 @@ mut("m13 run_id mismatch (rehashed forgery)", function (ch) {
 section("L4 INTEGRATION");
 var demo = require(path.join(__dirname, "..", "cli", "demo-run.js")).playDemo();
 var runFile = demo.runFile;
-ok(runFile.receipts.length === 9, "demo run produced 9 receipts");
+ok(runFile.receipts.length === 10, "demo run produced 10 receipts");
+/* same inputs -> identical receipt ids: replay the whole demo, byte-exact */
+var demo2 = require(path.join(__dirname, "..", "cli", "demo-run.js")).playDemo();
+eq(runFile, demo2.runFile, "same inputs give identical receipts and chain (determinism)");
 var rep = V.validateRun(runFile);
 eq(rep.valid, true, "demo run chain VALID");
 eq(rep.completed, true, "demo run COMPLETED");
@@ -253,19 +256,25 @@ section("L5 GAME FLOW");
     last_valid_receipt_id: F.cache_chain.chain[bad.seq - 1].receipt_id
   }, { clock: clock });
   var cachePass = state.receipts.filter(function (r) { return r.game.challenge_id === "cache-02" && r.game.verdict === "PASS"; })[0];
-  Game.submit(state, "delivery-03", { packet_id: "PKT-A", authority_receipt: cachePass.receipt_id }, { clock: clock });
-  Game.submit(state, "delivery-03", { packet_id: "PKT-C", authority_receipt: cachePass.receipt_id }, { clock: clock }); /* FAIL: content is not provenance */
-  var last = Game.submit(state, "apex-04", { quarantine_record: "DX-202", liar_records: ["DX-204", "DX-205"], deliverable_record: "DX-201" }, { clock: clock });
+  /* wrong relay path fails; correct relay evidence passes */
+  Game.submit(state, "delivery-03", { relay_path: "PATH-M", first_refused_hop: "2", first_refusal_code: "REFUSED_PROVENANCE", authority_receipt: cachePass.receipt_id }, { clock: clock });
+  Game.submit(state, "delivery-03", { relay_path: "PATH-R", first_refused_hop: "2", first_refusal_code: "REFUSED_PROVENANCE", authority_receipt: cachePass.receipt_id }, { clock: clock });
+  /* wrong lanes fail; the ledger-supported ruling passes */
+  var truth = C._internals.boardTruth({ fixtures: F, receipts: state.receipts });
+  Game.submit(state, "apex-04", { go_lanes: ["LANE-A", "LANE-B", "LANE-C", "LANE-D", "LANE-F"], actionable_cards: truth.actionable_cards, quarantine_record: "DX-202" }, { clock: clock });
+  var last = Game.submit(state, "apex-04", { go_lanes: truth.go_lanes, actionable_cards: truth.actionable_cards, quarantine_record: "DX-202" }, { clock: clock });
   ok(last.completed, "flow run completed");
   var exp = Game.exportRun(state, { clock: clock });
   var rep2 = V.validateRun(exp);
   eq(rep2.valid, true, "flow run chain VALID");
   eq(rep2.completed, true, "flow run COMPLETED");
-  /* export determinism under a fixed clock */
+  /* export determinism: timestamps are metadata, never identity — the receipt
+   * chain must be identical under any export clock */
   var exp2 = Game.exportRun(state, { clock: function () { return "2026-11-04T12:00:10Z"; } });
-  eq(exp, exp2, "export deterministic under fixed clock");
+  eq(exp.receipts, exp2.receipts, "export receipts deterministic under any clock");
+  ok(exp.exported_at !== exp2.exported_at, "export timestamp is metadata, not identity");
   /* every judgment minted exactly one chained receipt */
-  ok(state.receipts.length === 9, "flow run minted 9 receipts for 9 judgments");
+  ok(state.receipts.length === 10, "flow run minted 10 receipts for 10 judgments");
 })();
 
 /* ---------- L6 FIXTURES ---------- */
@@ -278,14 +287,78 @@ section("L6 FIXTURES");
   var rep = V.validateChain(fixtures.cache_chain.chain, {});
   var bad = rep.reasons.filter(function (r) { return r.codes.indexOf("INVALID_HASH") !== -1; });
   ok(bad.length === 3 && bad[0].seq === 3, "cache fixture: first break at seq 3, cascade 3 receipts");
-  var acceptable = fixtures.delivery_packets.filter(function (p) {
-    return V.validateChain(p.chain, {}).valid && canonDigest(p.content) === p.committed_digest;
-  });
-  eq(acceptable.map(function (p) { return p.packet_id; }), ["PKT-A"], "exactly PKT-A acceptable");
+  /* relay paths: the vendored estate kernel decides both logs */
+  var walkR = C._internals.walkRelayPath(fixtures.relay_paths[0]);
+  var walkM = C._internals.walkRelayPath(fixtures.relay_paths[1]);
+  ok(walkR.all_accepted === true, "relay fixture: PATH-R survives the kernel walk");
+  eq(walkR.walked.map(function (h) { return h.recomputed_code; }), ["ACCEPTED", "ACCEPTED", "ACCEPTED", "ACCEPTED"], "relay fixture: PATH-R four accepts");
+  ok(walkM.all_accepted === false, "relay fixture: PATH-M does not survive");
+  eq(walkM.first_refusal.hop, 2, "relay fixture: PATH-M first refusal at hop 2");
+  eq(walkM.first_refusal.code, "REFUSED_PROVENANCE", "relay fixture: PATH-M first refusal code");
+  eq(walkM.walked[3].recomputed_code, "REFUSED_REPLAY", "relay fixture: PATH-M hop 4 replay caught");
+  eq(walkM.walked.map(function (h) { return h.claimed_code; }), ["ACCEPTED", "ACCEPTED", "ACCEPTED", "ACCEPTED"], "relay fixture: PATH-M log narrates four accepts (kernel disagrees)");
+  /* the generator's walk and the judge's walk agree on every hop */
+  var genWalkR = gen.walkRelayPath(fixtures.relay_paths[0]);
+  var genWalkM = gen.walkRelayPath(fixtures.relay_paths[1]);
+  eq(genWalkR.walked.map(function (h) { return h.recomputed_code; }), walkR.walked.map(function (h) { return h.recomputed_code; }), "relay walks agree (generator vs judge)");
+  eq(genWalkM.walked.map(function (h) { return h.recomputed_code; }), walkM.walked.map(function (h) { return h.recomputed_code; }), "relay walks agree (generator vs judge, dead path)");
+  /* mission board: 19 records, five checks on the dispatch rack */
+  var board = fixtures.mission_board;
+  eq(board.lanes.length + board.evidence_cards.length + fixtures.apex_bundle.records.length, 19, "board fixture: 19 records on the board");
   var res = K.verifyRecords(fixtures.apex_bundle);
   eq(res.filter(function (r) { return r.verdict === "QUARANTINE"; }).map(function (r) { return r.record_id; }), ["DX-202"], "apex quarantine = DX-202");
   eq(res.filter(function (r) { return r.verdict === "PASS"; }).map(function (r) { return r.record_id; }), ["DX-201"], "apex deliverable = DX-201");
   eq(res.filter(function (r) { return r.claimed_status === "PASS" && r.verdict === "FAIL"; }).map(function (r) { return r.record_id; }).sort(), ["DX-204", "DX-205"], "apex liars = [DX-204, DX-205]");
+})();
+
+/* ---------- L7 KERNEL, NARRATOR-INDEPENDENCE & PURITY ---------- */
+section("L7 KERNEL, NARRATOR-INDEPENDENCE & PURITY");
+(function () {
+  /* vendored estate kernel is alive and its self-check holds */
+  var MK = require(path.join(__dirname, "..", "www", "vendor", "moorpost-kernel.js"));
+  var sc = MK.selfCheck();
+  ok(sc.ok === true, "vendored MOORPOST kernel selfCheck ok");
+  eq(sc.codes, ["REFUSED_IDENTITY", "REFUSED_PROVENANCE", "REFUSED_SEQUENCE", "REFUSED_REPLAY", "REFUSED_RACE", "ACCEPTED"], "kernel refusal codes frozen");
+  /* missing falsifier refuses (kernel-level) */
+  var noFals = MK.issuePacket({ origin: "A", destination: "B", owner: "courier", sequence: 1, event_id: "E", station_id: "A", claim: "c", falsifier: "", issued_at: "t" });
+  eq(MK.validatePacket(noFals, { requireFalsifier: true }).code, "REFUSED_NO_FALSIFIER", "kernel refuses packet without falsifier");
+  /* narrator changes do not change verdicts: flip every narration on every
+   * artifact and re-run the whole demo through the judges */
+  var F2 = clone(F);
+  F2.relay_paths.forEach(function (p) {
+    p.entries.forEach(function (e) { e.claimed_code = e.claimed_code === "ACCEPTED" ? "REFUSED_STALE" : "ACCEPTED"; });
+  });
+  F2.mission_board.lanes.forEach(function (l) { l.claimed_go = !l.claimed_go; });
+  F2.mission_board.evidence_cards.forEach(function (c) { c.claimed = c.claimed === "verified" ? "refuted" : "verified"; });
+  F2.apex_bundle.records.forEach(function (r) { r.claimed_status = r.claimed_status === "PASS" ? "FAIL" : "PASS"; });
+  var demoN;
+  var savedFixtures = globalThis.KIN.FIXTURES;
+  try {
+    globalThis.KIN.FIXTURES = F2; /* every narration flipped; bytes and citations unchanged */
+    demoN = require(path.join(__dirname, "..", "cli", "demo-run.js")).playDemo();
+  } finally {
+    globalThis.KIN.FIXTURES = savedFixtures;
+  }
+  eq(demoN.runFile.receipts.map(function (r) { return r.receipt_id; }),
+     runFile.receipts.map(function (r) { return r.receipt_id; }),
+     "narration flips leave receipt ids identical (narrator-independence)");
+  eq(demoN.runFile.receipts.map(function (r) { return r.game.verdict; }),
+     runFile.receipts.map(function (r) { return r.game.verdict; }),
+     "narration flips leave verdicts identical (narrator-independence)");
+  /* network purity: no cloud calls, tracking, or secrets in game code.
+   * sw.js is allowed exactly one pattern: fetch(event.request) for the
+   * offline cache (same-origin assets only). */
+  var purityFiles = ["www/core/trust.js", "www/core/kernel.js", "www/core/validator.js", "www/core/challenges.js", "www/core/game.js", "www/vendor/validate_receipt.js", "www/vendor/moorpost-kernel.js", "www/fixtures.js", "www/ui.js", "www/index.html"];
+  purityFiles.forEach(function (rel) {
+    var src = fs.readFileSync(path.join(__dirname, "..", rel), "utf8");
+    ok(!/fetch\s*\(/.test(src), "purity " + rel + ": no fetch");
+    ok(!/XMLHttpRequest|WebSocket|EventSource|sendBeacon/.test(src), "purity " + rel + ": no XHR/WebSocket/SSE/beacon");
+    ok(!/google-analytics|gtag|segment\.io|mixpanel|sentry/.test(src.toLowerCase()), "purity " + rel + ": no analytics");
+  });
+  /* localStorage persistence only (no accounts, no cloud) */
+  var uiSrc = fs.readFileSync(path.join(__dirname, "..", "www", "ui.js"), "utf8");
+  ok(uiSrc.indexOf("localStorage") !== -1, "persistence uses localStorage only");
+  ok(!/navigator\.credentials|OAuth|password/i.test(uiSrc), "no accounts in client code");
 })();
 
 /* ---------- summary ---------- */

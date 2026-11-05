@@ -1,164 +1,161 @@
+#!/usr/bin/env node
 /*
- * cli/ui-smoke.js — HEADLESS UI SMOKE TEST (development instrument only)
- * Not part of the shipped verification path; not referenced by the README
- * stranger-path. It executes www/ui.js against a minimal fake DOM and drives
- * a full playthrough by invoking the real click handlers, proving the UI
- * logic path BEGIN -> 5 stations -> finish -> export works without a browser.
- * Browser *rendering* remains UNINSTRUMENTED until a human plays it.
+ * kinetigor-game — UI SMOKE (headless; no browser in this environment)
+ *   node cli/ui-smoke.js
  *
- * Run: node cli/ui-smoke.js
+ * The DOM rendering itself can only be proven in a real browser
+ * (rendering label: UNINSTRUMENTED here). What CAN be proven headlessly:
+ * the exact module load order the phone will use, the pure UI layer
+ * (forge bench ops, export, flag derivation, persistence), and the
+ * offline-cache asset manifest completeness.
+ *
+ * Exit 0 only if every smoke check holds.
  */
 "use strict";
-const path = require("path");
-const ROOT = path.resolve(__dirname, "..");
 
-/* ---------- minimal fake DOM (just enough for ui.js) ---------- */
-function text(t) { return { __text: t }; }
-function node(tag) {
-  return {
-    tagName: tag, children: [], attrs: {}, value: "", textContent: "",
-    onclick: null, href: "", download: "",
-    setAttribute(k, v) { this.attrs[k] = String(v); },
-    appendChild(c) { this.children.push(c); return c; },
-    click() { if (this.onclick) this.onclick(); },
-    /* innerHTML="" clears children; other assignments ignored */
-    set innerHTML(v) { if (v === "") this.children = []; },
-    get innerHTML() { return ""; }
+var path = require("path");
+var fs = require("fs");
+var ROOT = path.join(__dirname, "..");
+var passed = 0, failed = 0, failures = [];
+function ok(cond, label) { if (cond) passed++; else { failed++; failures.push(label); } }
+function section(name) { console.log("\n== " + name + " =="); }
+
+/* ---------- 1. browser load order, in Node ---------- */
+section("S1 BROWSER LOAD ORDER");
+require(path.join(ROOT, "www", "vendor", "moorpost-kernel.js"));       /* 1st: estate relay kernel */
+require(path.join(ROOT, "www", "core", "trust.js"));                    /* 2nd: contract */
+require(path.join(ROOT, "www", "core", "kernel.js"));                   /* 3rd: five checks */
+require(path.join(ROOT, "www", "core", "validator.js"));                 /* 4th: independent validator */
+require(path.join(ROOT, "www", "core", "challenges.js"));               /* 5th: judges (needs MoorpostKernel) */
+require(path.join(ROOT, "www", "core", "game.js"));                     /* 6th: run state machine */
+require(path.join(ROOT, "www", "fixtures.js"));                   /* 7th: artifacts */
+var UI = require(path.join(ROOT, "www", "ui.js"));              /* 8th: UI (pure layer; no document in Node) */
+ok(!!UI && !!UI.FORGE, "ui.js loads headlessly with pure layer exposed");
+var G = globalThis.KIN.Game, V = globalThis.KIN.Validator, T = globalThis.KIN.Trust, C = globalThis.KIN.Challenges;
+
+/* ---------- 2. forge bench: the player's forgeries get refused ---------- */
+section("S2 FORGE BENCH (validator refuses every op)");
+var F = globalThis.KIN.FIXTURES;
+var baseline = UI.walkChain(F.cache_chain.chain);
+ok(baseline.reasons.length === 3 && baseline.reasons[0].seq === 3, "bench baseline: cache breaks at seq 3");
+function codesOf(chain) {
+  var rep = UI.walkChain(chain);
+  var all = rep.run_codes.slice();
+  rep.reasons.forEach(function (r) { all = all.concat(r.codes); });
+  return all.join(",");
+}
+var ops = [
+  ["alter", "INVALID_HASH"],
+  ["remove", "BROKEN_PREDECESSOR"],
+  ["reorder", "REORDERED_CHAIN"],
+  ["replay", "DUPLICATE_RECEIPT"],
+  ["badPrev", "BROKEN_PREDECESSOR"]
+];
+var pristine = JSON.stringify(F.cache_chain.chain);
+ops.forEach(function (spec) {
+  var res = UI.FORGE[spec[0]](F.cache_chain.chain);
+  var codes = codesOf(res.chain);
+  ok(codes.indexOf(spec[1]) !== -1, "forge " + spec[0] + " -> refused with " + spec[1] + " (got: " + codes + ")");
+});
+/* forge ops never mutate the pristine fixture */
+ok(JSON.stringify(F.cache_chain.chain) === pristine, "forge ops leave the fixture untouched (pure copies)");
+
+/* ---------- 3. export + flag derivation ---------- */
+section("S3 EXPORT & FLAG");
+var demo = require(path.join(ROOT, "cli", "demo-run.js")).playDemo();
+(function () {
+  var runFile = { schema: "kinetigor.game-run/1", run_id: "run-demo-0001", player: "Demo Verifier", exported_at: "2026-11-04T00:00:00Z", expected_final_receipt_id: demo.runFile.receipts[demo.runFile.receipts.length - 1].receipt_id, receipts: demo.runFile.receipts };
+  var rep = V.validateRun(runFile);
+  ok(rep.valid === true && rep.completed === true, "exported run passes the independent validator");
+})();
+
+/* flag derivation from a completed demo state */
+var flag = UI.deriveFlag({ receipts: demo.runFile.receipts });
+var last = demo.runFile.receipts[demo.runFile.receipts.length - 1];
+ok(flag === "RALLY{" + last.game.chain.entry_hash.slice(0, 32) + "}", "flag derived from apex PASS entry hash");
+ok(UI.deriveFlag({ receipts: demo.runFile.receipts.slice(0, 5) }) === null, "no flag without the apex PASS receipt");
+
+/* buildExportFile on a UI-shaped state */
+(function () {
+  var uiState = G.newRun("UI Verifier", { run_id: "run-ui-0001" });
+  /* solve stage 0 through the real flow so export has content */
+  var rec = C._internals.warrantRecords[0];
+  G.submit(uiState, "arrival-00", { record_id: rec.record_id, digest: T.sha256hex(T.canon(rec.fields)) });
+  var ex2 = UI.buildExportFile(uiState);
+  var parsed = JSON.parse(ex2.body);
+  ok(parsed.schema === "kinetigor.game-run/1" && parsed.receipts.length === 1, "buildExportFile emits a valid run file");
+  ok(/^princetown-run-run-ui-0001\.json$/.test(ex2.name), "export filename derived from run id");
+})();
+
+/* ---------- 4. persistence round-trip (the phone's save/restore) ---------- */
+section("S4 PERSISTENCE");
+(function () {
+  var mem = {};
+  var shim = {
+    getItem: function (k) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; },
+    setItem: function (k, v) { mem[k] = String(v); },
+    removeItem: function (k) { delete mem[k]; }
   };
+  UI._setStorage(shim);
+  var uiState = G.newRun("Persist Verifier", { run_id: "run-persist-0001" });
+  var rec = C._internals.warrantRecords[0];
+  G.submit(uiState, "arrival-00", { record_id: rec.record_id, digest: T.sha256hex(T.canon(rec.fields)) });
+  ok(UI.save(uiState, { "postbridge-01": { record_id: "PB-77-004" } }, { station: "postbridge-01" }), "save writes to storage");
+  var loaded = UI.loadSave();
+  ok(loaded !== null && loaded.state.run_id === "run-persist-0001", "save round-trips the run state");
+  ok(loaded.state.receipts.length === 1 && loaded.state.receipts[0].game.verdict === "PASS", "restored receipts intact");
+  ok(loaded.drafts["postbridge-01"].record_id === "PB-77-004", "restored evidence drafts intact");
+  /* continue playing on the RESTORED state — the run must survive close/reopen */
+  var wb = C._internals.waybills;
+  var res = G.submit(loaded.state, "postbridge-01", { record_id: "PB-77-004", recomputed_digest: T.sha256hex(T.canon(wb[3].fields)) });
+  ok(res.verdict === "PASS" && res.unlocked.indexOf("cache-02") !== -1, "restored run continues: next station solved and unlocked");
+  var runFile = G.exportRun(loaded.state);
+  ok(V.validateRun(runFile).valid === true, "chain after save/restore/continue still validates");
+  UI.clearSave();
+  ok(UI.loadSave() === null, "clearSave removes the run");
+  UI._setStorage(null);
+})();
+
+/* ---------- 5. offline asset manifest completeness ---------- */
+section("S5 OFFLINE ASSETS");
+(function () {
+  var sw = fs.readFileSync(path.join(ROOT, "www", "sw.js"), "utf8");
+  var html = fs.readFileSync(path.join(ROOT, "www", "index.html"), "utf8");
+  var m = sw.match(/var ASSETS = \[([\s\S]*?)\];/);
+  ok(!!m, "sw.js declares an asset list");
+  var assets = m[1].match(/"\.\/[^"]+"/g).map(function (s) { return s.slice(3, -1); });
+  /* every script/style/manifest/icon the game actually references must be cached */
+  var refs = [];
+  var re = /(?:src|href)="([^"]+)"/g, mm;
+  while ((mm = re.exec(html))) refs.push(mm[1]);
+  refs.push("sw.js");
+  refs.push("verify.html");
+  /* each referenced file must be in the SW cache list (sw.js registers itself) */
+  var missing2 = refs.filter(function (r) { return r !== "sw.js" && assets.indexOf(r) === -1; });
+  ok(missing2.length === 0, "sw.js caches every referenced asset (missing: " + JSON.stringify(missing2) + ")");
+  assets.forEach(function (a) {
+    ok(fs.existsSync(path.join(ROOT, "www", a)) || a === "./", "cached asset exists on disk: " + a);
+  });
+  /* sw.js fetch usage is confined to the offline cache pattern */
+  var fetchUses = sw.match(/fetch\(/g) || [];
+  ok(fetchUses.length === 1 && /fetch\(e\.request\)/.test(sw), "sw.js fetch is only the offline cache pattern");
+  /* manifest icons exist */
+  var manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "www", "manifest.webmanifest"), "utf8"));
+  manifest.icons.forEach(function (icon) {
+    ok(fs.existsSync(path.join(ROOT, "www", icon.src)), "manifest icon exists: " + icon.src);
+  });
+  /* verify.html standalone: stranger validator loads the frozen validator, no network */
+  var vh = fs.readFileSync(path.join(ROOT, "www", "verify.html"), "utf8");
+  ok(vh.indexOf("core/validator.js") !== -1, "verify.html uses the frozen validator");
+  ok(!/fetch\s*\(|XMLHttpRequest|WebSocket/.test(vh), "verify.html makes no network calls");
+})();
+
+/* ---------- summary ---------- */
+console.log("\n================================");
+console.log("PASS: " + passed + "   FAIL: " + failed);
+if (failed) {
+  failures.forEach(function (f) { console.log("  - " + f); });
+  process.exit(1);
 }
-const byId = {};
-const documentStub = {
-  createElement: (t) => node(t),
-  createTextNode: (t) => text(t),
-  getElementById: (id) => (byId[id] = byId[id] || node("div#" + id))
-};
-const storage = {};
-const localStorageStub = {
-  getItem: (k) => (k in storage ? storage[k] : null),
-  setItem: (k, v) => { storage[k] = String(v); },
-  removeItem: (k) => { delete storage[k]; }
-};
-const downloads = [];
-global.window = global;
-global.document = documentStub;
-global.localStorage = localStorageStub;
-global.confirm = () => true;
-global.Blob = class { constructor(parts) { this.parts = parts; } };
-global.URL = { createObjectURL: () => "blob:stub", revokeObjectURL() {} };
-
-/* load core + fixtures + ui exactly as index.html orders them */
-["core/trust.js", "core/kernel.js", "core/validator.js", "core/challenges.js",
- "core/game.js", "www/fixtures.js"].forEach(f => require(path.join(ROOT, f)));
-
-const T = global.KIN.Trust, C = global.KIN.Challenges, G = global.KIN.Game,
-      V = global.KIN.Validator, K = global.KIN.Kernel, F = global.KIN.FIXTURES;
-
-let pass = 0, fail = 0;
-function ok(cond, name) { if (cond) { pass++; console.log("  ok  " + name); } else { fail++; console.log("  FAIL " + name); } }
-
-/* ---------- traversal helpers over the fake tree ---------- */
-function walk(n, fn) { fn(n); (n.children || []).forEach(c => walk(c, fn)); }
-function findAll(pred) {
-  const out = [];
-  walk(byId["main"], n => { if (n !== byId["main"] && pred(n)) out.push(n); });
-  return out;
-}
-const buttonsWith = (cls) => findAll(n => n.tagName === "button" && (n.attrs["class"] || "").includes(cls));
-const hasText = (n, s) => (n.__text || "").includes(s) || n.children.some(c => hasText(c, s));
-function textOf(pred) { const b = findAll(pred)[0]; return b ? JSON.stringify(flatten(b)) : ""; }
-function flatten(n) { const parts = []; walk(n, c => { if (c.__text) parts.push(c.__text); }); return parts.join(" "); }
-function stageInputs() { return findAll(n => n.tagName === "input" && n.attrs.id !== "playername"); }
-
-/* ---------- drive the game ---------- */
-require(path.join(ROOT, "www/ui.js")); /* boots: state=null -> renderHome */
-
-console.log("== UI SMOKE: home renders ==");
-ok(byId["main"].children.length > 0, "home rendered");
-ok(textOf(n => n.tagName === "button" && flatten(n).includes("BEGIN THE RUN")) !== "", "begin button present");
-
-const nameInput = findAll(n => n.tagName === "input" && n.attrs.id === "playername")[0];
-nameInput.value = "Smoke Verifier";
-buttonsWith("primary")[0].click();
-
-console.log("== UI SMOKE: stage 0 renders ==");
-ok(findAll(n => n.tagName === "h2").some(h => flatten(h).includes("ARRIVAL")), "arrival desk open");
-ok(buttonsWith("ghost").length > 0, "lens buttons present");
-
-/* stage 0: honest FAIL first, then correct PASS */
-let ins = stageInputs();
-ins[0].value = "WRNT-2077-A19"; ins[1].value = T.sha256hex(T.canon({ clearance: "C-3", circuit: "Princetown Packet", name: "Rally Standing Orders" }));
-buttonsWith("primary")[0].click();
-let failText = flatten(byId["main"]);
-ok(failText.includes("S0_WRONG_RECORD") || failText.includes("FAIL"), "wrong record -> FAIL verdict shown");
-
-ins = stageInputs();
-ins[0].value = "WRNT-2077-A17";
-ins[1].value = T.sha256hex(T.canon({ clearance: "C-2", circuit: "Princetown Packet", name: "the arriving Verifier" }));
-buttonsWith("primary")[0].click();
-ok(flatten(byId["main"]).includes("S0_VERIFIED"), "correct digest -> PASS verdict shown");
-
-/* click every ghost (lens) button on every later desk to prove lens paths run */
-function clickAllLenses() { buttonsWith("ghost").forEach(b => { if (flatten(b).includes("LENS")) b.click(); }); }
-
-console.log("== UI SMOKE: stage 1 ==");
-clickAllLenses();
-ins = stageInputs();
-ins[0].value = "PB-77-004";
-ins[1].value = T.sha256hex(T.canon(C._internals.waybills[3].fields));
-buttonsWith("primary")[0].click();
-ok(flatten(byId["main"]).includes("PB_AMENDMENT_FOUND"), "postbridge amendment -> PASS");
-
-console.log("== UI SMOKE: stage 2 (lens = real validator walk) ==");
-clickAllLenses();
-const rep = V.validateChain(F.cache_chain.chain, {});
-const firstBad = rep.reasons[0];
-const cacheBadId = F.cache_chain.chain[firstBad.seq].receipt_id;
-const cacheLastValidId = F.cache_chain.chain[firstBad.seq - 1].receipt_id;
-ins = stageInputs();
-ins[0].value = cacheBadId; ins[1].value = "INVALID_HASH"; ins[2].value = cacheLastValidId;
-buttonsWith("primary")[0].click();
-ok(flatten(byId["main"]).includes("CACHE_QUARANTINE_ORDERED") || flatten(byId["main"]).includes("PASS"), "cache quarantine accepted");
-
-console.log("== UI SMOKE: stage 3 ==");
-clickAllLenses();
-const st = JSON.parse(localStorageStub.getItem("kinetigor-game-run-1"));
-const authReceipt = st.receipts.filter(r => r.game.challenge_id === "cache-02" && r.game.verdict === "PASS").pop().receipt_id;
-ins = stageInputs();
-ins[0].value = "PKT-A"; ins[1].value = authReceipt;
-buttonsWith("primary")[0].click();
-ok(flatten(byId["main"]).includes("DLV_PROVENANCE_ACCEPTED"), "provenance packet accepted");
-
-console.log("== UI SMOKE: stage 4 ==");
-clickAllLenses();
-const results = K.verifyRecords(F.apex_bundle);
-const quarantine = results.filter(r => r.verdict === "QUARANTINE").map(r => r.record_id)[0];
-const liars = results.filter(r => r.claimed_status === "PASS" && r.verdict === "FAIL").map(r => r.record_id);
-const deliverable = results.filter(r => r.verdict === "PASS").map(r => r.record_id)[0];
-ins = stageInputs();
-ins[0].value = quarantine; ins[1].value = JSON.stringify(liars); ins[2].value = deliverable;
-buttonsWith("primary")[0].click();
-ok(flatten(byId["main"]).includes("APEX_SEALED"), "apex sealed");
-
-console.log("== UI SMOKE: finish + export ==");
-const doneText = flatten(byId["main"]);
-ok(doneText.includes("RUN COMPLETE"), "finish screen shown");
-ok(doneText.includes("node cli/verify.js"), "independent verification instructions shown");
-
-/* replay-detection via the UI path (resubmit identical evidence) */
-const exportBtn = buttonsWith("primary").filter(b => flatten(b).includes("EXPORT"))[0];
-ok(!!exportBtn, "export button present");
-
-/* exported run from localStorage must validate under the frozen contract */
-const state = JSON.parse(localStorageStub.getItem("kinetigor-game-run-1"));
-const exp = G.exportRun(state);
-const vrep = V.validateRun(exp);
-ok(vrep.valid === true, "exported UI run validates (valid=" + vrep.valid + ")");
-ok(vrep.completed === true, "exported UI run completed");
-ok(state.receipts.length >= 6, "receipts recorded: " + state.receipts.length);
-
-/* honest-failure replay test: resubmit identical evidence to a solved desk */
-const solved = state.solved;
-console.log("== RESULT ==");
-console.log("PASS: " + pass + "  FAIL: " + fail);
-if (fail > 0) process.exit(1);
-console.log("UI SMOKE GREEN — UI logic path executed headless; browser rendering still UNINSTRUMENTED (needs human play).");
+console.log("UI SMOKE GREEN (DOM rendering UNINSTRUMENTED — no browser in this environment)");
+process.exit(0);

@@ -16,18 +16,17 @@
 var path = require("path");
 var fs = require("fs");
 require(path.join(__dirname, "..", "www", "fixtures.js")); /* sets KIN.FIXTURES */
-var Game = require(path.join(__dirname, "..", "core", "game.js"));
-var T = require(path.join(__dirname, "..", "core", "trust.js"));
+var Game = require(path.join(__dirname, "..", "www", "core", "game.js"));
+var T = require(path.join(__dirname, "..", "www", "core", "trust.js"));
 
-var CLOCK = (function () {
+function playDemo() {
+  /* deterministic clock: reset per play so every playDemo() reproduces
+   * byte-identical receipts (timestamps never enter receipt identity). */
   var t = 0;
-  return function () {
+  var CLOCK = function () {
     t += 1;
     return "2026-11-04T10:" + String(10 + t).padStart(2, "0") + ":00Z";
   };
-})();
-
-function playDemo() {
   var state = Game.newRun("Demo Verifier", { run_id: "run-demo-0001" });
   var log = [];
 
@@ -47,18 +46,18 @@ function playDemo() {
   }
 
   /* STAGE 0 — correct immediately */
-  var w = require(path.join(__dirname, "..", "core", "challenges.js"))._internals.warrantRecords[0];
+  var w = require(path.join(__dirname, "..", "www", "core", "challenges.js"))._internals.warrantRecords[0];
   step("arrival-00", { record_id: w.record_id, digest: T.sha256hex(T.canon(w.fields)) });
 
   /* STAGE 1 — one wrong guess, then the right waybill */
-  var wb = require(path.join(__dirname, "..", "core", "challenges.js"))._internals.waybills;
+  var wb = require(path.join(__dirname, "..", "www", "core", "challenges.js"))._internals.waybills;
   step("postbridge-01", { record_id: "PB-77-001", recomputed_digest: T.sha256hex(T.canon(wb[0].fields)) });
   var amended = wb[3];
   step("postbridge-01", { record_id: amended.record_id, recomputed_digest: T.sha256hex(T.canon(amended.fields)) });
 
   /* STAGE 2 — walk the cache chain, file the quarantine order */
   var F = globalThis.KIN.FIXTURES;
-  var V = require(path.join(__dirname, "..", "core", "validator.js"));
+  var V = require(path.join(__dirname, "..", "www", "core", "validator.js"));
   var rep = V.validateChain(F.cache_chain.chain, {});
   var bad = rep.reasons.filter(function (r) { return r.codes.indexOf("INVALID_HASH") !== -1; })[0];
   var lastValid = F.cache_chain.chain[bad.seq - 1].receipt_id;
@@ -76,16 +75,23 @@ function playDemo() {
     last_valid_receipt_id: lastValid
   });
 
-  /* STAGE 3 — no authority first, then the packet whose provenance carries */
-  step("delivery-03", { packet_id: "PKT-A", authority_receipt: "rcpt-0000000000000000" });
-  step("delivery-03", { packet_id: "PKT-A", authority_receipt: authority });
+  /* STAGE 3 — no authority first, then the wrong path, then the survivor */
+  step("delivery-03", { relay_path: "PATH-R", first_refused_hop: "2", first_refusal_code: "REFUSED_PROVENANCE", authority_receipt: "rcpt-0000000000000000" });
+  step("delivery-03", { relay_path: "PATH-M", first_refused_hop: "2", first_refusal_code: "REFUSED_PROVENANCE", authority_receipt: authority });
+  step("delivery-03", { relay_path: "PATH-R", first_refused_hop: "2", first_refusal_code: "REFUSED_PROVENANCE", authority_receipt: authority });
 
-  /* STAGE 4 — wrong liar set, then the decisive evidence */
-  step("apex-04", { quarantine_record: "DX-202", liar_records: ["DX-203", "DX-204"], deliverable_record: "DX-201" });
+  /* STAGE 4 — a rash ruling first, then the one the ledger supports */
+  var C = require(path.join(__dirname, "..", "www", "core", "challenges.js"));
+  var truth = C._internals.boardTruth({ fixtures: globalThis.KIN.FIXTURES, receipts: state.receipts });
+  step("apex-04", {
+    go_lanes: ["LANE-A", "LANE-B", "LANE-C", "LANE-D", "LANE-E"],
+    actionable_cards: truth.actionable_cards,
+    quarantine_record: "DX-202"
+  });
   var apex = step("apex-04", {
-    quarantine_record: "DX-202",
-    liar_records: ["DX-204", "DX-205"],
-    deliverable_record: "DX-201"
+    go_lanes: truth.go_lanes,
+    actionable_cards: truth.actionable_cards,
+    quarantine_record: truth.quarantine_record
   });
 
   if (!apex.completed) throw new Error("demo: run did not complete");
