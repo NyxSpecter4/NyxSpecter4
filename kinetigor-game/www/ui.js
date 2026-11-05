@@ -212,10 +212,16 @@
     var scr = doc.getElementById("screen");
     scr.textContent = "";
     var saved = loadSave();
+    scr.appendChild(el("div", { "class": "hero" }, [
+      el("img", { src: "hero.jpg", alt: "A detective on a foggy harbor quay at night holding a glowing sealed letter" }),
+      el("div", { "class": "hero-text" }, [
+        el("h2", { text: "The Princetown Packet" }),
+        el("p", { text: "Someone in Princetown is forging the mail. Find the fakes before they get through." })
+      ])
+    ]));
     scr.appendChild(el("div", { "class": "card" }, [
-      el("h2", { text: "The Princetown Packet — Verifier's Run" }),
-      el("p", { text: "A Competitive Cyber Rally course. MOORPOST organizes; the Princetown Packet is Course 001. Five stations, one phone, real validators. Every judgment is receipted — including yours." }),
-      el("p", { "class": "small", text: "The interface never decides anything. It shows you what the frozen validators compute. Bring receipts, not stories." })
+      el("p", { text: "You're a detective in a harbor town where every letter carries a digital seal. Five cases, about 30 minutes. Check the seals, catch the tampered records, and stop the forged delivery." }),
+      el("p", { "class": "small", text: "No guessing: every answer is checked by real code, and you finish with a receipt that proves what you solved. No account, no ads." })
     ]));
     if (saved && saved.state && saved.state.receipts.length > 0 && !saved.state.solved["apex-04"]) {
       actionBar([
@@ -249,7 +255,7 @@
     var st = ui.state;
     var completed = C.ORDER.every(function (id) { return !!st.solved[id]; });
     scr.appendChild(el("div", { "class": "card" }, [
-      el("h2", { text: "Course 001 — " + (completed ? "COMPLETE" : "in progress") }),
+      el("h2", { text: "Your cases — " + (completed ? "all solved!" : (Object.keys(st.solved).length) + " of 5 solved") }),
       el("p", { "class": "small", text: "run " + st.run_id + " · " + st.receipts.length + " receipt" + (st.receipts.length === 1 ? "" : "s") + " on the chain" })
     ]));
     C.ORDER.forEach(function (id, i) {
@@ -258,11 +264,12 @@
       var unlockedHere = st.unlocked.indexOf(id) !== -1;
       var cls = "station-item" + (solvedHere ? " done" : unlockedHere ? " current" : " locked");
       var icon = solvedHere ? "\u2713" : unlockedHere ? "\u25B6" : "\uD83D\uDD12";
-      var sub = solvedHere ? "solved" : unlockedHere ? "open" : "locked — clear the previous station";
+      var sub = solvedHere ? "\u2713 Solved" : unlockedHere ? "Ready to play" : "Locked: solve the case before it";
       var item = el("button", { "class": cls }, [
         el("span", { "class": "dot", text: icon }),
         el("span", { "class": "meta" }, [
-          el("span", { "class": "name", text: ch.station + " · " + ch.title }),
+          el("span", { "class": "name", text: "Case " + (i + 1) + " · " + ch.title }),
+          el("span", { "class": "plain", text: ch.plain || "" }),
           el("span", { "class": "sub", text: sub })
         ])
       ]);
@@ -305,14 +312,12 @@
     scr.appendChild(el("div", { "class": "card" }, [
       el("h3", { text: ch.station }),
       el("h2", { text: ch.title }),
+      el("p", { "class": "plain-lead", text: ch.plain || "" }),
+      el("p", { text: ch.howto || "" }),
       el("details", {}, [
-        el("summary", { text: "The brief" }),
-        el("p", { text: ch.brief })
-      ]),
-      el("details", { open: "open" }, [
-        el("summary", { text: "Your objective" }),
-        el("p", { text: ch.objective }),
-        el("p", { "class": "small", text: "Gate: " + ch.gate })
+        el("summary", { text: "Full case file" }),
+        el("p", { text: ch.brief }),
+        el("p", { text: ch.objective })
       ])
     ]));
 

@@ -288,3 +288,13 @@ summary { min-height: 44px; display: flex; align-items: center; cursor: pointer;
   padding: 12px;
 }
 hr.sep { border: none; border-top: 1px solid #1d2c3d; margin: 14px 0; }
+
+/* plain-English + art pass */
+.hero{position:relative;border-radius:16px;overflow:hidden;margin:0 0 12px;max-height:56vh}
+.hero img{display:block;width:100%;height:56vh;object-fit:cover;object-position:center 70%}
+.hero-text{position:absolute;left:0;right:0;bottom:0;padding:20px 16px 16px;background:linear-gradient(to top,rgba(14,22,32,.95),rgba(14,22,32,0))}
+.hero-text h2{margin:0 0 6px;font-size:26px;color:#f3d48a}
+.hero-text p{margin:0;font-size:16px;color:#e6edf3}
+.station-item .meta{display:flex;flex-direction:column;gap:3px}
+.station-item .plain{font-size:14px;color:#c9d6e2;font-weight:400}
+.plain-lead{font-size:17px;color:#f3d48a;font-weight:600}

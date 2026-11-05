@@ -317,6 +317,8 @@
     {
       id: "arrival-00", version: "1.0.0", station: "STAGE 0 — ARRIVAL",
       title: "The Commission Warrant",
+      plain: "Check your own badge. Prove your ID letter is genuine before the town lets you in.",
+      howto: "Scroll down and tap Compute All Digests. It works out the seal for record WRNT-2077-A17 and fills in your answer. Check it, then submit.",
       brief: "You arrive at the Rally depot holding a commission warrant. The depot does not greet you by face — it greets you by digest. Every warrant record carries an integrity digest: a seal computed over the record's canonical bytes.",
       objective: "Verify your own commission: recompute the digest of record WRNT-2077-A17 and submit {record_id, digest}. The lens tool computes canonical bytes and SHA-256 for you — the judge recomputes everything itself and never trusts the lens.",
       evidence_fields: [
@@ -335,6 +337,8 @@
     {
       id: "postbridge-01", version: "1.0.0", station: "STAGE 1 — POSTBRIDGE",
       title: "The Amended Waybill",
+      plain: "One shipping slip was changed after it was sealed. Find the forgery.",
+      howto: "Tap Compute All Digests and compare each slip\u2019s fresh seal to the seal on file. The one that doesn\u2019t match is your forgery. Submit its id and the fresh seal.",
       brief: "Postbridge keeps a relay ledger. Each waybill was sealed at posting: its recorded digest commits the words exactly as they were. One waybill's words no longer match the seal recorded for it — someone amended a record after it was sealed.",
       objective: "Find the amended waybill. Submit {record_id, recomputed_digest}: the waybill whose recomputed digest contradicts its recorded seal, and the digest you recomputed from its current words.",
       evidence_fields: [
@@ -353,6 +357,8 @@
     {
       id: "cache-02", version: "1.0.0", station: "STAGE 2 — CACHE",
       title: "The Cache That Lies",
+      plain: "A chain of old records has been tampered with. Find exactly where it breaks.",
+      howto: "Tap Walk the Chain and read from the top. Each record should point to the one before it. Report the first broken record, why it broke, and the last record you can still trust.",
       brief: "The depot cache holds a recovered receipt chain — six judgments from a run before yours. Walk it with the contract: each receipt's hash must cover its payload and its predecessor. Somewhere the cache stops proving its claims, and everything after that point is cascade, not proof. Do not just find corruption: find where trust last stood.",
       objective: "File a quarantine order: submit {first_bad_receipt_id, reason_code, last_valid_receipt_id} — the FIRST receipt that fails, the contract reason code for the failure class, and the last receipt the chain still proves.",
       evidence_fields: [
@@ -372,6 +378,8 @@
     {
       id: "delivery-03", version: "1.1.0", station: "STAGE 3 — DELIVERY",
       title: "Preserve State Through the Relay",
+      plain: "Two couriers both claim a clean delivery. Only one is telling the truth.",
+      howto: "Run both courier logs through the checker below. Pick the route that survives, say where the other one first got rejected and why, and cite the receipt you earned in Case 3.",
       brief: "Two courier routes left Postbridge for the Two Bridges Bank, each carrying a sealed packet station to station. At every station the MOORPOST relay kernel decides the way it has always decided: identity, provenance, sequence, uniqueness, atomicity. Both couriers' logs narrate four accepts. Narration is not evidence. One packet's trustworthy state survived the whole relay; the other's did not.",
       objective: "Walk both relay logs with the kernel lens. Submit {relay_path, first_refused_hop, first_refusal_code, authority_receipt}: the path whose state survives the relay, the hop where the OTHER path is first refused, the frozen refusal code the kernel returns there — and the receipt id of YOUR OWN accepted quarantine order from the Cache desk.",
       evidence_fields: [
@@ -392,6 +400,8 @@
     {
       id: "apex-04", version: "1.1.0", station: "STAGE 4 — APEX",
       title: "The Board Rules",
+      plain: "Final case: you\u2019re in charge. Decide what ships and what gets stopped.",
+      howto: "Approve only the lanes and evidence backed by receipts you earned, and stop the one dispatch that fails the five checks. Use Five-Check This Record on each dispatch to find it.",
       brief: "Mission Control at the Apex. 19 records hit the board: six lane cards each claiming they may go, five dispatch records each narrating its own status, eight evidence cards each claiming to be verified. You are the duty operator. The board does not ask what the cards say; it asks what the ledger proves. Lanes advance only on authority resolved against your own chain's PASS receipts. Evidence is actionable only if it cites one. The dispatch rack is decided by the five checks — IDENTITY, PROVENANCE, SEQUENCE, UNIQUENESS, ATOMICITY — not by claimed_status.",
       objective: "Issue the ruling: submit {go_lanes: [...], actionable_cards: [...], quarantine_record} — the lanes that carry chain authority, the evidence cards that cite an existing PASS receipt, and the dispatch record the five checks quarantine.",
       evidence_fields: [

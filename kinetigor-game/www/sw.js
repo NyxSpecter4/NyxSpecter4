@@ -4,7 +4,7 @@
  * The game makes no network requests of its own — this exists only so the
  * installed app keeps working with the network disabled after first load.
  */
-var CACHE = "princetown-v1";
+var CACHE = "princetown-v2";
 var ASSETS = [
   "./",
   "./index.html",
@@ -14,6 +14,7 @@ var ASSETS = [
   "./fixtures.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./hero.jpg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
