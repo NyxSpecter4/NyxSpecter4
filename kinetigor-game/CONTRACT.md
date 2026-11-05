@@ -36,7 +36,7 @@ v1 defines the envelope fields and the state-promotion gate
 
 This game issues **genuine v1 envelopes** — the `schema` field is
 unchanged (`kinetigor.trust-receipt/v1`), and every receipt passes the
-frozen estate judge (`vendor/validate_receipt.js`). The schema's
+frozen estate judge (`www/vendor/validate_receipt.js`). The schema's
 `additionalProperties: true` admits the `game` block. The chain layer
 (canonicalization, SHA-256, `prev_receipt`, `seq`, `entry_hash`) is
 declared as an **explicit extension** under the namespace:
