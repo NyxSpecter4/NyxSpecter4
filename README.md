@@ -19,6 +19,15 @@
 
 ---
 
+## 📌 Canonical estate orientation (marked 2026-11-14 — read this before the sections below)
+
+**Kinetigor is the public front door and CTF onboarding journey. BountyWarz is the live competitive cyber/agent-sport product inside the Kinetigor estate. Athelgard is the authorized execution, observation, and verification apparatus. MAKOTHOTH is independent AI agent testing & evaluation. The Bay is the controlled testing environment; the Assurance Desk is the customer interface. MOORPOST is the organizer; Competitive Cyber Rally is the sport; The Princetown Packet is Course 001.**
+
+Current live product: **THE ONE APP** at https://kinetigor.com (one bundle, aligned apexes, one identity contract). Governing gates: the three P0 issues in the `NyxSpecter4/bountywarz` repository (#1425 Atomic Journey · #1426 Time to Verified Outcome · #1427 Physical Return Loop). Sea Trial baseline: rank **#120 · 569 points · 4 human-banked flags**. Current operational gate: **one candidate completing the physical return loop** — not more instrumentation. A repository or service is not described as integrated, live, verified, or production-ready without current evidence.
+
+> **Historical marker:** the "BountyWarz™ — 3D Spatial Cyber Operations Simulator" section below (Strait of Hormuz / Persian Gulf, London Maritime Range, San Francisco Strategic Basin theaters) describes the **pre-ONE-APP flagship**, retained as history. Do not read it as the current product. The measured live estate (Nov 14, 2026) is the ONE APP plus the KIN model/dataset estate on Hugging Face.
+
+
 ## 🧪 Service — AI Agent Reality Check ($99 pilot)
 
 I independently test AI agents and chatbots against a fixed set of scenarios and document what passes, fails, and remains unproven.
